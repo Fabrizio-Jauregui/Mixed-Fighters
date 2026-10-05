@@ -1,7 +1,3 @@
-// ============================================================
-// IMPORTACIONES
-// ============================================================
-
 // Permite utilizar Box2D desde Processing.
 import shiffman.box2d.*;
 
@@ -19,10 +15,6 @@ import org.jbox2d.collision.shapes.*;
 // BOX2D
 // ============================================================
 
-// Objeto que conecta nuestro programa de Processing con Box2D.
-// A través de este objeto podemos crear el mundo físico,
-// avanzar la simulación y realizar conversiones entre
-// coordenadas de Processing y coordenadas de Box2D.
 Box2DProcessing box2d;
 
 
@@ -30,93 +22,134 @@ Box2DProcessing box2d;
 // JUGADOR
 // ============================================================
 
-// Variable que va a guardar nuestro objeto Jugador.
-//
-// La primera palabra "Jugador" indica el tipo de objeto.
-// La segunda "Jugador" es el nombre de la variable.
-//
-// Más adelante sería recomendable utilizar un nombre como
-// "jugador" para diferenciar el tipo de la variable,
-// pero por ahora funciona de esta manera.
 Jugador Jugador;
+
+
+// ============================================================
+// MAPA
+// ============================================================
+
+PImage map1;
+
+
+// ============================================================
+// PLATAFORMAS
+// ============================================================
+
+ArrayList<platf> plataformas;
 
 
 void setup() {
 
-  // Crear una ventana de 800 x 800 píxeles.
-  size(800, 800);
+  fullScreen();
+
+  // ----------------------------------------------------------
+  // CARGAR MAPA
+  // ----------------------------------------------------------
+
+  map1 = loadImage("mapas/rooftops.jpg");
+  map1.resize(width, height);
 
 
   // ----------------------------------------------------------
   // CREAR EL MUNDO DE BOX2D
   // ----------------------------------------------------------
 
-  // Crear el objeto que permite utilizar Box2D.
   box2d = new Box2DProcessing(this);
 
-  // Crear el mundo físico.
   box2d.createWorld();
 
-  // Establecer la gravedad del mundo.
-  //
-  // El eje Y de Box2D está orientado de una manera diferente
-  // al eje Y que utilizamos normalmente en Processing.
-  //
-  // Por eso, este valor genera una gravedad que hace que
-  // los cuerpos caigan hacia abajo en la pantalla.
   box2d.setGravity(0, -10);
 
 
   // ----------------------------------------------------------
-  // CREAR AL JUGADOR
+  // CREAR PLATAFORMAS
   // ----------------------------------------------------------
 
-  // Crear un nuevo objeto Jugador.
-  //
-  // width/2  -> posición X en el centro de la pantalla.
-  // height/2 -> posición Y en el centro de la pantalla.
-  // 60       -> ancho visual del jugador.
-  // 60       -> alto visual del jugador.
-  //
-  // El constructor de Jugador se encargará de crear
-  // su cuerpo físico dentro de Box2D.
-  Jugador = new Jugador(width/2, height/2, 60, 60);
+  plataformas = new ArrayList<platf>();
+
+
+  // Plataforma superior izquierda
+  plataformas.add(new platf(
+    width * 0.245,
+    height * 0.16,
+    width * 0.25,
+    20
+    ));
+
+
+  // Plataforma intermedia izquierda
+  plataformas.add(new platf(
+    width * 0.255,
+    height * 0.46,
+    width * 0.19,
+    20
+    ));
+
+
+  // Plataforma inferior izquierda
+  plataformas.add(new platf(
+    width * 0.27,
+    height * 0.65,
+    width * 0.20,
+    20
+    ));
+
+
+  // Plataforma superior derecha
+  plataformas.add(new platf(
+    width * 0.645,
+    height * 0.44,
+    width * 0.40,
+    20
+    ));
+
+
+  // Plataforma inferior derecha
+  plataformas.add(new platf(
+    width * 0.65,
+    height * 0.73,
+    width * 0.40,
+    20
+    ));
+
+
+  // ----------------------------------------------------------
+  // CREAR JUGADOR
+  // ----------------------------------------------------------
+
+  Jugador = new Jugador(
+    width/2,
+    height/2,
+    60,
+    60
+    );
 }
 
 
 void draw() {
 
-  // Limpiar la pantalla en cada frame.
-  background(200);
+  // Dibujar el mapa.
+  background(map1);
 
 
   // ----------------------------------------------------------
-  // ACTUALIZAR LA FÍSICA
+  // ACTUALIZAR FÍSICA
   // ----------------------------------------------------------
 
-  // Avanzar la simulación de Box2D un paso.
-  //
-  // Acá Box2D calcula cosas como:
-  // - gravedad
-  // - movimiento
-  // - velocidad
-  // - colisiones
-  // - etc.
   box2d.step();
 
 
   // ----------------------------------------------------------
-  // ACTUALIZAR EL MOVIMIENTO DEL JUGADOR
+  // MOVIMIENTO DEL JUGADOR
   // ----------------------------------------------------------
 
-  // Le indicamos al jugador si se está presionando
-  // izquierda (A) o derecha (D).
-  //
-  // is_a e is_d son variables booleanas que se actualizan
-  // mediante keyPressed() y keyReleased().
   Jugador.mover(is_a, is_d);
 
 
-  // Dibujar al jugador en su posición actual.
+  // ----------------------------------------------------------
+  // DIBUJAR JUGADOR
+  // ----------------------------------------------------------
+
   Jugador.dibujar();
 }
