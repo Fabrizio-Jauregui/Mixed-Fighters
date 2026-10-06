@@ -22,7 +22,7 @@ ArrayList<platf> plataformas;
 void setup() {
 
   fullScreen();
-  map1 = loadImage("mapas/rooftops.jpg");
+  map1 = loadImage("mapas/Rooftops.png");
   map1.resize(width, height);
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
@@ -77,15 +77,15 @@ void setup() {
   Jugador = new Jugador(
     width/2,
     height/2,
-    60,
-    60
+    20,
+    35
     );
     
       Jugador2 = new Jugador(
     width/4,
     height/8,
-    60,
-    60
+    20,
+    35
     );
 }
 
