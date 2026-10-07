@@ -3,7 +3,7 @@ class platf {
 
   float x;
   float y;
-
+  color colorplatf;
   float ancho;
   float alto;
   PolygonShape formaPoligonal = new PolygonShape();
@@ -15,6 +15,7 @@ class platf {
 
     this.ancho = ancho;
     this.alto = alto;
+    this.colorplatf = color(255,0,0);
     BodyDef definicionCuerpo = new BodyDef();
 
 
@@ -45,4 +46,23 @@ class platf {
     // Crear el Fixture.
     body.createFixture(definicionFixture);
   }
+  
+  void dibujar() {
+
+  Vec2 posicionEnBox2D = body.getPosition();
+
+  Vec2 posicionEnPixeles =
+    box2d.coordWorldToPixels(posicionEnBox2D);
+
+  rectMode(CENTER);
+
+  fill(colorplatf);
+
+  rect(
+    posicionEnPixeles.x,
+    posicionEnPixeles.y,
+    ancho,
+    alto
+  );
+}
 }

@@ -22,7 +22,7 @@ class Jugador {
     definicionCuerpo.position.set(posicionInicial);
     cuerpo = box2d.world.createBody(definicionCuerpo);
     definicionFixture.shape = formaPoligonal;
-    definicionFixture.density = 1;
+    definicionFixture.density = 0;
     definicionFixture.friction = 0.5;
     cuerpo.createFixture(definicionFixture);
   }
