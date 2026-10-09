@@ -61,7 +61,7 @@ void CrearPlataformas(){
     
 //Plataforma abajo de la puerta de arriba a la derecha
   plataformas.add(new plataforma(
-    width * 0.8554,
+    width * 0.8551,
     height * 0.562,
     width * 0.09,
     37
@@ -77,9 +77,9 @@ void CrearPlataformas(){
 
 //Plataforma arriba de la escalera
   plataformas.add(new plataforma(
-    width * 0.48175,
+    width * 0.48166,
     height * 0.828,
-    width * 0.0959,
+    width * 0.097,
     20
     ));
 
@@ -118,9 +118,105 @@ void CrearPlataformas(){
 //pared escalera
   plataformas.add(new plataforma(
     width * 0.3219,
-    height * 0.47,
+    height * 0.4668,
     width * 0.019,
-    470
+    450
     ));
- 
+
+// Techo puerta abajo izquierda
+  plataformas.add(new plataforma(
+    width * 0.1090,
+    height * 0.6553,
+    width * 0.019,
+    150
+    ));
+
+//Techoabajo izquierda
+  plataformas.add(new plataforma(
+    width * 0.22,
+    height * 0.6,
+    width * 0.21,
+    30
+    ));
+
+//Piso de escalera 
+  plataformas.add(new plataforma(
+    width * 0.356,
+    height * 0.624,
+    width * 0.046,
+    5
+    ));
+
+//Techo puerta izquierda arriba
+  plataformas.add(new plataforma(
+    width * 0.08915,
+    height * 0.135,
+    width * 0.102,
+    40
+    ));
+    
+//Cartel puerta arriba izquierda
+  plataformas.add(new plataforma(
+    width * 0.13,
+    height * 0.161,
+    width * 0.02,
+    30
+    ));
+
+//pared izquierda hueco
+  plataformas.add(new plataforma(
+    width * 0.3219,
+    height * 0.91,
+    width * 0.02,
+    190
+    ));
+
+//pared derecha arriba en el hueco
+  plataformas.add(new plataforma(
+    width * 0.443,
+    height * 0.6418,
+    width * 0.02,
+    130
+    ));
+    
+//pared derecha abajo hueco
+  plataformas.add(new plataforma(
+    width * 0.443,
+    height * 0.92,
+    width * 0.02,
+    170
+    ));
+    
+//techo puerta arriba derecha
+  plataformas.add(new plataforma(
+    width * 0.913,
+    height * 0.435,
+    width * 0.1018,
+    35
+    ));
+    
+//cartel puerta arriba derecha
+  plataformas.add(new plataforma(
+    width * 0.872,
+    height * 0.4635,
+    width * 0.02,
+    25
+    ));
+    
+//Pared arriba puerta abajo derecha
+  plataformas.add(new plataforma(
+    width * 0.8725,
+    height * 0.675,
+    width * 0.02,
+    210
+    ));
+    
+    
+//Cartel puerta abajo a la izquierda
+  plataformas.add(new plataforma(
+    width * 0.8724,
+    height * 0.789,
+    width * 0.02,
+    23
+    ));
 }
