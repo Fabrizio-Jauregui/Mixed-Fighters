@@ -60,6 +60,9 @@ void draw() {
   Jugador.dibujar();
   Jugador2.dibujar();
   
+  Jugador.dibujarHitbox();
+  Jugador2.dibujarHitbox();
+  
   for (plataforma plataforma : plataformas) {
     plataforma.dibujar();
   }
