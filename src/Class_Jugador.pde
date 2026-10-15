@@ -5,12 +5,12 @@ class Jugador {
   BodyDef definicionCuerpo = new BodyDef();
   PolygonShape formaPoligonal = new PolygonShape();
   FixtureDef definicionFixture = new FixtureDef();
-  
+
   Jugador(int posx, int posy, int ancho, int alto) {
 
     definicionCuerpo.type = BodyType.DYNAMIC;
     definicionCuerpo.fixedRotation = true;
-    
+
     Vec2 posicionInicial = box2d.coordPixelsToWorld(
       posx,
       posy
@@ -28,32 +28,32 @@ class Jugador {
     cuerpo.createFixture(definicionFixture);
   }
 
-void mover(boolean izq, boolean der) {
+  void mover(boolean izq, boolean der) {
 
-  Vec2 velocidadActual = cuerpo.getLinearVelocity();
-  println(velocidadActual.y);
+    Vec2 velocidadActual = cuerpo.getLinearVelocity();
+    println(velocidadActual.y);
 
-  float velocidadHorizontal = 0;
+    float velocidadHorizontal = 0;
 
-  if (izq && !der) {
-    velocidadHorizontal = -10;
-  } else if (der && !izq) {
-    velocidadHorizontal = 10;
+    if (izq && !der) {
+      velocidadHorizontal = -10;
+    } else if (der && !izq) {
+      velocidadHorizontal = 10;
+    }
+    //Usar una fuerza en lugar de este metodo
+    //¿Donde se
+    cuerpo.setLinearVelocity(
+      new Vec2(velocidadHorizontal, velocidadActual.y)
+      );
   }
-//Usar una fuerza en lugar de este metodo
-//¿Donde se 
-  cuerpo.setLinearVelocity(
-    new Vec2(velocidadHorizontal, velocidadActual.y)
-  );
-}
 
 
 
-void saltar() {
-  Vec2 vel = cuerpo.getLinearVelocity();
-  if (Math.abs(vel.y) > 0) return;  // está en el aire, no saltar
-  cuerpo.setLinearVelocity(new Vec2(vel.x, 160/3));
-}
+  void saltar() {
+    Vec2 vel = cuerpo.getLinearVelocity();
+    if (Math.abs(vel.y) > 0) return;  // está en el aire, no saltar
+    cuerpo.setLinearVelocity(new Vec2(vel.x, 160/3));
+  }
 
   void dibujar() {
 
@@ -74,35 +74,34 @@ void saltar() {
       alto
       );
   }
-  
-void dibujarHitbox() {
 
-  Fixture fixture = cuerpo.getFixtureList();
-  PolygonShape forma = (PolygonShape) fixture.getShape();
+  void dibujarHitbox() {
 
-  noFill();
-  stroke(0, 255, 0);
-  strokeWeight(2);
+    Fixture fixture = cuerpo.getFixtureList();
+    PolygonShape forma = (PolygonShape) fixture.getShape();
 
-  beginShape();
+    noFill();
+    stroke(0, 255, 0);
+    strokeWeight(2);
 
-  for (int i = 0; i < forma.getVertexCount(); i++) {
+    beginShape();
 
-    Vec2 verticeMundo = cuerpo.getWorldPoint(
-      forma.getVertex(i)
-    );
+    for (int i = 0; i < forma.getVertexCount(); i++) {
 
-    Vec2 verticePixel = box2d.coordWorldToPixels(
-      verticeMundo
-    );
+      Vec2 verticeMundo = cuerpo.getWorldPoint(
+        forma.getVertex(i)
+        );
 
-    vertex(
-      verticePixel.x,
-      verticePixel.y
-    );
+      Vec2 verticePixel = box2d.coordWorldToPixels(
+        verticeMundo
+        );
+
+      vertex(
+        verticePixel.x,
+        verticePixel.y
+        );
+    }
+
+    endShape(CLOSE);
   }
-
-  endShape(CLOSE);
-}
-
 }

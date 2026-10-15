@@ -15,7 +15,7 @@ class plataforma {
 
     this.ancho = ancho;
     this.alto = alto;
-    this.colorplataforma = color(255,0,0);
+    this.colorplataforma = color(255, 0, 0);
     BodyDef definicionCuerpo = new BodyDef();
 
 
@@ -46,23 +46,23 @@ class plataforma {
     // Crear el Fixture.
     body.createFixture(definicionFixture);
   }
-  
+
   void dibujar() {
 
-  Vec2 posicionEnBox2D = body.getPosition();
+    Vec2 posicionEnBox2D = body.getPosition();
 
-  Vec2 posicionEnPixeles =
-    box2d.coordWorldToPixels(posicionEnBox2D);
+    Vec2 posicionEnPixeles =
+      box2d.coordWorldToPixels(posicionEnBox2D);
 
-  rectMode(CENTER);
+    rectMode(CENTER);
 
-  fill(colorplataforma);
+    fill(colorplataforma);
 
-  rect(
-    posicionEnPixeles.x,
-    posicionEnPixeles.y,
-    ancho,
-    alto
-  );
-}
+    rect(
+      posicionEnPixeles.x,
+      posicionEnPixeles.y,
+      ancho,
+      alto
+      );
+  }
 }

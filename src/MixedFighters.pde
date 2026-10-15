@@ -27,17 +27,17 @@ void setup() {
   box2d.createWorld();
   box2d.setGravity(0, -160);
   plataformas = new ArrayList<plataforma>();
-  
+
   CrearPlataformas();
-      
+
   Jugador = new Jugador(
     width/2,
     height/2,
     20,
     40
     );
-    
-      Jugador2 = new Jugador(
+
+  Jugador2 = new Jugador(
     width/4,
     height/8,
     20,
@@ -58,14 +58,14 @@ void draw() {
 
   Jugador.dibujar();
   Jugador2.dibujar();
-  
-  Jugador.dibujarHitbox();
-  Jugador2.dibujarHitbox();
-  
+
+  //Jugador.dibujarHitbox();
+  //Jugador2.dibujarHitbox();
+
   for (plataforma plataforma : plataformas) {
     plataforma.dibujar();
   }
   fill(40, 200, 100);
-  
-    box2d.step();
+
+  box2d.step();
 }

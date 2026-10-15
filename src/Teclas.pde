@@ -10,8 +10,8 @@ void keyPressed() {
   if (key == 'd' || key == 'D') {
     is_d = true;
   }
-  
-    if (keyCode == LEFT) {
+
+  if (keyCode == LEFT) {
     is_LEFT = true;
   }
 
@@ -22,8 +22,8 @@ void keyPressed() {
   if (key == 'w') {
     Jugador.saltar();
   }
-  
-    if (keyCode == UP) {
+
+  if (keyCode == UP) {
     Jugador2.saltar();
   }
 }
@@ -38,8 +38,8 @@ void keyReleased() {
   if (key == 'd' || key == 'D') {
     is_d = false;
   }
-  
-      if (keyCode == LEFT) {
+
+  if (keyCode == LEFT) {
     is_LEFT = false;
   }
 
