@@ -4,7 +4,7 @@ ArrayList<Plataforma> plataformas;
 int estado = 0;
 Jugador jugador1;
 Jugador jugador2;
-
+boolean enter = false;
 boolean isA = false;
 boolean isD = false;
 boolean isLEFT = false;
@@ -16,11 +16,9 @@ boolean mostrarHitboxes = false;
 void setup() {
   fullScreen();
   mapa = loadImage("mapas/Rooftops.png");
-  panCarga = loadImage("mapas/carga");
-  if (mapa != null) {
-    mapa.resize(width, height);
-  }
-
+  panCarga = loadImage("mapas/carga.png");
+  panCarga.resize(width, height);
+  mapa.resize(width, height);
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
 
@@ -32,13 +30,13 @@ void draw() {
   
   if(estado == 0){
     image(panCarga,0,0);
+    textSize(30);
+    fill(0,0,255);
+    text("Toque enter para empezar", width*0.35, height*0.80);
+    if( enter == true){
+    estado = 1;
+    }
     
-  
-  
-  
-  
-  
-  
   }
   
   
