@@ -1,10 +1,14 @@
 void keyPressed() {
   if (key == 'a' || key == 'A') isA = true;
   if (key == 'd' || key == 'D') isD = true;
-
+  
   if (keyCode == LEFT) isLEFT = true;
   if (keyCode == RIGHT) isRIGHT = true;
-
+  
+  
+  if(keyCode == ENTER) enter = true;
+  
+  
   if (key == 'w' || key == 'W') jugador1.saltar();
   if (keyCode == UP) jugador2.saltar();
 
@@ -18,4 +22,6 @@ void keyReleased() {
 
   if (keyCode == LEFT) isLEFT = false;
   if (keyCode == RIGHT) isRIGHT = false;
+
+  if(keyCode == ENTER) enter = false;
 }
