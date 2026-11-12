@@ -32,7 +32,7 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.443, height * 0.6235, width * 0.02, height * 0.1625));//pared a la derecha de la escalera marinera
   plataformas.add(new Plataforma(width * 0.443, height * 0.93, width * 0.02, height * 0.2125));//pared caida del medio a la derecha
   plataformas.add(new Plataforma(width * 0.913, height * 0.435, width * 0.1018, height * 0.04375));//techo tp arriba a la derecha
-  plataformas.add(new Plataforma(width * 0.872, height * 0.4635, width * 0.02, height * 0.03125));//colision cartelito arriba a la derecha del tp
+  plataformas.add(new Plataforma(width * 0.872, height * 0.4635, width * 0.01980, height * 0.03125));//colision cartelito arriba a la derecha del tp
   plataformas.add(new Plataforma(width * 0.8725, height * 0.675, width * 0.02, height * 0.2625));//pared arriba del tp abajo a la derecha
   plataformas.add(new Plataforma(width * 0.8724, height * 0.789, width * 0.02, height * 0.02875));//
 }
