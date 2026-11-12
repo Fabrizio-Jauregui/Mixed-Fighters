@@ -27,7 +27,7 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.22, height * 0.6, width * 0.21, height * 0.0375));//techo callejon abajo a la izquierda
   plataformas.add(new Plataforma(width * 0.3565, height * 0.624, width * 0.046, height * 0.00625));//piso escalera marinera
   plataformas.add(new Plataforma(width * 0.08915, height * 0.135, width * 0.102, height * 0.05));//techo tp arriba a la izquierda
-  plataformas.add(new Plataforma(width * 0.13, height * 0.161, width * 0.02, height * 0.0375));//
+  plataformas.add(new Plataforma(width * 0.13, height * 0.161, width * 0.02, height * 0.0375));//cartelito arriba a la izquierda
   plataformas.add(new Plataforma(width * 0.3219, height * 0.94, width * 0.02, height * 0.2375));//pared caida del medio a la izquierda
   plataformas.add(new Plataforma(width * 0.443, height * 0.6235, width * 0.02, height * 0.1625));//pared a la derecha de la escalera marinera
   plataformas.add(new Plataforma(width * 0.443, height * 0.93, width * 0.02, height * 0.2125));//pared caida del medio a la derecha
