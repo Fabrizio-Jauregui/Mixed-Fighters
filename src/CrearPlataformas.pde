@@ -35,4 +35,5 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.872, height * 0.4635, width * 0.01980, height * 0.03125));//colision cartelito arriba a la derecha del tp
   plataformas.add(new Plataforma(width * 0.8725, height * 0.675, width * 0.02, height * 0.2625));//pared arriba del tp abajo a la derecha
   plataformas.add(new Plataforma(width * 0.8724, height * 0.789, width * 0.02, height * 0.02875));//
+  plataformas.add(new Plataforma(width * 0.412, height * 0.83, width * 0.05, height * 0.02));// plataforma flotante
 }
