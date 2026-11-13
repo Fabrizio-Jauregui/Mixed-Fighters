@@ -56,7 +56,9 @@ void draw() {
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
         p.dibujar();
-      }
+        p.teletransporte(jugador1, isA != isD);
+        p.teletransporte(jugador2, isLEFT != isRIGHT);  
+    }
     }
 
     if (mostrarHitboxes) {
