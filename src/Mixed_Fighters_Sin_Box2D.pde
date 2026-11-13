@@ -30,11 +30,12 @@ void setup() {
 
 void draw() {
   background(0);
-  if (estado == 0) {
+    if (estado == 0) {
+    textAlign(CENTER,CENTER);
     image(panCarga, 0, 0);
     textSize(30);
     fill(0, 0, 255);
-    text("Toque enter para empezar", width*0.35, height*0.80);
+    text("Toque enter para empezar", width/2, height*0.80);
     if ( enter == true) {
       estado = 1;
     }
