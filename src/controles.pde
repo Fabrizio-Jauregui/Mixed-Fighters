@@ -24,4 +24,12 @@ void keyReleased() {
   if (keyCode == RIGHT) isRIGHT = false;
 
   if(keyCode == ENTER) enter = false;
+
+  if (!isA && !isD) {
+    jugador1.invertirX = false;
+  }
+
+  if (!isLEFT && !isRIGHT) {
+    jugador2.invertirX = false;
+  }
 }
