@@ -22,6 +22,14 @@ class Jugador {
     this.c = c;
   }
 
+  void reiniciar(float x, float y) {
+    pos.set(x, y);
+    vel.set(0, 0);
+    acel.set(0, 0);
+    enSuelo = false;
+    invertirX = false;
+  }
+
   void mover(boolean izq, boolean der, ArrayList<Plataforma> plataformas) {
     if (izq && !der) {
       vel.x = invertirX ? velocidad : -velocidad;
