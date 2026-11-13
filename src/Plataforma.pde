@@ -49,7 +49,7 @@ void teletransporte(Jugador jugador, boolean moviendo) {
 
 
     
-    
+    /*
     rect(width * 0.85, height * 0.5, width * 0.009, height * 0.11875);//pared tp arriba a la derecha
     
     rect(width * 0.87, height * 0.845, width * 0.009, height * 0.11875);//pared tp abajo a la derecha
@@ -57,6 +57,9 @@ void teletransporte(Jugador jugador, boolean moviendo) {
     rect(width * 0.15, height * 0.2, width * 0.009, height * 0.11875);//pared tp arriba a la izquierda
     
     rect(width * 0.11, height * 0.77, width * 0.009, height * 0.11875);//pared tp abajo a la izquierda
+    
+    */
+
     
   }
 
