@@ -9,6 +9,7 @@ class Jugador {
   float velocidad = 5;
   float fuerzaSalto = 12;
   boolean enSuelo = false;
+  boolean invertirX = false;
   color c;
 
   Jugador(float x, float y, int ancho, int alto, color c) {
@@ -23,9 +24,9 @@ class Jugador {
 
   void mover(boolean izq, boolean der, ArrayList<Plataforma> plataformas) {
     if (izq && !der) {
-      vel.x = -velocidad;
+      vel.x = invertirX ? velocidad : -velocidad;
     } else if (der && !izq) {
-      vel.x = velocidad;
+      vel.x = invertirX ? -velocidad : velocidad;
     } else {
       vel.x = 0;
     }
