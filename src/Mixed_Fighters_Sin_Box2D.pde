@@ -4,6 +4,7 @@ ArrayList<Plataforma> plataformas;
 int estado = 0;
 Jugador jugador1;
 Jugador jugador2;
+MotorFisico motorFisico;
 boolean enter = false;
 boolean isA = false;
 boolean isD = false;
@@ -23,6 +24,7 @@ void setup() {
   mapa.resize(width, height);
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
+  motorFisico = new MotorFisico();
 
   jugador1 = new Jugador(width/2, height/2, width * 0.01, height * 0.038, color(40, 200, 100));
   jugador2 = new Jugador(width/4, height/8, width * 0.01, height * 0.038, color(230, 80, 70));
@@ -49,8 +51,8 @@ void draw() {
       background(70);
     }
 
-    jugador1.mover(isA, isD, plataformas);
-    jugador2.mover(isLEFT, isRIGHT, plataformas);
+    motorFisico.actualizar(jugador1, isA, isD, plataformas);
+    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, plataformas);
 
     jugador1.dibujar();
     jugador2.dibujar();
