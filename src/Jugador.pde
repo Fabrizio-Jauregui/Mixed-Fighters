@@ -3,16 +3,16 @@ class Jugador {
   PVector vel;
   PVector acel;
 
-  int ancho;
-  int alto;
-  float gravedad = 0.55;
-  float velocidad = 5;
-  float fuerzaSalto = 12;
+  float ancho;
+  float alto;
+  float gravedad = height * 0.0005;
+  float velocidad = width * 0.0015;
+  float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
   boolean invertirX = false;
   color c;
 
-  Jugador(float x, float y, int ancho, int alto, color c) {
+  Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
     vel = new PVector(0, 0);
     acel = new PVector(0, 0);

@@ -24,8 +24,8 @@ void setup() {
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
 
-  jugador1 = new Jugador(width/2, height/2, 20, 40, color(40, 200, 100));
-  jugador2 = new Jugador(width/4, height/8, 20, 40, color(230, 80, 70));
+  jugador1 = new Jugador(width/2, height/2, width * 0.01, height * 0.038, color(40, 200, 100));
+  jugador2 = new Jugador(width/4, height/8, width * 0.01, height * 0.038, color(230, 80, 70));
 }
 
 void draw() {
