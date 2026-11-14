@@ -1,85 +1,52 @@
-
 # Mixed Fighters
 
-Juego inspirado en Superfighters de flash. Contendrá personajes nuevos con habilidades
+Prototipo de juego local para dos jugadores, inspirado en *Superfighters*. Está desarrollado en Processing y usa un motor de colisiones propio.
 
-## Descripción
+## Abrir y ejecutar
 
-Este juego será desarrollado con Processing
+1. Instala Processing 4.
+2. Abre la carpeta `Mixed_Fighters_Sin_Box2D` desde Processing o abre directamente `Mixed_Fighters_Sin_Box2D.pde` dentro de esa carpeta.
+3. Pulsa **Run** para iniciar el sketch.
 
-## Características
+La carpeta del sketch y el archivo principal tienen el mismo nombre, como espera Processing. Los recursos que carga el juego están dentro de `Mixed_Fighters_Sin_Box2D/data`.
 
-- Modo para dos jugadores
-- Sistema de puntuación.
-- Efectos de sonido y música.
+## Mapa del código
 
-## Controles
+Las pestañas `.pde` se mantienen juntas en la carpeta del sketch porque Processing las combina al compilar. El prefijo con letra indica el orden sugerido para recorrerlas:
 
-Teclas personaje 1:
-- moverse a la izquierda : Flechita izquierda
-- moverse a la derecha: Flechita derecha
-- saltar: Flechita arriba
-- agacharse: Flechita abajo
-- rodar: Flechita izquierda o derecha(Mantener) y flechita abajo
-- Correr: Flechita izquierda o derecha(Apretar y después mantener)
-- Placaje(embestir): Correr + flechita abajo
-- Golpear: N
-- Apuntar y disparar: Mantener M, Flechita arriba o abajo para subir o bajar objetivo, soltar
-m(dispara).
-- Volver a disparar: Al haber soltado, volver a apretar y así sucesivamente (cooldown para
-guardar arma).
-- Guardar arma: Se guarda automáticamente al dejar de presionar la letra M
-- Reemplazar arma: Agacharse y pegar
-- Apuntar y tirar granadas: misma mecánica que el disparo, solo que se tiene que
-mantener la “,” en lugar de la “M”
-- Cubrirse con objetos: ponerse al lado de un objeto y apretar la flecha que está a la
-dirección del objeto, ejemplo, el objeto está a la izquierda del personaje, se debe apretar la
-flecha izquierda.
-- Usar habilidades: “.”
-  
-Teclas personaje 2:
-- moverse a la izquierda : A
-- moverse a la derecha: D
-- saltar: W
-- agacharse: S
-- rodar: A o D(Mantener) y S
-- Correr(baja barra de stamina): A o D (Apretar y después mantener)
-- Placaje(embestir): Correr + S
-- Golpear: 1
-- Apuntar y disparar: Mantener 2, W o S para subir o bajar objetivo, soltar 2(dispara).
-- Volver a disparar: Al haber soltado, volver a apretar y así sucesivamente (cooldown para
-guardar arma).
-- Guardar arma: Se guarda automáticamente al dejar de presionar la tecla 2
-- Reemplazar arma: Agacharse y pegar
-- Apuntar y tirar granadas: misma mecánica que el disparo, solo que se tiene que
-mantener el “3” en lugar de él “2”
-- Cubrirse con objetos: ponerse al lado de un objeto y apretar la tecla que está en la
-dirección del objeto, ejemplo, el objeto está a la izquierda del personaje, se debe apretar la
-A.
-- Usar habilidades: “4”
+| Pestaña | Responsabilidad |
+| --- | --- |
+| `Mixed_Fighters_Sin_Box2D.pde` | Punto de entrada: inicializa el juego y coordina cada cuadro (`setup()` y `draw()`). |
+| `A_EstadoDelJuego.pde` | Estado compartido: jugadores, recursos, controles y opciones de depuración. |
+| `B_EstadosJuego.pde` | Dibujo y actualización del inicio, la partida y la pantalla de resultado. |
+| `C_Controles.pde` | Traduce eventos del teclado a acciones y estados de entrada. |
+| `D_Jugador.pde` | Datos y comportamiento propio del jugador, como saltar, reiniciar y dibujarse. |
+| `E_Plataforma.pde` | Plataforma y lógica de teletransporte existente. |
+| `F_MotorFisico.pde` | Movimiento, gravedad y resolución de colisiones. |
+| `G_CrearPlataformas.pde` | Ubicaciones y dimensiones de las plataformas del mapa. |
 
-## Capturas de pantalla
+Para agregar una mecánica, empieza en el grupo responsable de esa mecánica; deja en el archivo principal solo la coordinación general. Para sumar una entidad, crea una pestaña `.pde` con su clase y agrega su creación o actualización al flujo del juego donde corresponda.
 
-(A futuro)
+## Recursos
 
-## Instalación
+- `Mixed_Fighters_Sin_Box2D/data/mapas/`: mapa y pantalla de carga usados por el sketch.
+- `Mixed_Fighters_Sin_Box2D/data/sprites/`: archivo de sprites del proyecto.
+- `docs/`: roadmap y notas de investigación.
+- `docs/libreria/`: JBox2D y Processing Box2D guardados como referencia. El juego actual no los utiliza; la física está implementada en `F_MotorFisico.pde`.
 
-(A futuro)
+## Controles implementados actualmente
 
-## Tecnologías utilizadas
+- `A` / `D`: movimiento horizontal del jugador 1.
+- `←` / `→`: movimiento horizontal del jugador 2.
+- `W`: salto del jugador 1.
+- `↑`: salto del jugador 2.
+- `Enter`: comenzar desde el menú o reiniciar desde el resultado.
+- `P`: mostrar u ocultar las plataformas dibujadas.
+- `H`: mostrar u ocultar las hitboxes de los jugadores.
 
-- Lenguaje: Processing.
-- Motor: Processing.
-- Librerías principales.
+Las mecánicas de combate, armas, granadas, agacharse y habilidades descritas originalmente son ideas para el desarrollo futuro; todavía no están implementadas en el código actual.
 
-## Objetivos del proyecto
+## Tecnologías
 
-- Aprender desarrollo de videojuegos.
-- Practicar programación orientada a objetos.
-- Implementar mecánicas de juego.
-
-## Autores
-
-- Nombres:
-- Aramis Damian Perez Hurtado
-- Fabrizio Nicolas Jauregui Di Blasi
+- Processing 4 / Java mode.
+- Física y colisiones implementadas dentro del proyecto.
