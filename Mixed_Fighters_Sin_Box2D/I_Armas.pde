@@ -27,4 +27,7 @@ class Armas {
       spawn = false;
     }
   }
+  void reiniciar(){
+  spawn = true;
+  }
 }
