@@ -9,6 +9,7 @@ void dibujarInicio() {
 
     if (enter) {
       estado = 1;
+      inicioArmas = millis();
     }
   }
 }
@@ -31,12 +32,26 @@ void actualizarPartida() {
     jugador1.dibujar();
     jugador2.dibujar();
 
-    spawn1.dibujar();
-    spawn2.dibujar();
-    spawn3.dibujar();
-    spawn4.dibujar();
-    spawn5.dibujar();
-    spawn6.dibujar();
+    if (millis() - inicioArmas >= 10000) {
+      spawn1.dibujar();
+      spawn2.dibujar();
+      spawn3.dibujar();
+      spawn4.dibujar();
+      spawn5.dibujar();
+      spawn6.dibujar();
+      spawn1.agarrarArma(jugador1, isS);
+      spawn2.agarrarArma(jugador1, isS);
+      spawn3.agarrarArma(jugador1, isS);
+      spawn4.agarrarArma(jugador1, isS);
+      spawn5.agarrarArma(jugador1, isS);
+      spawn6.agarrarArma(jugador1, isS);
+      spawn1.agarrarArma(jugador2, isDOWN);
+      spawn2.agarrarArma(jugador2, isDOWN);
+      spawn3.agarrarArma(jugador2, isDOWN);
+      spawn4.agarrarArma(jugador2, isDOWN);
+      spawn5.agarrarArma(jugador2, isDOWN);
+      spawn6.agarrarArma(jugador2, isDOWN);
+    }
 
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
