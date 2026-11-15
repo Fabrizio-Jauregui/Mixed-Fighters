@@ -4,7 +4,7 @@ void actualizarTeletransporte(Jugador jugador, boolean moviendo) {
   boolean teletransportado = false;
 
   // Superior derecho -> Inferior derecho
-  if (dist(pos.x, pos.y, width * 0.872, height * 0.5) < 20) {
+  if (dist(pos.x, pos.y, width * 0.872, height * 0.52) < 20) {
     pos.x = width * 0.85;
     pos.y = height * 0.845;
     teletransportado = true;
