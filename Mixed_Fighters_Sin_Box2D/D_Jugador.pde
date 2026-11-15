@@ -40,7 +40,8 @@ class Jugador {
   void dibujar() {
     rectMode(CENTER);
     noStroke();
-    fill(c);
+    fill(c);boolean isRIGHT = false;
+
     rect(pos.x, pos.y, ancho, alto);
   }
 
