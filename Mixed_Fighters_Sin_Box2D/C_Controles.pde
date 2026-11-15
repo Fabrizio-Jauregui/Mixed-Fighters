@@ -1,14 +1,15 @@
 void keyPressed() {
   if (key == 'a' || key == 'A') isA = true;
   if (key == 'd' || key == 'D') isD = true;
-  
+  if (key == 's' || key == 'S') isS = true;
+
   if (keyCode == LEFT) isLEFT = true;
   if (keyCode == RIGHT) isRIGHT = true;
-  
-  
-  if(keyCode == ENTER) enter = true;
-  
-  
+  if ( keyCode == DOWN) isDOWN = true;
+
+  if (keyCode == ENTER) enter = true;
+
+
   if (key == 'w' || key == 'W') jugador1.saltar();
   if (keyCode == UP) jugador2.saltar();
 
@@ -19,11 +20,13 @@ void keyPressed() {
 void keyReleased() {
   if (key == 'a' || key == 'A') isA = false;
   if (key == 'd' || key == 'D') isD = false;
+  if (key == 's' || key == 'S') isS = false;
 
   if (keyCode == LEFT) isLEFT = false;
   if (keyCode == RIGHT) isRIGHT = false;
+  if ( keyCode == DOWN) isDOWN = false;
 
-  if(keyCode == ENTER) enter = false;
+  if (keyCode == ENTER) enter = false;
 
   if (!isA && !isD) {
     jugador1.invertirX = false;
