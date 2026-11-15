@@ -31,6 +31,13 @@ void actualizarPartida() {
     jugador1.dibujar();
     jugador2.dibujar();
 
+    spawn1.dibujar();
+    spawn2.dibujar();
+    spawn3.dibujar();
+    spawn4.dibujar();
+    spawn5.dibujar();
+    spawn6.dibujar();
+
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
         p.dibujar();
@@ -43,13 +50,13 @@ void actualizarPartida() {
     }
 
     if (jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
-        jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
+      jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
       estado = 3;
       perdio1 = true;
     }
 
     if (jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
-        jugador2.pos.y <= 0 || jugador2.pos.y >= height) {
+      jugador2.pos.y <= 0 || jugador2.pos.y >= height) {
       estado = 3;
       perdio2 = true;
     }
