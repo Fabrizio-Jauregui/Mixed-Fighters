@@ -10,6 +10,12 @@ void dibujarInicio() {
     if (enter) {
       estado = 1;
       inicioArmas = millis();
+      spawn1.reiniciar();
+      spawn2.reiniciar();
+      spawn3.reiniciar();
+      spawn4.reiniciar();
+      spawn5.reiniciar();
+      spawn6.reiniciar();
     }
   }
 }
