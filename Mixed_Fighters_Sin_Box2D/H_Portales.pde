@@ -6,28 +6,28 @@ void actualizarTeletransporte(Jugador jugador, boolean moviendo) {
   // Superior derecho -> Inferior derecho
   if (dist(pos.x, pos.y, width * 0.872, height * 0.52) < 20) {
     pos.x = width * 0.85;
-    pos.y = height * 0.845;
+    pos.y = height * 0.85;
     teletransportado = true;
   }
 
   // Inferior derecho -> Superior derecho
   else if (dist(pos.x, pos.y, width * 0.872, height * 0.845) < 20) {
     pos.x = width * 0.85;
-    pos.y = height * 0.5;
+    pos.y = height * 0.519;
     teletransportado = true;
   }
 
   // Superior izquierdo -> Inferior izquierdo
   else if (dist(pos.x, pos.y, width * 0.13, height * 0.22) < 20) {
     pos.x = width * 0.13;
-    pos.y = height * 0.77;
+    pos.y = height * 0.78;
     teletransportado = true;
   }
 
   // Inferior izquierdo -> Superior izquierdo
   else if (dist(pos.x, pos.y, width * 0.11, height * 0.77) < 20) {
     pos.x = width * 0.15;
-    pos.y = height * 0.2;
+    pos.y = height * 0.222;
     teletransportado = true;
   }
 
