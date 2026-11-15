@@ -25,14 +25,15 @@ void actualizarPartida() {
     motorFisico.actualizar(jugador1, isA, isD, plataformas);
     motorFisico.actualizar(jugador2, isLEFT, isRIGHT, plataformas);
 
+    actualizarTeletransporte(jugador1, isA != isD);
+    actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
+
     jugador1.dibujar();
     jugador2.dibujar();
 
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
         p.dibujar();
-        p.teletransporte(jugador1, isA != isD);
-        p.teletransporte(jugador2, isLEFT != isRIGHT);
       }
     }
 
