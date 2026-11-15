@@ -5,6 +5,13 @@ ArrayList<Plataforma> plataformas;
 int estado = 0;
 Jugador jugador1;
 Jugador jugador2;
+Armas spawn1;
+Armas spawn2;
+Armas spawn3;
+Armas spawn4;
+Armas spawn5;
+Armas spawn6;
+
 MotorFisico motorFisico;
 
 boolean enter = false;
