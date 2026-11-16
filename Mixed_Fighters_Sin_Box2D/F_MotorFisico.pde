@@ -8,8 +8,9 @@ class MotorFisico {
       jugador.acel.set(0, 0);
       jugador.enSuelo = false;
       jugador.enRampa = false;
-    }
-
+    }   
+    
+    
     if (jugador.escalando) {
       actualizarEscalada(jugador, izq, der, subir, bajar, plataformas, escalera);
       return;
