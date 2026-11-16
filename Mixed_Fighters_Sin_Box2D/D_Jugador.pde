@@ -2,7 +2,9 @@ class Jugador {
   PVector pos;
   PVector vel;
   PVector acel;
-
+  
+  int vida = 100;
+  
   float ancho;
   float alto;
   float gravedad = height * 0.0005;
@@ -13,6 +15,8 @@ class Jugador {
   boolean escalando = false;
   boolean invertirX = false;
   color c;
+  boolean tieneArmaPrinc = false;
+  boolean tieneArmaSecund = true;
 
   Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
@@ -32,6 +36,8 @@ class Jugador {
     enRampa = false;
     escalando = false;
     invertirX = false;
+    tieneArmaPrinc = false;
+    tieneArmaSecund = true;
   }
 
   void saltar() {
@@ -48,6 +54,21 @@ class Jugador {
     fill(c);
     rect(pos.x, pos.y, ancho, alto);
   }
+  
+  
+  void golpear(){
+  
+  
+  
+  }
+
+
+  void disparar(){
+  
+  
+  
+  }
+  
 
   void dibujarHitbox() {
     rectMode(CENTER);
