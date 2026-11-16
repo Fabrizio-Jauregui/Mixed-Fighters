@@ -2,10 +2,12 @@ void keyPressed() {
   if (key == 'a' || key == 'A') isA = true;
   if (key == 'd' || key == 'D') isD = true;
   if (key == 's' || key == 'S') isS = true;
+  if ( key == '1') is1 = true;
 
   if (keyCode == LEFT) isLEFT = true;
   if (keyCode == RIGHT) isRIGHT = true;
   if (keyCode == DOWN) isDOWN = true;
+  if (key == 'm' || key == 'M') isM = true;
 
   if (keyCode == ENTER) enter = true;
 
@@ -46,11 +48,14 @@ void keyReleased() {
   if (key == 'd' || key == 'D') isD = false;
   if (key == 'w' || key == 'W') isW = false;
   if (key == 's' || key == 'S') isS = false;
+  if ( key == '1') is1 = false;
 
   if (keyCode == LEFT) isLEFT = false;
   if (keyCode == RIGHT) isRIGHT = false;
   if (keyCode == UP) isUP = false;
   if (keyCode == DOWN) isDOWN = false;
+  if (key == 'm' || key == 'M') isM = true;
+
 
   if (keyCode == ENTER) enter = false;
 
