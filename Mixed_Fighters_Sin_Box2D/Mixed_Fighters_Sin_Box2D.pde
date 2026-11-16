@@ -7,24 +7,25 @@ void setup() {
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
   rampas = new ArrayList<Rampa>();
-  // La rampa conecta el borde del piso inferior derecho con el borde del piso superior.
 
-//Escalera
+  //Escalera
   rampas.add(new Rampa(
     width * 0.525, height * 0.82,
     width * 0.566, height * 0.873
     ));
 
-//piso izquierda
+  //Piso izquierda
   rampas.add(new Rampa(
     width * 0.435, height * 0.82,
     width * 0.525, height * 0.82
     ));
-  // Coordenadas iniciales editables de la zona de interacción de la escalera marinera.
+
+  //Escalera Marinera
   escaleraMarinera = new EscaleraMarinera(
     width * 0.336, height * 0.23,
     width * 0.358, height * 0.624
     );
+
   puntosArmas = new ArrayList<Armas>();
   puntosArmas.add(new Armas(width * 0.55, height * 0.195, 35, 10));
   puntosArmas.add(new Armas(width * 0.2265, height * 0.233, 35, 10));

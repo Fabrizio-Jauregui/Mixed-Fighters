@@ -9,13 +9,11 @@ class Rampa {
   }
 
   boolean contieneX(float x) {
-    return x >= min(inicio.x, fin.x) &&
-           x <= max(inicio.x, fin.x);
+    return x >= min(inicio.x, fin.x) && x <= max(inicio.x, fin.x);
   }
 
   boolean contieneX(float x, float margen) {
-    return x >= min(inicio.x, fin.x) - margen &&
-           x <= max(inicio.x, fin.x) + margen;
+    return x >= min(inicio.x, fin.x) - margen && x <= max(inicio.x, fin.x) + margen;
   }
 
   float alturaEn(float x) {
