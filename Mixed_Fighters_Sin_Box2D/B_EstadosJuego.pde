@@ -26,15 +26,15 @@ void actualizarPartida() {
       background(70);
     }
 
-    motorFisico.actualizar(jugador1, isA, isD, plataformas, rampas);
-    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, plataformas, rampas);
+    motorFisico.actualizar(jugador1, isA, isD, isW, isS, plataformas, rampas, escaleraMarinera);
+    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, isUP, isDOWN, plataformas, rampas, escaleraMarinera);
 
     actualizarTeletransporte(jugador1, isA != isD);
     actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
 
     jugador1.dibujar();
     jugador2.dibujar();
-    actualizarPuntosArmas(jugador1, isS, jugador2, isDOWN);
+    actualizarPuntosArmas(jugador1, isS && !jugador1.escalando, jugador2, isDOWN && !jugador2.escalando);
 
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
@@ -43,6 +43,7 @@ void actualizarPartida() {
       for (Rampa rampa : rampas) {
         rampa.dibujar();
       }
+      escaleraMarinera.dibujarHitbox();
     }
 
     if (mostrarHitboxes) {
@@ -90,9 +91,11 @@ void dibujarFin() {
 
       isA = false;
       isD = false;
+      isW = false;
       isS = false;
       isLEFT = false;
       isRIGHT = false;
+      isUP = false;
       isDOWN = false;
       enter = false;
     }

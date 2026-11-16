@@ -1,6 +1,20 @@
 class MotorFisico {
 
-  void actualizar(Jugador jugador, boolean izq, boolean der, ArrayList<Plataforma> plataformas, ArrayList<Rampa> rampas) {
+  void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
+    ArrayList<Plataforma> plataformas, ArrayList<Rampa> rampas, EscaleraMarinera escalera) {
+    if (!jugador.escalando && escalera.contieneJugador(jugador) && subir != bajar) {
+      jugador.escalando = true;
+      jugador.vel.y = 0;
+      jugador.acel.set(0, 0);
+      jugador.enSuelo = false;
+      jugador.enRampa = false;
+    }
+
+    if (jugador.escalando) {
+      actualizarEscalada(jugador, izq, der, subir, bajar, plataformas, escalera);
+      return;
+    }
+
     boolean estabaEnRampa = jugador.enRampa;
     boolean estabaApoyado = jugador.enSuelo || estabaEnRampa;
     float pieAnterior = jugador.pos.y + jugador.alto/2;
@@ -116,6 +130,71 @@ class MotorFisico {
 
     // 6. Limpiar aceleración
     jugador.acel.mult(0);
+  }
+
+  void actualizarEscalada(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
+    ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
+    if (izq && !der) {
+      jugador.vel.x = jugador.invertirX ? jugador.velocidad : -jugador.velocidad;
+    } else if (der && !izq) {
+      jugador.vel.x = jugador.invertirX ? -jugador.velocidad : jugador.velocidad;
+    } else {
+      jugador.vel.x = 0;
+    }
+
+    jugador.vel.y = 0;
+    jugador.pos.x += jugador.vel.x;
+
+    for (Plataforma p : plataformas) {
+      if (colisiona(jugador, p)) {
+        if (jugador.vel.x > 0) {
+          jugador.pos.x = p.x - p.ancho/2 - jugador.ancho/2;
+        } else if (jugador.vel.x < 0) {
+          jugador.pos.x = p.x + p.ancho/2 + jugador.ancho/2;
+        }
+      }
+    }
+
+    if (escalera.salioPorCostado(jugador)) {
+      jugador.escalando = false;
+      jugador.enSuelo = false;
+      return;
+    }
+
+    if (subir != bajar) {
+      jugador.vel.y = subir ? -jugador.velocidad : jugador.velocidad;
+      jugador.pos.y += jugador.vel.y;
+    }
+
+    float centroSuperior = escalera.bordeSuperior - jugador.alto/2;
+    float centroInferior = escalera.bordeInferior - jugador.alto/2;
+
+    if (jugador.pos.y <= centroSuperior) {
+      jugador.pos.y = centroSuperior;
+      jugador.vel.y = 0;
+      jugador.enSuelo = true;
+    } else if (jugador.pos.y >= centroInferior) {
+      jugador.pos.y = centroInferior;
+      jugador.vel.y = 0;
+      jugador.enSuelo = true;
+    } else {
+      jugador.enSuelo = false;
+    }
+
+    jugador.enRampa = false;
+
+    for (Plataforma p : plataformas) {
+      if (colisiona(jugador, p)) {
+        if (jugador.vel.y > 0) {
+          jugador.pos.y = p.y - p.alto/2 - jugador.alto/2;
+          jugador.enSuelo = true;
+        } else if (jugador.vel.y < 0) {
+          jugador.pos.y = p.y + p.alto/2 + jugador.alto/2;
+          jugador.enSuelo = false;
+        }
+        jugador.vel.y = 0;
+      }
+    }
   }
 
   boolean colisiona(Jugador jugador, Plataforma p) {

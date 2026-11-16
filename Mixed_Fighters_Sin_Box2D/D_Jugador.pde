@@ -10,6 +10,7 @@ class Jugador {
   float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
   boolean enRampa = false;
+  boolean escalando = false;
   boolean invertirX = false;
   color c;
 
@@ -29,11 +30,12 @@ class Jugador {
     acel.set(0, 0);
     enSuelo = false;
     enRampa = false;
+    escalando = false;
     invertirX = false;
   }
 
   void saltar() {
-    if (enSuelo) {
+    if (enSuelo && !escalando) {
       vel.y = -fuerzaSalto;
       enSuelo = false;
       enRampa = false;
