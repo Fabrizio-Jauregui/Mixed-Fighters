@@ -39,9 +39,9 @@ class Armas {
     }
   }
 
-  void recogerSiCorresponde(Jugador jugador, boolean agachado) {
+  boolean recogerSiCorresponde(Jugador jugador, boolean agachado) {
     if (!disponible || !agachado) {
-      return;
+      return false;
     }
 
     boolean tocaX =
@@ -54,7 +54,10 @@ class Armas {
 
     if (tocaX && tocaY) {
       disponible = false;
+      return true;
     }
+
+    return false;
   }
 
   void reiniciar() {
@@ -72,7 +75,12 @@ void actualizarPuntosArmas(Jugador jugador1, boolean agachado1, Jugador jugador2
   for (Armas punto : puntosArmas) {
     punto.actualizar();
     punto.dibujar();
-    punto.recogerSiCorresponde(jugador1, agachado1);
-    punto.recogerSiCorresponde(jugador2, agachado2);
+
+    if (punto.recogerSiCorresponde(jugador1, agachado1)) {
+      jugador1.tieneArmaPrinc = true;
+    }
+    if (punto.recogerSiCorresponde(jugador2, agachado2)) {
+      jugador2.tieneArmaPrinc = true;
+    }
   }
 }
