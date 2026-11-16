@@ -4,6 +4,9 @@ class Armas {
   float ancho;
   float alto;
   boolean disponible = true;
+  int inicioCiclo = 0;
+  boolean cicloIniciado = false;
+  final int duracionCiclo = 30000;
 
   Armas(float x, float y, float ancho, float alto) {
     this.x = x;
@@ -18,6 +21,21 @@ class Armas {
       noStroke();
       fill(255);
       rect(x, y, ancho, alto);
+    }
+  }
+
+  void actualizar() {
+    int ahora = millis();
+
+    if (!cicloIniciado) {
+      inicioCiclo = ahora;
+      cicloIniciado = true;
+      return;
+    }
+
+    if (ahora - inicioCiclo >= duracionCiclo) {
+      disponible = true;
+      inicioCiclo = ahora;
     }
   }
 
@@ -41,6 +59,8 @@ class Armas {
 
   void reiniciar() {
     disponible = true;
+    inicioCiclo = 0;
+    cicloIniciado = false;
   }
 }
 
@@ -50,6 +70,7 @@ void actualizarPuntosArmas(Jugador jugador1, boolean agachado1, Jugador jugador2
   }
 
   for (Armas punto : puntosArmas) {
+    punto.actualizar();
     punto.dibujar();
     punto.recogerSiCorresponde(jugador1, agachado1);
     punto.recogerSiCorresponde(jugador2, agachado2);
