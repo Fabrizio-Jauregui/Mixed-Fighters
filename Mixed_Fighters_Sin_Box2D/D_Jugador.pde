@@ -14,9 +14,14 @@ class Jugador {
   boolean enRampa = false;
   boolean escalando = false;
   boolean invertirX = false;
+  boolean mirandoDerecha = true;
   color c;
   boolean tieneArmaPrinc = false;
   boolean tieneArmaSecund = true;
+  PImage spriteQuieto;
+  PImage[] spritesCaminar;
+  int cuadroCaminar = 0;
+  int ultimoCambioSprite = 0;
 
   Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
@@ -28,6 +33,15 @@ class Jugador {
     this.c = c;
   }
 
+  void cargarSprites(String carpeta) {
+    spriteQuieto = loadImage("sprites/" + carpeta + "/quieto_1.png");
+    spritesCaminar = new PImage[4];
+
+    for (int i = 0; i < spritesCaminar.length; i++) {
+      spritesCaminar[i] = loadImage("sprites/" + carpeta + "/caminar_" + (i + 1) + ".png");
+    }
+  }
+
   void reiniciar(float x, float y) {
     pos.set(x, y);
     vel.set(0, 0);
@@ -36,6 +50,8 @@ class Jugador {
     enRampa = false;
     escalando = false;
     invertirX = false;
+    mirandoDerecha = true;
+    cuadroCaminar = 0;
     tieneArmaPrinc = false;
     tieneArmaSecund = true;
   }
@@ -49,10 +65,48 @@ class Jugador {
   }
 
   void dibujar() {
-    rectMode(CENTER);
-    noStroke();
-    fill(c);
-    rect(pos.x, pos.y, ancho, alto);
+    if (vel.x > 0) {
+      mirandoDerecha = true;
+    } else if (vel.x < 0) {
+      mirandoDerecha = false;
+    }
+
+    boolean caminando = abs(vel.x) > 0.1;
+    PImage sprite = spriteQuieto;
+
+    if (caminando && spritesCaminar != null) {
+      if (millis() - ultimoCambioSprite >= 130) {
+        cuadroCaminar = (cuadroCaminar + 1) % spritesCaminar.length;
+        ultimoCambioSprite = millis();
+      }
+      sprite = spritesCaminar[cuadroCaminar];
+    } else {
+      cuadroCaminar = 0;
+      ultimoCambioSprite = millis();
+    }
+
+    if (sprite == null) {
+      rectMode(CENTER);
+      noStroke();
+      fill(c);
+      rect(pos.x, pos.y, ancho, alto);
+      return;
+    }
+
+    float altoSprite = alto;
+    float anchoSprite = sprite.width * (altoSprite / sprite.height);
+    float xSprite = pos.x - anchoSprite/2;
+    float ySprite = pos.y + alto/2 - altoSprite;
+
+    pushMatrix();
+    if (!mirandoDerecha) {
+      translate(pos.x, 0);
+      scale(-1, 1);
+      image(sprite, -anchoSprite/2, ySprite, anchoSprite, altoSprite);
+    } else {
+      image(sprite, xSprite, ySprite, anchoSprite, altoSprite);
+    }
+    popMatrix();
   }
   
   

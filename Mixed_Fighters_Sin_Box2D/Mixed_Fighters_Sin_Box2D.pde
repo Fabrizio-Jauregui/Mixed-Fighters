@@ -34,8 +34,10 @@ void setup() {
   puntosArmas.add(new Armas(width * 0.48166, height * 0.808, 35, 10));
   puntosArmas.add(new Armas(width * 0.723, height * 0.86, 35, 10));
   motorFisico = new MotorFisico();
-  jugador1 = new Jugador(width/2, height/2, width * 0.01, height * 0.038, color(40, 200, 100));
-  jugador2 = new Jugador(width/4, height/8, width * 0.01, height * 0.038, color(230, 80, 70));
+  jugador1 = new Jugador(width/2, height/2, width * 0.02, height * 0.059, color(40, 200, 100));
+  jugador2 = new Jugador(width/4, height/8, width * 0.02, height * 0.059, color(230, 80, 70));
+  jugador1.cargarSprites("remera_blanca_original");
+  jugador2.cargarSprites("remera_negra");
 }
 
 void draw() {
