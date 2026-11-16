@@ -51,13 +51,13 @@ void actualizarPartida() {
     }
 
     if (jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
-        jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
+      jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
       estado = 3;
       perdio1 = true;
     }
 
     if (jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
-        jugador2.pos.y <= 0 || jugador2.pos.y >= height) {
+      jugador2.pos.y <= 0 || jugador2.pos.y >= height) {
       estado = 3;
       perdio2 = true;
     }

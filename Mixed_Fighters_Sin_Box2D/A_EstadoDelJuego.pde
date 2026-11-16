@@ -9,6 +9,7 @@ int inicioArmas = 0;
 final int retrasoAparicionArmas = 10000;
 Jugador jugador1;
 Jugador jugador2;
+
 MotorFisico motorFisico;
 
 boolean enter = false;
@@ -20,6 +21,5 @@ boolean isRIGHT = false;
 boolean isDOWN = false;
 boolean perdio1 = false;
 boolean perdio2 = false;
-
 boolean mostrarPlataformas = true;
 boolean mostrarHitboxes = false;
