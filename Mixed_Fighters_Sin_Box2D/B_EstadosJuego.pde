@@ -9,6 +9,10 @@ void dibujarInicio() {
 
     if (enter) {
       estado = 1;
+      inicioArmas = millis();
+      for (Armas punto : puntosArmas) {
+        punto.reiniciar();
+      }
     }
   }
 }
@@ -22,18 +26,22 @@ void actualizarPartida() {
       background(70);
     }
 
-    motorFisico.actualizar(jugador1, isA, isD, plataformas);
-    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, plataformas);
+    motorFisico.actualizar(jugador1, isA, isD, plataformas, rampas);
+    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, plataformas, rampas);
 
     actualizarTeletransporte(jugador1, isA != isD);
     actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
 
     jugador1.dibujar();
     jugador2.dibujar();
+    actualizarPuntosArmas(jugador1, isS, jugador2, isDOWN);
 
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
         p.dibujar();
+      }
+      for (Rampa rampa : rampas) {
+        rampa.dibujar();
       }
     }
 
@@ -82,8 +90,10 @@ void dibujarFin() {
 
       isA = false;
       isD = false;
+      isS = false;
       isLEFT = false;
       isRIGHT = false;
+      isDOWN = false;
       enter = false;
     }
   }

@@ -9,6 +9,7 @@ class Jugador {
   float velocidad = width * 0.0015;
   float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
+  boolean enRampa = false;
   boolean invertirX = false;
   color c;
 
@@ -27,6 +28,7 @@ class Jugador {
     vel.set(0, 0);
     acel.set(0, 0);
     enSuelo = false;
+    enRampa = false;
     invertirX = false;
   }
 
@@ -34,6 +36,7 @@ class Jugador {
     if (enSuelo) {
       vel.y = -fuerzaSalto;
       enSuelo = false;
+      enRampa = false;
     }
   }
 

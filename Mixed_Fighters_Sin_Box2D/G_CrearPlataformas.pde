@@ -8,14 +8,6 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.7547, height * 0.55, width * 0.0199, height * 0.01875));// cuadradito chikito al lado de lamp 2
   plataformas.add(new Plataforma(width * 0.8551, height * 0.562, width * 0.09, height * 0.04625));//arriba derecha al lado del tp piso
   plataformas.add(new Plataforma(width * 0.723, height * 0.885645, width * 0.313, height * 0.025));//abajo a la derecha piso
-  plataformas.add(new Plataforma(width * 0.48166, height * 0.828, width * 0.097, height * 0.025));//abajo a la derecha zona escalerita comun
-
-  // Escalerita falopa
-  plataformas.add(new Plataforma(width * 0.515, height * 0.825, width * 0.018, height * 0.014));
-  plataformas.add(new Plataforma(width * 0.525, height * 0.835, width * 0.018, height * 0.014));
-  plataformas.add(new Plataforma(width * 0.535, height * 0.845, width * 0.018, height * 0.014));
-  plataformas.add(new Plataforma(width * 0.545, height * 0.855, width * 0.018, height * 0.014));
-  plataformas.add(new Plataforma(width * 0.555, height * 0.865, width * 0.018, height * 0.014));
 
   plataformas.add(new Plataforma(width * 0.884, height * 0.845, width * 0.009, height * 0.11875));//pared tp abajo a la derecha
   plataformas.add(new Plataforma(width * 0.884, height * 0.5, width * 0.009, height * 0.11875));//pared tp arriba a la derecha
