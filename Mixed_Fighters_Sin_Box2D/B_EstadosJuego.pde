@@ -26,8 +26,8 @@ void actualizarPartida() {
       background(70);
     }
 
-    motorFisico.actualizar(jugador1, isA, isD, isW, isS, plataformas, rampas, escaleraMarinera);
-    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, isUP, isDOWN, plataformas, rampas, escaleraMarinera);
+    motorFisico.actualizar(jugador1, isA, isD, isW, isS, plataformas, escaleraMarinera);
+    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, isUP, isDOWN, plataformas, escaleraMarinera);
 
     actualizarTeletransporte(jugador1, isA != isD);
     actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
@@ -39,9 +39,6 @@ void actualizarPartida() {
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
         p.dibujar();
-      }
-      for (Rampa rampa : rampas) {
-        rampa.dibujar();
       }
       escaleraMarinera.dibujarHitbox();
     }

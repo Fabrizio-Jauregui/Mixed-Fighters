@@ -8,6 +8,8 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.7547, height * 0.55, width * 0.0199, height * 0.01875));// cuadradito chikito al lado de lamp 2
   plataformas.add(new Plataforma(width * 0.8551, height * 0.562, width * 0.09, height * 0.04625));//arriba derecha al lado del tp piso
   plataformas.add(new Plataforma(width * 0.723, height * 0.885645, width * 0.313, height * 0.025));//abajo a la derecha piso
+  plataformas.add(new Plataforma(width * 0.4776, height * 0.83, width * 0.1801, height * 0.025));//abajo a la derecha piso arriba
+  plataformas.add(new Plataforma(width * 0.563, height * 0.86, width * 0.01, height * 0.08));//abajo a la derecha pared reeemplazo escalera
 
   plataformas.add(new Plataforma(width * 0.884, height * 0.845, width * 0.009, height * 0.11875));//pared tp abajo a la derecha
   plataformas.add(new Plataforma(width * 0.884, height * 0.5, width * 0.009, height * 0.11875));//pared tp arriba a la derecha
@@ -26,6 +28,5 @@ void crearPlataformas() {
   plataformas.add(new Plataforma(width * 0.913, height * 0.435, width * 0.1018, height * 0.04375));//techo tp arriba a la derecha
   plataformas.add(new Plataforma(width * 0.872, height * 0.4635, width * 0.01980, height * 0.03125));//colision cartelito arriba a la derecha del tp
   plataformas.add(new Plataforma(width * 0.8725, height * 0.675, width * 0.02, height * 0.2625));//pared arriba del tp abajo a la derecha
-  plataformas.add(new Plataforma(width * 0.8724, height * 0.789, width * 0.02, height * 0.02875));//
-  plataformas.add(new Plataforma(width * 0.412, height * 0.83, width * 0.05, height * 0.02));// plataforma flotante
+  plataformas.add(new Plataforma(width * 0.8724, height * 0.789, width * 0.02, height * 0.02875));//cartelito abajo  a la derecha
 }

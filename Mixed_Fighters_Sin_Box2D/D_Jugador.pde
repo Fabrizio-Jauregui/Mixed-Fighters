@@ -11,7 +11,6 @@ class Jugador {
   float velocidad = width * 0.0015;
   float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
-  boolean enRampa = false;
   boolean escalando = false;
   boolean invertirX = false;
   boolean mirandoDerecha = true;
@@ -47,7 +46,6 @@ class Jugador {
     vel.set(0, 0);
     acel.set(0, 0);
     enSuelo = false;
-    enRampa = false;
     escalando = false;
     invertirX = false;
     mirandoDerecha = true;
@@ -60,7 +58,6 @@ class Jugador {
     if (enSuelo && !escalando) {
       vel.y = -fuerzaSalto;
       enSuelo = false;
-      enRampa = false;
     }
   }
 

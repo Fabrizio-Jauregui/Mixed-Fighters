@@ -6,19 +6,6 @@ void setup() {
   mapa.resize(width, height);
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
-  rampas = new ArrayList<Rampa>();
-
-  //Escalera
-  rampas.add(new Rampa(
-    width * 0.525, height * 0.82,
-    width * 0.566, height * 0.873
-    ));
-
-  //Piso izquierda
-  rampas.add(new Rampa(
-    width * 0.435, height * 0.82,
-    width * 0.525, height * 0.82
-    ));
 
   //Escalera Marinera
   escaleraMarinera = new EscaleraMarinera(

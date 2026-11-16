@@ -54,7 +54,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 - La escalera marinera está en el centro del mapa. Su zona de interacción invisible cubre toda la parte visual. Si el personaje está dentro, puede iniciar la subida o bajada pulsando arriba/abajo desde cualquier altura; no necesita estar en un extremo.
 - Durante la escalada no puede caminar normalmente, saltar, agacharse, atacar ni disparar, pero sí puede recibir daño. Puede moverse a izquierda o derecha para salir de la zona; al salir, deja de escalar, vuelve a la física normal y puede caer. En el extremo superior puede saltar o salir hacia un costado.
-- La escalera recta inferior derecha, conocida en el proyecto como “escalerita falopa”, se representa actualmente mediante peldaños pequeños y debe convertirse en una pendiente transitable normal, sin estado especial de escalada.
+- La escalera diagonal inferior derecha permanece en el mapa. El usuario agregará sus colisiones más adelante mediante plataformas normales; no añadir una entidad ni una lógica de colisión especial para esa zona.
 - Hay cuatro indicadores verdes en el mapa. Las conexiones confirmadas son parejas verticales: el acceso superior e inferior del lado izquierdo forman una pareja; lo mismo en el lado derecho. El teletransporte funciona en ambos sentidos, sin espera ni restricciones adicionales.
 - La lógica del teletransporte debe ejecutarse independientemente del dibujo de las plataformas. Ocultar las plataformas para depuración nunca debe desactivar los portales.
 
@@ -120,7 +120,7 @@ Ordena la estructura compatible con Processing IDE, revisa Git, conserva los cam
 
 ### Etapa 2 — Escenario y geometrías
 
-Revisa el fondo y las plataformas sólidas ya definidas; conserva sus coordenadas aproximadas y ajusta únicamente las que no coincidan con Rooftops. Mantén la plataforma central fija, los límites del mundo y la visualización de depuración. Reemplaza la representación actual de la “escalerita falopa” inferior derecha por una pendiente transitable normal. No confundas esta pendiente con la escalera marinera del centro, que recibe su comportamiento interactivo en la Etapa 4.
+Revisa el fondo y las plataformas sólidas ya definidas; conserva sus coordenadas aproximadas y ajusta únicamente las que no coincidan con Rooftops. Mantén la plataforma central fija, los límites del mundo y la visualización de depuración. La escalera diagonal inferior derecha permanece sin colisiones adicionales hasta que el usuario las agregue como plataformas normales. No confundas esa geometría con la escalera marinera del centro, que recibe su comportamiento interactivo en la Etapa 4.
 
 **Aceptación:** el plano de colisión coincide con Rooftops y todas las superficies acordadas están verificadas visualmente.
 

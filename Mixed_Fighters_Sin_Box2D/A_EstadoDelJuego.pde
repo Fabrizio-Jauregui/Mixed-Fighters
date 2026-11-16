@@ -2,7 +2,6 @@
 PImage panCarga;
 PImage mapa;
 ArrayList<Plataforma> plataformas;
-ArrayList<Rampa> rampas;
 ArrayList<Armas> puntosArmas;
 EscaleraMarinera escaleraMarinera;
 int estado = 0;
