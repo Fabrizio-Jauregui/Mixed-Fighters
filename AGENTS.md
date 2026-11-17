@@ -80,7 +80,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - Todos los objetos tienen posición, dimensiones, gravedad, fricción y colisiones con plataformas y entre sí; pueden apilarse y frenarse sin deslizarse indefinidamente ni rebotar exageradamente.
 - No se empujan al caminar; se desplazan por impactos autorizados. Caja, mesa y silla tienen resistencia configurable y desaparecen al llegar a cero. El barril es movible e indestructible.
 - Disparos, golpes e impactos entre objetos producen daño fijo. Una colisión persistente no debe repetir daño cada cuadro; una plataforma no destruye automáticamente un objeto.
-- La vida de cada jugador comienza en 100 y solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. Si ambos mueren en la misma actualización, el resultado es «La partida quedó en empate». El HUD de vida y resistencia es decorativo hasta que se apruebe conectarlo con esos valores.
+- La vida de cada jugador comienza en 100 y solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. Si ambos mueren en la misma actualización, el resultado es «La partida quedó en empate». La barra de vida del HUD refleja la vida actual; la barra de resistencia permanece decorativa hasta que se apruebe conectarla.
 - No añadas estadísticas, botones, menú final, revancha ni reinicio automático.
 
 ## 4. Decisiones y parámetros
