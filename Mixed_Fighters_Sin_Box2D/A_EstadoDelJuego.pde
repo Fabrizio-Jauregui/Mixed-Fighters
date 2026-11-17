@@ -7,6 +7,12 @@ EscaleraMarinera escaleraMarinera;
 int estado = 0;
 int inicioArmas = 0;
 final int retrasoAparicionArmas = 10000;
+final float estaminaMaxima = 100;
+final int ventanaDoblePulsacionCarrera = 1000;
+final int ventanaInversionCarrera = 100;
+final float multiplicadorVelocidadCarrera = 1.75;
+final float consumoEstaminaPorSegundo = 25;
+final float recuperacionEstaminaPorSegundo = 20;
 Jugador jugador1;
 Jugador jugador2;
 

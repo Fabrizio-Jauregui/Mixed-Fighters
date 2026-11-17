@@ -21,6 +21,16 @@ class Jugador {
   color c;
   boolean tieneArmaPrinc = false;
   boolean tieneArmaSecund = true;
+  float estamina = estaminaMaxima;
+  boolean corriendo = false;
+  int direccionCarrera = 0;
+  int direccionTapEnCurso = 0;
+  int ultimaDireccionLiberada = 0;
+  int instanteUltimaDireccionLiberada = 0;
+  boolean esperandoInversionCarrera = false;
+  int instanteInicioInversionCarrera = 0;
+  int ultimaActualizacionEstamina = 0;
+  boolean relojEstaminaIniciado = false;
   PImage spriteQuieto;
   PImage[] spritesCaminar;
   PImage[] spritesGolpe;
@@ -60,6 +70,16 @@ class Jugador {
     enSuelo = false;
     escalando = false;
     atacando = false;
+    estamina = estaminaMaxima;
+    corriendo = false;
+    direccionCarrera = 0;
+    direccionTapEnCurso = 0;
+    ultimaDireccionLiberada = 0;
+    instanteUltimaDireccionLiberada = 0;
+    esperandoInversionCarrera = false;
+    instanteInicioInversionCarrera = 0;
+    ultimaActualizacionEstamina = millis();
+    relojEstaminaIniciado = true;
     cuadroGolpe = 0;
     inicioCuadroGolpe = 0;
     invertirX = false;
@@ -81,12 +101,127 @@ class Jugador {
       return;
     }
 
+    cancelarCarrera();
     atacando = true;
     mirandoDerechaAlAtacar = mirandoDerecha;
     cuadroGolpe = 0;
     inicioCuadroGolpe = millis();
     vel.x = 0;
     acel.set(0, 0);
+  }
+
+  void registrarPulsacionHorizontal(int direccion) {
+    int ahora = millis();
+
+    if (atacando || escalando) {
+      limpiarEstadoCarrera();
+      return;
+    }
+
+    if (corriendo) {
+      if (esperandoInversionCarrera) {
+        if (direccion == -direccionCarrera &&
+          ahora - instanteInicioInversionCarrera <= ventanaInversionCarrera) {
+          direccionCarrera = direccion;
+          esperandoInversionCarrera = false;
+        } else {
+          cancelarCarrera();
+          direccionTapEnCurso = direccion;
+        }
+      } else if (direccion != direccionCarrera) {
+        // Si ambas direcciones se solapan, el motor deja al jugador quieto
+        // hasta que quede una sola dirección presionada.
+        direccionCarrera = direccion;
+      }
+      return;
+    }
+
+    if (ultimaDireccionLiberada == direccion &&
+      ahora - instanteUltimaDireccionLiberada <= ventanaDoblePulsacionCarrera) {
+      direccionTapEnCurso = 0;
+      ultimaDireccionLiberada = 0;
+
+      if (estamina > 0) {
+        corriendo = true;
+        direccionCarrera = direccion;
+        esperandoInversionCarrera = false;
+        ultimaActualizacionEstamina = ahora;
+        relojEstaminaIniciado = true;
+      }
+    } else {
+      direccionTapEnCurso = direccion;
+      ultimaDireccionLiberada = 0;
+    }
+  }
+
+  void registrarLiberacionHorizontal(int direccion, boolean direccionContrariaPresionada) {
+    int ahora = millis();
+
+    if (atacando || escalando) {
+      limpiarEstadoCarrera();
+      return;
+    }
+
+    if (corriendo) {
+      if (direccion == direccionCarrera) {
+        if (direccionContrariaPresionada) {
+          direccionCarrera = -direccion;
+          esperandoInversionCarrera = false;
+        } else {
+          esperandoInversionCarrera = true;
+          instanteInicioInversionCarrera = ahora;
+        }
+      }
+      return;
+    }
+
+    if (direccionTapEnCurso == direccion) {
+      ultimaDireccionLiberada = direccion;
+      instanteUltimaDireccionLiberada = ahora;
+      direccionTapEnCurso = 0;
+    }
+  }
+
+  void actualizarEstamina(int ahora, boolean hayUnaSolaDireccionPresionada) {
+    if (!relojEstaminaIniciado) {
+      ultimaActualizacionEstamina = ahora;
+      relojEstaminaIniciado = true;
+      return;
+    }
+
+    float segundosTranscurridos = (ahora - ultimaActualizacionEstamina) / 1000.0;
+    ultimaActualizacionEstamina = ahora;
+
+    if (corriendo && !esperandoInversionCarrera && hayUnaSolaDireccionPresionada) {
+      estamina -= consumoEstaminaPorSegundo * segundosTranscurridos;
+      if (estamina <= 0) {
+        estamina = 0;
+        limpiarEstadoCarrera();
+      }
+    } else if (!corriendo) {
+      estamina += recuperacionEstaminaPorSegundo * segundosTranscurridos;
+    }
+
+    estamina = constrain(estamina, 0, estaminaMaxima);
+  }
+
+  void cancelarCarrera() {
+    int ahora = millis();
+    actualizarEstamina(ahora, true);
+    limpiarEstadoCarrera();
+  }
+
+  void finalizarInversionSinDireccion() {
+    limpiarEstadoCarrera();
+  }
+
+  void limpiarEstadoCarrera() {
+    corriendo = false;
+    direccionCarrera = 0;
+    direccionTapEnCurso = 0;
+    ultimaDireccionLiberada = 0;
+    esperandoInversionCarrera = false;
+    instanteInicioInversionCarrera = 0;
   }
 
   void dibujar() {

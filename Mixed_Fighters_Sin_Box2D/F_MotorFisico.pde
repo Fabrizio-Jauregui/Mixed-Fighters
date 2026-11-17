@@ -2,13 +2,22 @@ class MotorFisico {
 
   void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
     ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
+    int ahora = millis();
+    jugador.actualizarEstamina(ahora, izq != der);
+
     if (jugador.atacando) {
       jugador.vel.set(0, 0);
       jugador.acel.set(0, 0);
       return;
     }
 
+    if (jugador.esperandoInversionCarrera &&
+      ahora - jugador.instanteInicioInversionCarrera > ventanaInversionCarrera) {
+      jugador.finalizarInversionSinDireccion();
+    }
+
     if (!jugador.escalando && escalera.contieneJugador(jugador) && subir != bajar) {
+      jugador.cancelarCarrera();
       jugador.escalando = true;
       jugador.vel.y = 0;
       jugador.acel.set(0, 0);
@@ -17,16 +26,22 @@ class MotorFisico {
     
     
     if (jugador.escalando) {
+      jugador.cancelarCarrera();
       actualizarEscalada(jugador, izq, der, subir, bajar, plataformas, escalera);
       return;
     }
 
     // 1. Movimiento horizontal
+    float velocidadHorizontal = jugador.velocidad;
+    if (jugador.corriendo) {
+      velocidadHorizontal *= multiplicadorVelocidadCarrera;
+    }
+
     if (izq && !der) {
-      jugador.vel.x = jugador.invertirX ? jugador.velocidad : -jugador.velocidad;
+      jugador.vel.x = jugador.invertirX ? velocidadHorizontal : -velocidadHorizontal;
 
     } else if (der && !izq) {
-      jugador.vel.x = jugador.invertirX ? -jugador.velocidad : jugador.velocidad;
+      jugador.vel.x = jugador.invertirX ? -velocidadHorizontal : velocidadHorizontal;
 
     } else {
       jugador.vel.x = 0;
