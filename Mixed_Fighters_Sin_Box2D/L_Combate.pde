@@ -6,8 +6,10 @@ final int finVentanaGolpe = 300;
 final float altoProporcionHitboxGolpe = 0.65;
 final int duracionRetroceso = 120;
 final float distanciaRetroceso = 24;
-final float alturasJugadorParaDanioCaida = 2;
+final float alturasJugadorParaDanioCaida = 3;
 final float pixelesPorPuntoDanioCaida = 12;
+final int esperaRegeneracionVida = 5000;
+final float puntosRegeneradosPorSegundo = 3;
 
 void resolverGolpes() {
   // Se comprueban los dos ataques antes de aplicar daño para permitir un empate simultáneo.

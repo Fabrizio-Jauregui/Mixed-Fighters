@@ -1,4 +1,4 @@
-// Dibuja los HUD decorativos sin conectarlos todavía a los datos de los jugadores.
+// Dibuja el HUD y representa la vida actual; los demás indicadores siguen siendo decorativos.
 void dibujarHUD() {
   float escala = width / 1920.0;
   float margen = width * 0.01;

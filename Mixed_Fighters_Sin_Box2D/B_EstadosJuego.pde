@@ -51,8 +51,6 @@ void actualizarPartida() {
       jugador2.dibujarHitboxGolpe();
     }
 
-    dibujarHUD();
-
     perdio1 = jugador1.vida <= 0 || jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
       jugador1.pos.y <= 0 || jugador1.pos.y >= height;
     perdio2 = jugador2.vida <= 0 || jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
@@ -61,6 +59,13 @@ void actualizarPartida() {
     if (perdio1 || perdio2) {
       estado = 3;
     }
+
+    if (estado == 1) {
+      jugador1.actualizarRegeneracion();
+      jugador2.actualizarRegeneracion();
+    }
+
+    dibujarHUD();
   }
 }
 

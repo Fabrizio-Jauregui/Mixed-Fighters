@@ -4,6 +4,9 @@ class Jugador {
   PVector acel;
   
   int vida = vidaInicial;
+  int ultimaVezDanada = 0;
+  int ultimaActualizacionRegeneracion = 0;
+  float progresoRegeneracion = 0;
   boolean caidaEnCurso = false;
   float alturaMasAltaCaida = 0;
   
@@ -71,6 +74,9 @@ class Jugador {
     cuadroGolpe = 0;
     inicioCuadroGolpe = 0;
     vida = vidaInicial;
+    ultimaVezDanada = millis();
+    ultimaActualizacionRegeneracion = ultimaVezDanada;
+    progresoRegeneracion = 0;
     cancelarSeguimientoCaida();
     retrocesoActivo = false;
     inicioRetroceso = 0;
@@ -148,6 +154,40 @@ class Jugador {
     }
 
     vida = max(0, vida - danio);
+    ultimaVezDanada = millis();
+    ultimaActualizacionRegeneracion = ultimaVezDanada;
+    progresoRegeneracion = 0;
+  }
+
+  void actualizarRegeneracion() {
+    int ahora = millis();
+
+    if (vida <= 0 || vida >= vidaInicial) {
+      progresoRegeneracion = 0;
+      ultimaActualizacionRegeneracion = ahora;
+      return;
+    }
+
+    if (ahora - ultimaVezDanada < esperaRegeneracionVida) {
+      progresoRegeneracion = 0;
+      ultimaActualizacionRegeneracion = ahora;
+      return;
+    }
+
+    int tiempoTranscurrido = ahora - ultimaActualizacionRegeneracion;
+    progresoRegeneracion += tiempoTranscurrido / 1000.0 * puntosRegeneradosPorSegundo;
+
+    int puntosRecuperados = (int) progresoRegeneracion;
+    if (puntosRecuperados > 0) {
+      vida = min(vidaInicial, vida + puntosRecuperados);
+      progresoRegeneracion -= puntosRecuperados;
+    }
+
+    if (vida >= vidaInicial) {
+      progresoRegeneracion = 0;
+    }
+
+    ultimaActualizacionRegeneracion = ahora;
   }
 
   void actualizarSeguimientoCaida() {
