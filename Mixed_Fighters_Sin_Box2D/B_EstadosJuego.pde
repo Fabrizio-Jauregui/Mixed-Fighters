@@ -48,6 +48,8 @@ void actualizarPartida() {
       jugador2.dibujarHitbox();
     }
 
+    dibujarHUD();
+
     if (jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
       jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
       estado = 3;

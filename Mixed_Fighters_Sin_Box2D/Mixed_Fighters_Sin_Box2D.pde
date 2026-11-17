@@ -2,6 +2,8 @@ void setup() {
   fullScreen();
   mapa = loadImage("mapas/Rooftops.png");
   panCarga = loadImage("mapas/carga.png");
+  hudJugador1 = loadImage("hud/inventario P1 con dos armas.png");
+  hudJugador2 = loadImage("hud/inventario P2 con dos armas.png");
   panCarga.resize(width, height);
   mapa.resize(width, height);
   plataformas = new ArrayList<Plataforma>();

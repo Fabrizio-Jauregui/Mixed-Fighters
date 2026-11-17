@@ -1,6 +1,8 @@
 // Estado compartido del sketch. Los valores actuales representan menú, partida y resultado.
 PImage panCarga;
 PImage mapa;
+PImage hudJugador1;
+PImage hudJugador2;
 ArrayList<Plataforma> plataformas;
 ArrayList<Armas> puntosArmas;
 PImage[] spritesArmas;
