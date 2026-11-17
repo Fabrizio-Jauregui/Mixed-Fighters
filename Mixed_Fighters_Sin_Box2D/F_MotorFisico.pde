@@ -2,13 +2,16 @@ class MotorFisico {
 
   void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
     ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
-    if (jugador.atacando) {
-      jugador.vel.set(0, 0);
-      jugador.acel.set(0, 0);
-      return;
+    float desplazamientoRetroceso = jugador.actualizarRetroceso();
+    if (desplazamientoRetroceso != 0) {
+      jugador.pos.x += desplazamientoRetroceso;
+      resolverColisionHorizontal(jugador, plataformas, desplazamientoRetroceso);
     }
 
-    if (!jugador.escalando && escalera.contieneJugador(jugador) && subir != bajar) {
+    boolean retrocesoActivo = jugador.retrocesoActivo;
+
+    if (!jugador.atacando && !retrocesoActivo && !jugador.escalando &&
+      escalera.contieneJugador(jugador) && subir != bajar) {
       jugador.escalando = true;
       jugador.vel.y = 0;
       jugador.acel.set(0, 0);
@@ -17,27 +20,30 @@ class MotorFisico {
     
     
     if (jugador.escalando) {
-      actualizarEscalada(jugador, izq, der, subir, bajar, plataformas, escalera);
+      actualizarEscalada(
+        jugador,
+        retrocesoActivo ? false : izq,
+        retrocesoActivo ? false : der,
+        subir,
+        bajar,
+        plataformas,
+        escalera
+        );
       return;
     }
 
-    // 1. Movimiento horizontal
-    if (izq && !der) {
+    // 1. Movimiento horizontal; durante el ataque o el retroceso no hay control lateral.
+    if (jugador.atacando || retrocesoActivo) {
+      jugador.vel.x = 0;
+    } else if (izq && !der) {
       jugador.vel.x = jugador.invertirX ? jugador.velocidad : -jugador.velocidad;
-
     } else if (der && !izq) {
       jugador.vel.x = jugador.invertirX ? -jugador.velocidad : jugador.velocidad;
-
     } else {
       jugador.vel.x = 0;
     }
 
-    // 2. Aplicar gravedad
-    jugador.acel.set(0, jugador.gravedad);
-    jugador.vel.add(jugador.acel);
-    jugador.vel.limit(20);
-
-    // 3. Movimiento horizontal y colisiones laterales con plataformas.
+    // 2. Movimiento horizontal y colisiones laterales con plataformas.
     jugador.pos.x += jugador.vel.x;
 
     for (Plataforma p : plataformas) {
@@ -50,7 +56,14 @@ class MotorFisico {
       }
     }
 
-    // 4. Movimiento vertical y colisiones con plataformas.
+    // 3. Movimiento vertical y colisiones con plataformas.
+    actualizarMovimientoVertical(jugador, plataformas);
+  }
+
+  void actualizarMovimientoVertical(Jugador jugador, ArrayList<Plataforma> plataformas) {
+    jugador.acel.set(0, jugador.gravedad);
+    jugador.vel.add(jugador.acel);
+    jugador.vel.limit(20);
     jugador.enSuelo = false;
     jugador.pos.y += jugador.vel.y;
 
@@ -67,8 +80,19 @@ class MotorFisico {
       }
     }
 
-    // 5. Limpiar aceleración
     jugador.acel.mult(0);
+  }
+
+  void resolverColisionHorizontal(Jugador jugador, ArrayList<Plataforma> plataformas, float movimientoX) {
+    for (Plataforma p : plataformas) {
+      if (colisiona(jugador, p)) {
+        if (movimientoX > 0) {
+          jugador.pos.x = p.x - p.ancho/2 - jugador.ancho/2;
+        } else if (movimientoX < 0) {
+          jugador.pos.x = p.x + p.ancho/2 + jugador.ancho/2;
+        }
+      }
+    }
   }
 
   void actualizarEscalada(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar, ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {

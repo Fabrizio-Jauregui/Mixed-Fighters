@@ -36,9 +36,9 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 - Jugador 1 usa WASD: `A`/`D` para moverse, `W` para saltar y `S` para agacharse.
 - Jugador 2 usa las flechas: `←`/`→` para moverse, `↑` para saltar y `↓` para agacharse.
-- Jugador 1 usa `N` para atacar o recoger y `M` para apuntar/disparar. Jugador 2 usa `1` para atacar o recoger y `2` para apuntar/disparar. Para `1` y `2`, usa inicialmente la fila superior del teclado.
+- En los controles actuales, Jugador 2 usa `N` para el puñetazo y Jugador 1 usa `1`; Jugador 1 usa `M` para apuntar/disparar y Jugador 2 usa `2`. Para `1` y `2`, usa inicialmente la fila superior del teclado. Para recoger armas en la mecánica final se usarán las teclas de ataque de cada jugador.
 - Al apuntar, las direcciones modifican la mira; en la escalera marinera, arriba/abajo permiten subir y bajar. Estas funciones dependen del estado actual del personaje.
-- El prototipo actual ya implementa movimiento horizontal de jugador 1 con `A`/`D`, movimiento horizontal de jugador 2 con `←`/`→`, y salto de jugador 1 con `W` y jugador 2 con `↑`. Todavía no implementa agacharse ni las acciones de `N`, `M`, `1` y `2`.
+- El prototipo implementa movimiento horizontal, salto y animación/combate básico de puñetazo con `N` para Jugador 2 y `1` para Jugador 1. Apuntado/disparo con `M` y `2` y agacharse siguen pendientes.
 - Gestiona teclas mantenidas y liberadas y prueba acciones simultáneas. Si una combinación no funciona, considera también el ghosting del teclado físico.
 - Los personajes no se bloquean físicamente entre sí, pero pueden recibir daño de ataques y proyectiles.
 - Los personajes se representan primero con formas geométricas. Separa su dibujo de su movimiento y combate para permitir añadir sprites en el futuro. No generes ni busques sprites.
@@ -60,7 +60,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 ### Combate y armas
 
-- El puñetazo es un golpe por pulsación, solo en el suelo, hacia donde mira el personaje. Tiene hitbox temporal, daño fijo, retroceso e intervalo. Durante el golpe bloquea las acciones especificadas. Una intersección persistente no debe aplicar daño varias veces.
+- El puñetazo es un golpe por pulsación, solo en el suelo y fuera de la escalada, hacia donde mira el personaje. La animación dura 400 ms; la hitbox frontal mide el ancho del jugador por el 65 % de su alto y está activa entre los 100 y 300 ms. Cada golpe puede hacer 10 puntos de daño como máximo una vez. El retroceso es horizontal: 24 píxeles a lo largo de 120 ms; durante ese tiempo se bloquea el control horizontal y se mantiene la gravedad. Recibir un golpe no cancela una animación de ataque ya iniciada. No añadas invulnerabilidad tras el impacto.
 - El hacha sustituye a los puños mientras está equipada, hace más daño y tiene más alcance, pero no consume munición ni durabilidad. Recoger otra hacha cuando ya se tiene no hace nada.
 - Apuntar requiere mantener `M` o `2`; el personaje queda inmóvil, puede elegir ocho direcciones y conserva la última orientación al soltar. La pistola dispara un proyectil al soltar la tecla. Tiene 12 disparos; no dispara automáticamente.
 - El fusil tiene 25 balas. Al soltar el apuntado inicia una ráfaga de cinco, con intervalo breve. El usuario puede seguir modificando la mira durante la ráfaga para orientar los disparos que aún no salieron. No permite ráfagas parciales.
@@ -80,7 +80,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - Todos los objetos tienen posición, dimensiones, gravedad, fricción y colisiones con plataformas y entre sí; pueden apilarse y frenarse sin deslizarse indefinidamente ni rebotar exageradamente.
 - No se empujan al caminar; se desplazan por impactos autorizados. Caja, mesa y silla tienen resistencia configurable y desaparecen al llegar a cero. El barril es movible e indestructible.
 - Disparos, golpes e impactos entre objetos producen daño fijo. Una colisión persistente no debe repetir daño cada cuadro; una plataforma no destruye automáticamente un objeto.
-- La vida de cada jugador solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. La partida termina con `JUGADOR 1 GANA`, `JUGADOR 2 GANA` o un texto de empate que debe acordarse antes de implementarlo.
+- La vida de cada jugador comienza en 100 y solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. Si ambos mueren en la misma actualización, el resultado es «La partida quedó en empate». El HUD de vida y resistencia es decorativo hasta que se apruebe conectarlo con esos valores.
 - No añadas estadísticas, botones, menú final, revancha ni reinicio automático.
 
 ## 4. Decisiones y parámetros
@@ -137,7 +137,7 @@ Implementa en la escalera marinera del centro una zona de interacción que cubra
 
 ### Etapa 5 — Puñetazo, daño y victoria
 
-Implementa el estado de ataque, hitbox temporal, daño, retroceso, vida, muerte por daño y caída, sin derribos ni reaparición. Añade victoria y empate simultáneo, aprobando el texto antes de codificarlo.
+Implementa el estado de ataque, hitbox temporal, daño, retroceso, vida, muerte por daño y caída, sin derribos, invulnerabilidad ni reaparición. El puñetazo usa 10 puntos de daño, hitbox frontal del ancho del jugador por el 65 % de su alto activa entre 100 y 300 ms, y retroceso horizontal de 24 píxeles durante 120 ms. El empate usa el texto «La partida quedó en empate».
 
 **Aceptación:** un golpe por pulsación, ningún ataque en el aire, sin daño repetido por contacto y final correcto al morir uno o ambos.
 

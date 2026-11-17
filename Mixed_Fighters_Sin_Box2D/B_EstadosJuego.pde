@@ -34,6 +34,7 @@ void actualizarPartida() {
 
     jugador1.dibujar();
     jugador2.dibujar();
+    resolverGolpes();
     actualizarPuntosArmas(jugador1, isS && !jugador1.escalando, jugador2, isDOWN && !jugador2.escalando);
 
     if (mostrarPlataformas) {
@@ -46,20 +47,19 @@ void actualizarPartida() {
     if (mostrarHitboxes) {
       jugador1.dibujarHitbox();
       jugador2.dibujarHitbox();
+      jugador1.dibujarHitboxGolpe();
+      jugador2.dibujarHitboxGolpe();
     }
 
     dibujarHUD();
 
-    if (jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
-      jugador1.pos.y <= 0 || jugador1.pos.y >= height) {
-      estado = 3;
-      perdio1 = true;
-    }
+    perdio1 = jugador1.vida <= 0 || jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
+      jugador1.pos.y <= 0 || jugador1.pos.y >= height;
+    perdio2 = jugador2.vida <= 0 || jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
+      jugador2.pos.y <= 0 || jugador2.pos.y >= height;
 
-    if (jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
-      jugador2.pos.y <= 0 || jugador2.pos.y >= height) {
+    if (perdio1 || perdio2) {
       estado = 3;
-      perdio2 = true;
     }
   }
 }
@@ -73,17 +73,20 @@ void dibujarFin() {
     rect(width/2, height/2, width/2, height/2);
     fill(255);
 
-    if (perdio1) {
-      text("El jugador 2 gano", width/2, height/2);
-    }
-    if (perdio2) {
-      text("El jugador 1 gano", width/2, height/2);
+    if (perdio1 && perdio2) {
+      text("La partida quedó en empate", width/2, height/2);
+    } else if (perdio1) {
+      text("JUGADOR 2 GANA", width/2, height/2);
+    } else if (perdio2) {
+      text("JUGADOR 1 GANA", width/2, height/2);
     }
 
     if (enter) {
       estado = 0;
       perdio1 = false;
       perdio2 = false;
+      isN = false;
+      is1 = false;
 
       jugador1.reiniciar(width/2, height/2);
       jugador2.reiniciar(width/4, height/8);

@@ -3,19 +3,24 @@ class Jugador {
   PVector vel;
   PVector acel;
   
-  int vida = 100;
+  int vida = vidaInicial;
   
   float ancho;
   float alto;
   float gravedad = height * 0.0005;
-  float velocidad = width * 0.0015;
+  float velocidad = width * 0.003;
   float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
   boolean escalando = false;
   boolean atacando = false;
   boolean mirandoDerechaAlAtacar = true;
+  boolean golpeYaImpacto = false;
   int cuadroGolpe = 0;
   int inicioCuadroGolpe = 0;
+  boolean retrocesoActivo = false;
+  int inicioRetroceso = 0;
+  float distanciaRetrocesoX = 0;
+  float retrocesoAplicadoX = 0;
   boolean invertirX = false;
   boolean mirandoDerecha = true;
   color c;
@@ -60,8 +65,14 @@ class Jugador {
     enSuelo = false;
     escalando = false;
     atacando = false;
+    golpeYaImpacto = false;
     cuadroGolpe = 0;
     inicioCuadroGolpe = 0;
+    vida = vidaInicial;
+    retrocesoActivo = false;
+    inicioRetroceso = 0;
+    distanciaRetrocesoX = 0;
+    retrocesoAplicadoX = 0;
     invertirX = false;
     mirandoDerecha = true;
     cuadroCaminar = 0;
@@ -83,10 +94,90 @@ class Jugador {
 
     atacando = true;
     mirandoDerechaAlAtacar = mirandoDerecha;
+    golpeYaImpacto = false;
     cuadroGolpe = 0;
     inicioCuadroGolpe = millis();
     vel.x = 0;
     acel.set(0, 0);
+  }
+
+  boolean puedeGolpear(Jugador objetivo) {
+    if (!atacando || golpeYaImpacto || objetivo.vida <= 0) {
+      return false;
+    }
+
+    int tiempoGolpe = millis() - inicioCuadroGolpe;
+    if (tiempoGolpe < inicioVentanaGolpe || tiempoGolpe >= finVentanaGolpe) {
+      return false;
+    }
+
+    float anchoGolpe = ancho;
+    float altoGolpe = alto * altoProporcionHitboxGolpe;
+    float direccion = mirandoDerechaAlAtacar ? 1 : -1;
+    float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
+
+    boolean tocaX =
+      centroGolpeX + anchoGolpe/2 > objetivo.pos.x - objetivo.ancho/2 &&
+      centroGolpeX - anchoGolpe/2 < objetivo.pos.x + objetivo.ancho/2;
+    boolean tocaY =
+      pos.y + altoGolpe/2 > objetivo.pos.y - objetivo.alto/2 &&
+      pos.y - altoGolpe/2 < objetivo.pos.y + objetivo.alto/2;
+
+    return tocaX && tocaY;
+  }
+
+  void recibirGolpe(int danio, float direccion) {
+    if (vida <= 0) {
+      return;
+    }
+
+    vida = max(0, vida - danio);
+    retrocesoActivo = true;
+    inicioRetroceso = millis();
+    distanciaRetrocesoX = direccion * distanciaRetroceso;
+    retrocesoAplicadoX = 0;
+  }
+
+  float actualizarRetroceso() {
+    if (!retrocesoActivo) {
+      return 0;
+    }
+
+    float progreso = constrain(
+      (millis() - inicioRetroceso) / (float) duracionRetroceso,
+      0,
+      1
+      );
+    float distanciaActual = distanciaRetrocesoX * progreso;
+    float desplazamiento = distanciaActual - retrocesoAplicadoX;
+    retrocesoAplicadoX = distanciaActual;
+
+    if (progreso >= 1) {
+      retrocesoActivo = false;
+      distanciaRetrocesoX = 0;
+      retrocesoAplicadoX = 0;
+    }
+
+    return desplazamiento;
+  }
+
+  void dibujarHitboxGolpe() {
+    int tiempoGolpe = millis() - inicioCuadroGolpe;
+    if (!atacando || golpeYaImpacto || tiempoGolpe < inicioVentanaGolpe || tiempoGolpe >= finVentanaGolpe) {
+      return;
+    }
+
+    float anchoGolpe = ancho;
+    float altoGolpe = alto * altoProporcionHitboxGolpe;
+    float direccion = mirandoDerechaAlAtacar ? 1 : -1;
+    float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
+
+    rectMode(CENTER);
+    noFill();
+    stroke(255, 0, 0);
+    strokeWeight(2);
+    rect(centroGolpeX, pos.y, anchoGolpe, altoGolpe);
+    noStroke();
   }
 
   void dibujar() {
