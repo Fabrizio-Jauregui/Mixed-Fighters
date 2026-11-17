@@ -12,6 +12,10 @@ class Jugador {
   float fuerzaSalto = height * 0.01;
   boolean enSuelo = false;
   boolean escalando = false;
+  boolean atacando = false;
+  boolean mirandoDerechaAlAtacar = true;
+  int cuadroGolpe = 0;
+  int inicioCuadroGolpe = 0;
   boolean invertirX = false;
   boolean mirandoDerecha = true;
   color c;
@@ -19,6 +23,7 @@ class Jugador {
   boolean tieneArmaSecund = true;
   PImage spriteQuieto;
   PImage[] spritesCaminar;
+  PImage[] spritesGolpe;
   int cuadroCaminar = 0;
   int ultimoCambioSprite = 0;
 
@@ -39,6 +44,13 @@ class Jugador {
     for (int i = 0; i < spritesCaminar.length; i++) {
       spritesCaminar[i] = loadImage("sprites/" + carpeta + "/caminar_" + (i + 1) + ".png");
     }
+
+    spritesGolpe = new PImage[] {
+      loadImage("sprites/" + carpeta + "/ataque_fisico_2.png"),
+      loadImage("sprites/" + carpeta + "/ataque_fisico_3.png"),
+      loadImage("sprites/" + carpeta + "/ataque_fisico_5.png"),
+      loadImage("sprites/" + carpeta + "/ataque_fisico_6.png")
+    };
   }
 
   void reiniciar(float x, float y) {
@@ -47,6 +59,9 @@ class Jugador {
     acel.set(0, 0);
     enSuelo = false;
     escalando = false;
+    atacando = false;
+    cuadroGolpe = 0;
+    inicioCuadroGolpe = 0;
     invertirX = false;
     mirandoDerecha = true;
     cuadroCaminar = 0;
@@ -55,23 +70,51 @@ class Jugador {
   }
 
   void saltar() {
-    if (enSuelo && !escalando) {
+    if (enSuelo && !escalando && !atacando) {
       vel.y = -fuerzaSalto;
       enSuelo = false;
     }
   }
 
+  void golpear() {
+    if (!enSuelo || escalando || atacando) {
+      return;
+    }
+
+    atacando = true;
+    mirandoDerechaAlAtacar = mirandoDerecha;
+    cuadroGolpe = 0;
+    inicioCuadroGolpe = millis();
+    vel.x = 0;
+    acel.set(0, 0);
+  }
+
   void dibujar() {
-    if (vel.x > 0) {
-      mirandoDerecha = true;
-    } else if (vel.x < 0) {
-      mirandoDerecha = false;
+    if (atacando) {
+      cuadroGolpe = (millis() - inicioCuadroGolpe) / 100;
+      if (cuadroGolpe >= spritesGolpe.length) {
+        atacando = false;
+        cuadroGolpe = 0;
+      }
+    }
+
+    if (!atacando) {
+      if (vel.x > 0) {
+        mirandoDerecha = true;
+      } else if (vel.x < 0) {
+        mirandoDerecha = false;
+      }
     }
 
     boolean caminando = abs(vel.x) > 0.1;
     PImage sprite = spriteQuieto;
 
-    if (caminando && spritesCaminar != null) {
+    if (atacando && spritesGolpe != null) {
+      sprite = spritesGolpe[cuadroGolpe];
+      if (sprite == null) {
+        sprite = spriteQuieto;
+      }
+    } else if (caminando && spritesCaminar != null) {
       if (millis() - ultimoCambioSprite >= 130) {
         cuadroCaminar = (cuadroCaminar + 1) % spritesCaminar.length;
         ultimoCambioSprite = millis();
@@ -94,9 +137,10 @@ class Jugador {
     float anchoSprite = sprite.width * (altoSprite / sprite.height);
     float xSprite = pos.x - anchoSprite/2;
     float ySprite = pos.y + alto/2 - altoSprite;
+    boolean dibujarDerecha = atacando ? mirandoDerechaAlAtacar : mirandoDerecha;
 
     pushMatrix();
-    if (!mirandoDerecha) {
+    if (!dibujarDerecha) {
       translate(pos.x, 0);
       scale(-1, 1);
       image(sprite, -anchoSprite/2, ySprite, anchoSprite, altoSprite);
@@ -105,15 +149,6 @@ class Jugador {
     }
     popMatrix();
   }
-  
-  
-  void golpear(){
-  
-  
-  
-  }
-
-
   void disparar(){
   
   

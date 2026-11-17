@@ -17,6 +17,7 @@ boolean isA = false;
 boolean isD = false;
 boolean isW = false;
 boolean isS = false;
+boolean isN = false;
 boolean is1 = false;
 boolean isLEFT = false;
 boolean isRIGHT = false;

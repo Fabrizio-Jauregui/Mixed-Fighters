@@ -1,5 +1,9 @@
 // Comprueba y aplica los teletransportes independientemente del dibujo de las plataformas.
 void actualizarTeletransporte(Jugador jugador, boolean moviendo) {
+  if (jugador.atacando) {
+    return;
+  }
+
   PVector pos = jugador.pos;
   boolean teletransportado = false;
 

@@ -1,8 +1,16 @@
 void keyPressed() {
+  if ((key == 'n' || key == 'N') && !isN) {
+    isN = true;
+    jugador2.golpear();
+  }
+
   if (key == 'a' || key == 'A') isA = true;
   if (key == 'd' || key == 'D') isD = true;
   if (key == 's' || key == 'S') isS = true;
-  if ( key == '1') is1 = true;
+  if (key == '1' && !is1) {
+    is1 = true;
+    jugador1.golpear();
+  }
 
   if (keyCode == LEFT) isLEFT = true;
   if (keyCode == RIGHT) isRIGHT = true;
@@ -13,29 +21,33 @@ void keyPressed() {
 
   if ((key == 'w' || key == 'W') && !isW) {
     isW = true;
-    if (escaleraMarinera.contieneJugador(jugador1) || jugador1.escalando) {
-      if (escaleraMarinera.estaEnExtremoSuperior(jugador1) && jugador1.escalando) {
-        jugador1.escalando = false;
-        jugador1.enSuelo = true;
+    if (!jugador1.atacando) {
+      if (escaleraMarinera.contieneJugador(jugador1) || jugador1.escalando) {
+        if (escaleraMarinera.estaEnExtremoSuperior(jugador1) && jugador1.escalando) {
+          jugador1.escalando = false;
+          jugador1.enSuelo = true;
+          jugador1.saltar();
+          isW = false;
+        }
+      } else {
         jugador1.saltar();
-        isW = false;
       }
-    } else {
-      jugador1.saltar();
     }
   }
 
   if (keyCode == UP && !isUP) {
     isUP = true;
-    if (escaleraMarinera.contieneJugador(jugador2) || jugador2.escalando) {
-      if (escaleraMarinera.estaEnExtremoSuperior(jugador2) && jugador2.escalando) {
-        jugador2.escalando = false;
-        jugador2.enSuelo = true;
+    if (!jugador2.atacando) {
+      if (escaleraMarinera.contieneJugador(jugador2) || jugador2.escalando) {
+        if (escaleraMarinera.estaEnExtremoSuperior(jugador2) && jugador2.escalando) {
+          jugador2.escalando = false;
+          jugador2.enSuelo = true;
+          jugador2.saltar();
+          isUP = false;
+        }
+      } else {
         jugador2.saltar();
-        isUP = false;
       }
-    } else {
-      jugador2.saltar();
     }
   }
 
@@ -44,6 +56,7 @@ void keyPressed() {
 }
 
 void keyReleased() {
+  if (key == 'n' || key == 'N') isN = false;
   if (key == 'a' || key == 'A') isA = false;
   if (key == 'd' || key == 'D') isD = false;
   if (key == 'w' || key == 'W') isW = false;

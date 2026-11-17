@@ -2,6 +2,12 @@ class MotorFisico {
 
   void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
     ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
+    if (jugador.atacando) {
+      jugador.vel.set(0, 0);
+      jugador.acel.set(0, 0);
+      return;
+    }
+
     if (!jugador.escalando && escalera.contieneJugador(jugador) && subir != bajar) {
       jugador.escalando = true;
       jugador.vel.y = 0;
