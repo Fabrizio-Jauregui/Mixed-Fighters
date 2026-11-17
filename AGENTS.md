@@ -64,17 +64,16 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - El hacha sustituye a los puños mientras está equipada, hace más daño y tiene más alcance, pero no consume munición ni durabilidad. Recoger otra hacha cuando ya se tiene no hace nada.
 - Apuntar requiere mantener `M` o `2`; el personaje queda inmóvil, puede elegir ocho direcciones y conserva la última orientación al soltar. La pistola dispara un proyectil al soltar la tecla. Tiene 12 disparos; no dispara automáticamente.
 - El fusil tiene 25 balas. Al soltar el apuntado inicia una ráfaga de cinco, con intervalo breve. El usuario puede seguir modificando la mira durante la ráfaga para orientar los disparos que aún no salieron. No permite ráfagas parciales.
-- Cada jugador tiene espacios independientes para arma de fuego y arma cuerpo a cuerpo. Empieza con pistola de 12 disparos y puños; no empieza con fusil ni hacha. Recoger requiere agacharse y pulsar ataque con al menos un píxel de superposición. Los objetos recogibles no tienen colisión física. Una nueva arma de fuego reemplaza la anterior y no la deja caer; al agotarse desaparece y se conservan hacha o puños según corresponda.
+- Cada jugador tiene espacios independientes para arma de fuego y arma cuerpo a cuerpo. Empieza con pistola de 12 disparos y puños; no empieza con fusil ni hacha. En la mecánica final, recoger requiere agacharse y pulsar ataque con al menos un píxel de superposición. Los objetos recogibles no tienen colisión física. Una nueva arma de fuego reemplaza la anterior y no la deja caer; al agotarse desaparece y se conservan hacha o puños según corresponda.
 - Los proyectiles dañan jugadores y objetos, chocan con plataformas sin dañarlas, y desaparecen al impactar o salir del mundo. No agregues rebotes, penetración, explosiones ni alcance máximo.
 
 ### Aparición de armas — reglas aclaradas por el usuario
 
-- Hay seis puntos de aparición y cada uno mantiene su propio ciclo independiente. Al comenzar la partida aparece un arma en cada punto y se inicia el temporizador individual de cada arma.
-- Cuando vence el temporizador de un punto, el arma anterior desaparece y otra aparece inmediatamente en ese mismo punto. El temporizador de la nueva arma comienza entonces.
-- Si un jugador recoge el arma antes de que venza su temporizador, el punto queda vacío hasta el vencimiento previsto; en ese momento aparece la siguiente arma en el mismo lugar.
-- Si un jugador está sobre el punto cuando vence el temporizador, el arma aparece igualmente y no se recoge automáticamente. Para recogerla debe agacharse y pulsar la tecla de ataque.
-- En cada aparición, el tipo se selecciona con igual probabilidad entre pistola, fusil y hacha.
-- La duración del temporizador se propondrá y aprobará al llegar a la etapa de armas; no exijas definirla en la etapa de análisis inicial. Si queda por decidir si un tipo puede repetirse consecutivamente, presenta una recomendación en esa etapa.
+- Hay seis puntos de aparición y cada uno mantiene su propio ciclo de 30 segundos. Al comenzar la partida hay un retraso global de 10 segundos; al terminar, aparece un objeto visual en cada punto y empieza el temporizador individual correspondiente.
+- Al vencer el temporizador, se elige un nuevo sprite para ese punto y aparece allí inmediatamente, tanto si el sprite anterior seguía visible como si el punto estaba vacío porque alguien lo recogió.
+- En cada aparición, se elige con igual probabilidad entre `pistola.png`, `ametralladora.png` (representa el fusil) y `hacha.png`. Las elecciones son independientes y se permite que el mismo tipo aparezca en ciclos consecutivos.
+- En el prototipo visual actual, los sprites solo identifican el objeto: recogerlo todavía no equipa un tipo. La recogida provisional requiere agacharse y superponerse al punto; activa únicamente el booleano genérico existente. La tecla de ataque y el inventario por tipo se integrarán después.
+- En la mecánica final, recoger requerirá la tecla de ataque además de agacharse. Si un jugador está sobre el punto al vencer el temporizador, el nuevo objeto no se recogerá automáticamente.
 
 ### Objetos, vida y final
 
@@ -150,7 +149,7 @@ Implementa espacios del inventario para arma de fuego y cuerpo a cuerpo, equipam
 
 ### Etapa 7 — Hacha, fusil, recogida y ciclos de aparición
 
-Integra el hacha, reemplazo de arma, recogida agachado más ataque, fusil con ráfagas de cinco, dirección ajustable durante la ráfaga y reglas de munición. Implementa seis ciclos independientes: una aparición inicial en cada punto y un temporizador propio por arma. Al vencer, reemplaza el arma en ese mismo lugar y reinicia el temporizador; si la recogen antes, deja vacío el punto hasta el vencimiento. Si un jugador está sobre el punto, aparece igualmente sin recogerse automáticamente. Propón y aprueba la duración antes de implementarla.
+Integra el hacha, reemplazo de arma, recogida agachado más ataque, fusil con ráfagas de cinco, dirección ajustable durante la ráfaga y reglas de munición. Para los puntos ya acordados, conserva el retraso global provisional de 10 segundos y seis ciclos independientes de 30 segundos. Al comenzar cada ciclo y al vencer su temporizador, el punto muestra una elección equiprobable entre pistola, fusil (`ametralladora.png`) y hacha; puede repetirse el mismo tipo consecutivamente. Si recogen el objeto, el punto queda vacío hasta el vencimiento previsto. Si un jugador está sobre el punto cuando vence, aparece igualmente y no se recoge automáticamente. Los sprites se dibujan centrados, preservando su proporción, con su dimensión mayor limitada aproximadamente al 70 % de la altura del jugador. La recogida provisional solo requiere agacharse y superponerse y activa el booleano genérico; la regla final será agacharse más ataque y equipar el tipo correspondiente. Los 10 y 30 segundos y la elección repetible ya fueron acordados: no volver a proponerlos para aprobación.
 
 **Aceptación:** inventario independiente, reglas de reemplazo exactas, fusil con cinco ráfagas completas, seis ciclos independientes, tipo equiprobable y sustituciones en cada punto al vencer su temporizador.
 

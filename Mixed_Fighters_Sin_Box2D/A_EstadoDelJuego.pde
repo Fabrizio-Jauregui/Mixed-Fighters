@@ -3,6 +3,7 @@ PImage panCarga;
 PImage mapa;
 ArrayList<Plataforma> plataformas;
 ArrayList<Armas> puntosArmas;
+PImage[] spritesArmas;
 EscaleraMarinera escaleraMarinera;
 int estado = 0;
 int inicioArmas = 0;
