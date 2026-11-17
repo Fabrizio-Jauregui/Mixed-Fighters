@@ -80,7 +80,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - Todos los objetos tienen posición, dimensiones, gravedad, fricción y colisiones con plataformas y entre sí; pueden apilarse y frenarse sin deslizarse indefinidamente ni rebotar exageradamente.
 - No se empujan al caminar; se desplazan por impactos autorizados. Caja, mesa y silla tienen resistencia configurable y desaparecen al llegar a cero. El barril es movible e indestructible.
 - Disparos, golpes e impactos entre objetos producen daño fijo. Una colisión persistente no debe repetir daño cada cuadro; una plataforma no destruye automáticamente un objeto.
-- La vida de cada jugador comienza en 100 y solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. Si ambos mueren en la misma actualización, el resultado es «La partida quedó en empate». La barra de vida del HUD refleja la vida actual; la barra de resistencia permanece decorativa hasta que se apruebe conectarla.
+- La vida de cada jugador comienza en 100 y solo disminuye. Al llegar a cero o caer al vacío, muere sin reaparecer. Al aterrizar tras caer más de dos alturas de jugador, recibe un punto de daño por cada 12 píxeles adicionales, redondeando hacia arriba. La caída se mide desde el punto más alto alcanzado en el aire. Caer fuera del mundo sigue causando derrota inmediata. Si ambos mueren en la misma actualización, el resultado es «La partida quedó en empate». La barra de vida del HUD refleja la vida actual; la barra de resistencia permanece decorativa hasta que se apruebe conectarla.
 - No añadas estadísticas, botones, menú final, revancha ni reinicio automático.
 
 ## 4. Decisiones y parámetros
@@ -137,7 +137,7 @@ Implementa en la escalera marinera del centro una zona de interacción que cubra
 
 ### Etapa 5 — Puñetazo, daño y victoria
 
-Implementa el estado de ataque, hitbox temporal, daño, retroceso, vida, muerte por daño y caída, sin derribos, invulnerabilidad ni reaparición. El puñetazo usa 10 puntos de daño, hitbox frontal del ancho del jugador por el 65 % de su alto activa entre 100 y 300 ms, y retroceso horizontal de 24 píxeles durante 120 ms. El empate usa el texto «La partida quedó en empate».
+Implementa el estado de ataque, hitbox temporal, daño, retroceso, vida, muerte por daño y caída, sin derribos, invulnerabilidad ni reaparición. El puñetazo usa 10 puntos de daño, hitbox frontal del ancho del jugador por el 65 % de su alto activa entre 100 y 300 ms, y retroceso horizontal de 24 píxeles durante 120 ms. La caída causa daño al aterrizar si supera dos alturas de jugador: un punto por cada 12 píxeles adicionales, redondeando hacia arriba, medidos desde el punto más alto alcanzado durante la caída. Caer fuera del mundo sigue causando derrota inmediata. El empate usa el texto «La partida quedó en empate».
 
 **Aceptación:** un golpe por pulsación, ningún ataque en el aire, sin daño repetido por contacto y final correcto al morir uno o ambos.
 

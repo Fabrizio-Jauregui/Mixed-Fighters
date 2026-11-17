@@ -38,4 +38,8 @@ void actualizarTeletransporte(Jugador jugador, boolean moviendo) {
   if (teletransportado && moviendo) {
     jugador.invertirX = true;
   }
+
+  if (teletransportado) {
+    jugador.cancelarSeguimientoCaida();
+  }
 }

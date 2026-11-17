@@ -1,4 +1,4 @@
-// Parámetros aprobados para el combate cuerpo a cuerpo actual.
+// Parámetros aprobados para el combate cuerpo a cuerpo y el daño por caída.
 final int vidaInicial = 100;
 final int danioPunetazo = 10;
 final int inicioVentanaGolpe = 100;
@@ -6,6 +6,8 @@ final int finVentanaGolpe = 300;
 final float altoProporcionHitboxGolpe = 0.65;
 final int duracionRetroceso = 120;
 final float distanciaRetroceso = 24;
+final float alturasJugadorParaDanioCaida = 2;
+final float pixelesPorPuntoDanioCaida = 12;
 
 void resolverGolpes() {
   // Se comprueban los dos ataques antes de aplicar daño para permitir un empate simultáneo.

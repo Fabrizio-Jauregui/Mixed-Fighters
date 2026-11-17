@@ -4,6 +4,8 @@ class Jugador {
   PVector acel;
   
   int vida = vidaInicial;
+  boolean caidaEnCurso = false;
+  float alturaMasAltaCaida = 0;
   
   float ancho;
   float alto;
@@ -69,6 +71,7 @@ class Jugador {
     cuadroGolpe = 0;
     inicioCuadroGolpe = 0;
     vida = vidaInicial;
+    cancelarSeguimientoCaida();
     retrocesoActivo = false;
     inicioRetroceso = 0;
     distanciaRetrocesoX = 0;
@@ -127,15 +130,55 @@ class Jugador {
   }
 
   void recibirGolpe(int danio, float direccion) {
+    recibirDanio(danio);
+
+    if (vida <= 0) {
+      return;
+    }
+
+    retrocesoActivo = true;
+    inicioRetroceso = millis();
+    distanciaRetrocesoX = direccion * distanciaRetroceso;
+    retrocesoAplicadoX = 0;
+  }
+
+  void recibirDanio(int danio) {
     if (vida <= 0) {
       return;
     }
 
     vida = max(0, vida - danio);
-    retrocesoActivo = true;
-    inicioRetroceso = millis();
-    distanciaRetrocesoX = direccion * distanciaRetroceso;
-    retrocesoAplicadoX = 0;
+  }
+
+  void actualizarSeguimientoCaida() {
+    if (escalando) {
+      cancelarSeguimientoCaida();
+      return;
+    }
+
+    if (enSuelo) {
+      if (caidaEnCurso) {
+        float distanciaCaida = pos.y - alturaMasAltaCaida;
+        float umbralCaida = alto * alturasJugadorParaDanioCaida;
+
+        if (distanciaCaida > umbralCaida) {
+          int danio = ceil((distanciaCaida - umbralCaida) / pixelesPorPuntoDanioCaida);
+          recibirDanio(danio);
+        }
+      }
+
+      cancelarSeguimientoCaida();
+    } else if (!caidaEnCurso) {
+      caidaEnCurso = true;
+      alturaMasAltaCaida = pos.y;
+    } else {
+      alturaMasAltaCaida = min(alturaMasAltaCaida, pos.y);
+    }
+  }
+
+  void cancelarSeguimientoCaida() {
+    caidaEnCurso = false;
+    alturaMasAltaCaida = 0;
   }
 
   float actualizarRetroceso() {

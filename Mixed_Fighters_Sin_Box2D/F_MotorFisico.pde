@@ -20,6 +20,7 @@ class MotorFisico {
     
     
     if (jugador.escalando) {
+      jugador.cancelarSeguimientoCaida();
       actualizarEscalada(
         jugador,
         retrocesoActivo ? false : izq,
@@ -58,6 +59,7 @@ class MotorFisico {
 
     // 3. Movimiento vertical y colisiones con plataformas.
     actualizarMovimientoVertical(jugador, plataformas);
+    jugador.actualizarSeguimientoCaida();
   }
 
   void actualizarMovimientoVertical(Jugador jugador, ArrayList<Plataforma> plataformas) {
