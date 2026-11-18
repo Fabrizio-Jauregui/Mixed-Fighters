@@ -34,6 +34,7 @@ class Jugador {
   PImage spriteQuieto;
   PImage[] spritesCaminar;
   PImage[] spritesGolpe;
+  PImage[] spritesGolpeHacha;
   int cuadroCaminar = 0;
   int ultimoCambioSprite = 0;
   int municionArma = capacidadMunicionPistola;
@@ -66,6 +67,11 @@ class Jugador {
       loadImage("sprites/" + carpeta + "/ataque_fisico_3.png"),
       loadImage("sprites/" + carpeta + "/ataque_fisico_5.png"),
       loadImage("sprites/" + carpeta + "/ataque_fisico_6.png")
+    };
+    spritesGolpeHacha = new PImage[] {
+      loadImage("sprites/" + carpeta + "/ataque_arma_11.png"),
+      loadImage("sprites/" + carpeta + "/ataque_arma_14.png"),
+      loadImage("sprites/" + carpeta + "/ataque_arma_15.png")
     };
     spriteDisparoPistola = loadImage("sprites/" + carpeta + "/ataque_arma_25.png");
     spriteDisparoFusil = loadImage("sprites/" + carpeta + "/ataque_arma_29.png");
@@ -334,12 +340,15 @@ class Jugador {
     boolean caminando = abs(vel.x) > 0.1;
     boolean poseDisparoActiva = spriteDisparoActual != null &&
       millis() - inicioPoseDisparo < duracionPoseDisparo;
+    boolean usandoHacha = armaCuerpoACuerpo == TIPO_HACHA;
+    PImage[] spritesAtaqueActual = usandoHacha ? spritesGolpeHacha : spritesGolpe;
     PImage sprite = spriteQuieto;
 
     if (poseDisparoActiva) {
       sprite = spriteDisparoActual;
-    } else if (atacando && spritesGolpe != null) {
-      sprite = spritesGolpe[cuadroGolpe];
+    } else if (atacando && spritesAtaqueActual != null) {
+      int cuadroAtaque = min(cuadroGolpe, spritesAtaqueActual.length - 1);
+      sprite = spritesAtaqueActual[cuadroAtaque];
       if (sprite == null) {
         sprite = spriteQuieto;
       }
