@@ -29,8 +29,8 @@ class Jugador {
   boolean invertirX = false;
   boolean mirandoDerecha = true;
   color c;
-  boolean tieneArmaPrinc = false;
-  boolean tieneArmaSecund = true;
+  int armaCuerpoACuerpo = TIPO_PUNOS;
+  int armaDeFuego = TIPO_PISTOLA;
   PImage spriteQuieto;
   PImage[] spritesCaminar;
   PImage[] spritesGolpe;
@@ -85,8 +85,8 @@ class Jugador {
     invertirX = false;
     mirandoDerecha = true;
     cuadroCaminar = 0;
-    tieneArmaPrinc = false;
-    tieneArmaSecund = true;
+    armaCuerpoACuerpo = TIPO_PUNOS;
+    armaDeFuego = TIPO_PISTOLA;
   }
 
   void saltar() {
@@ -157,6 +157,16 @@ class Jugador {
     ultimaVezDanada = millis();
     ultimaActualizacionRegeneracion = ultimaVezDanada;
     progresoRegeneracion = 0;
+  }
+
+  void equiparArma(int tipoArma) {
+    if (tipoArma == TIPO_HACHA) {
+      if (armaCuerpoACuerpo == TIPO_PUNOS) {
+        armaCuerpoACuerpo = TIPO_HACHA;
+      }
+    } else if (tipoArma == TIPO_PISTOLA || tipoArma == TIPO_FUSIL) {
+      armaDeFuego = tipoArma;
+    }
   }
 
   void actualizarRegeneracion() {

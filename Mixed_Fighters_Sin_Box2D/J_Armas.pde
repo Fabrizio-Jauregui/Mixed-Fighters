@@ -5,6 +5,7 @@ class Armas {
   float alto;
   PImage[] spritesDisponibles;
   PImage spriteActual;
+  int tipoActual = -1;
   boolean disponible = true;
   int inicioCiclo = 0;
   boolean cicloIniciado = false;
@@ -47,8 +48,8 @@ class Armas {
   }
 
   PImage elegirSprite() {
-    int indice = (int) random(spritesDisponibles.length);
-    return spritesDisponibles[indice];
+    tipoActual = (int) random(spritesDisponibles.length);
+    return spritesDisponibles[tipoActual];
   }
 
   boolean recogerSiCorresponde(Jugador jugador, boolean agachado) {
@@ -77,6 +78,7 @@ class Armas {
     inicioCiclo = 0;
     cicloIniciado = false;
     spriteActual = null;
+    tipoActual = -1;
   }
 }
 
@@ -90,10 +92,10 @@ void actualizarPuntosArmas(Jugador jugador1, boolean agachado1, Jugador jugador2
     punto.dibujar(jugador1.alto);
 
     if (punto.recogerSiCorresponde(jugador1, agachado1)) {
-      jugador1.tieneArmaPrinc = true;
+      jugador1.equiparArma(punto.tipoActual);
     }
     if (punto.recogerSiCorresponde(jugador2, agachado2)) {
-      jugador2.tieneArmaPrinc = true;
+      jugador2.equiparArma(punto.tipoActual);
     }
   }
 }
