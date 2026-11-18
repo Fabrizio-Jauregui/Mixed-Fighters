@@ -19,6 +19,7 @@ class Jugador {
   boolean escalando = false;
   boolean atacando = false;
   boolean mirandoDerechaAlAtacar = true;
+  int armaCuerpoACuerpoAlAtacar = TIPO_PUNOS;
   boolean golpeYaImpacto = false;
   int cuadroGolpe = 0;
   int inicioCuadroGolpe = 0;
@@ -85,6 +86,7 @@ class Jugador {
     escalando = false;
     atacando = false;
     golpeYaImpacto = false;
+    armaCuerpoACuerpoAlAtacar = TIPO_PUNOS;
     cuadroGolpe = 0;
     inicioCuadroGolpe = 0;
     vida = vidaInicial;
@@ -121,6 +123,7 @@ class Jugador {
 
     atacando = true;
     mirandoDerechaAlAtacar = mirandoDerecha;
+    armaCuerpoACuerpoAlAtacar = armaCuerpoACuerpo;
     golpeYaImpacto = false;
     cuadroGolpe = 0;
     inicioCuadroGolpe = millis();
@@ -138,7 +141,7 @@ class Jugador {
       return false;
     }
 
-    float anchoGolpe = ancho;
+    float anchoGolpe = anchoHitboxGolpeActual();
     float altoGolpe = alto * altoProporcionHitboxGolpe;
     float direccion = mirandoDerechaAlAtacar ? 1 : -1;
     float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
@@ -151,6 +154,22 @@ class Jugador {
       pos.y - altoGolpe/2 < objetivo.pos.y + objetivo.alto/2;
 
     return tocaX && tocaY;
+  }
+
+  float anchoHitboxGolpeActual() {
+    if (armaCuerpoACuerpoAlAtacar == TIPO_HACHA) {
+      return ancho * proporcionAnchoHitboxHacha;
+    }
+
+    return ancho;
+  }
+
+  int danioGolpeActual() {
+    if (armaCuerpoACuerpoAlAtacar == TIPO_HACHA) {
+      return danioHacha;
+    }
+
+    return danioPunetazo;
   }
 
   void recibirGolpe(int danio, float direccion) {
@@ -307,7 +326,7 @@ class Jugador {
       return;
     }
 
-    float anchoGolpe = ancho;
+    float anchoGolpe = anchoHitboxGolpeActual();
     float altoGolpe = alto * altoProporcionHitboxGolpe;
     float direccion = mirandoDerechaAlAtacar ? 1 : -1;
     float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
@@ -340,7 +359,8 @@ class Jugador {
     boolean caminando = abs(vel.x) > 0.1;
     boolean poseDisparoActiva = spriteDisparoActual != null &&
       millis() - inicioPoseDisparo < duracionPoseDisparo;
-    boolean usandoHacha = armaCuerpoACuerpo == TIPO_HACHA;
+    int armaAtaqueActual = atacando ? armaCuerpoACuerpoAlAtacar : armaCuerpoACuerpo;
+    boolean usandoHacha = armaAtaqueActual == TIPO_HACHA;
     PImage[] spritesAtaqueActual = usandoHacha ? spritesGolpeHacha : spritesGolpe;
     PImage sprite = spriteQuieto;
 
