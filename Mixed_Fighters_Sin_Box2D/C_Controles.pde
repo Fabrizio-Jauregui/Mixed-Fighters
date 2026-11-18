@@ -15,7 +15,15 @@ void keyPressed() {
   if (keyCode == LEFT) isLEFT = true;
   if (keyCode == RIGHT) isRIGHT = true;
   if (keyCode == DOWN) isDOWN = true;
-  if (key == 'm' || key == 'M') isM = true;
+  if (key == '2' && !is2) {
+    is2 = true;
+    solicitarDisparo(jugador1, isA, isD);
+  }
+
+  if ((key == 'm' || key == 'M') && !isM) {
+    isM = true;
+    solicitarDisparo(jugador2, isLEFT, isRIGHT);
+  }
 
   if (keyCode == ENTER) enter = true;
 
@@ -67,7 +75,8 @@ void keyReleased() {
   if (keyCode == RIGHT) isRIGHT = false;
   if (keyCode == UP) isUP = false;
   if (keyCode == DOWN) isDOWN = false;
-  if (key == 'm' || key == 'M') isM = true;
+  if (key == 'm' || key == 'M') isM = false;
+  if (key == '2') is2 = false;
 
 
   if (keyCode == ENTER) enter = false;
@@ -78,5 +87,21 @@ void keyReleased() {
 
   if (!isLEFT && !isRIGHT) {
     jugador2.invertirX = false;
+  }
+}
+
+void solicitarDisparo(Jugador jugador, boolean izquierda, boolean derecha) {
+  if (estado != 1 || jugador.escalando) {
+    return;
+  }
+
+  // Si el movimiento y el disparo entran juntos, actualiza primero la orientación.
+  if (izquierda != derecha) {
+    jugador.mirandoDerecha = derecha;
+  }
+
+  Proyectil nuevoProyectil = jugador.disparar();
+  if (nuevoProyectil != null) {
+    proyectiles.add(nuevoProyectil);
   }
 }

@@ -20,7 +20,7 @@ El juego final incluye:
 
 - Una pantalla inicial con la imagen de Mixed Fighters y el texto «Toque Enter para empezar». Al pulsar Enter comienza una sola partida.
 - Un mapa: Rooftops; dos jugadores humanos en la misma computadora y controlados con el mismo teclado.
-- Movimiento horizontal, salto, agachamiento, carrera con resistencia, puñetazo, apuntado, disparo, hacha, pistola, fusil, proyectiles, inventario, armas recogibles, teletransportes y las dos escaleras especificadas.
+- Movimiento horizontal, salto, agachamiento, carrera con resistencia, puñetazo, disparo horizontal, hacha, pistola, fusil, proyectiles, inventario, armas recogibles, teletransportes y las dos escaleras especificadas.
 - Caja, barril metálico, mesa y silla como objetos físicos. Caja, mesa y silla se pueden destruir; el barril es movible e indestructible.
 - Vida, muerte por daño o caída, victoria del último jugador vivo y empate si ambos mueren simultáneamente.
 
@@ -36,9 +36,9 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 - Jugador 1 usa WASD: `A`/`D` para moverse, `W` para saltar y `S` para agacharse.
 - Jugador 2 usa las flechas: `←`/`→` para moverse, `↑` para saltar y `↓` para agacharse.
-- En los controles actuales, Jugador 2 usa `N` para el puñetazo y Jugador 1 usa `1`; Jugador 1 usa `M` para apuntar/disparar y Jugador 2 usa `2`. Para `1` y `2`, usa inicialmente la fila superior del teclado. Para recoger armas en la mecánica final se usarán las teclas de ataque de cada jugador.
-- Al apuntar, las direcciones modifican la mira; en la escalera marinera, arriba/abajo permiten subir y bajar. Estas funciones dependen del estado actual del personaje.
-- El prototipo implementa movimiento horizontal, salto y animación/combate básico de puñetazo con `N` para Jugador 2 y `1` para Jugador 1. Apuntado/disparo con `M` y `2` y agacharse siguen pendientes.
+- Jugador 1 usa `1` para el puñetazo y `2` para disparar. Jugador 2 usa `N` para el puñetazo y `M` para disparar. Para `1` y `2`, usa inicialmente la fila superior del teclado. Para recoger armas en la mecánica final se usarán las teclas de ataque de cada jugador.
+- Cada pulsación de disparo crea una bala hacia el lado al que mira el jugador. Para disparar al otro lado, primero debe cambiar su orientación moviéndose hacia allí. En la escalera marinera, arriba/abajo permiten subir y bajar.
+- El prototipo implementa movimiento horizontal, salto y animación/combate básico de puñetazo con `1` para Jugador 1 y `N` para Jugador 2. `2` (Jugador 1) y `M` (Jugador 2) disparan una bala visual por pulsación; las colisiones de proyectiles siguen pendientes. Agacharse sigue pendiente.
 - Gestiona teclas mantenidas y liberadas y prueba acciones simultáneas. Si una combinación no funciona, considera también el ghosting del teclado físico.
 - Los personajes no se bloquean físicamente entre sí, pero pueden recibir daño de ataques y proyectiles.
 - Los personajes se representan primero con formas geométricas. Separa su dibujo de su movimiento y combate para permitir añadir sprites en el futuro. No generes ni busques sprites.
@@ -48,7 +48,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - Correr se activa con doble pulsación de una dirección horizontal y mantenerla. Consume resistencia; al agotarla se detiene y vuelve la velocidad normal. La resistencia empieza a recuperarse al dejar de correr, no puede ser negativa y no reactiva la carrera automáticamente.
 - No ataques cuerpo a cuerpo en el aire.
 - Mantén separados el estado general de la partida y los estados de cada jugador. Evita estados incompatibles y condiciones de acción dispersas.
-- La orientación debe seguir el movimiento o la mira y conservarse al soltar el apuntado.
+- La orientación sigue el movimiento y se conserva cuando el jugador se detiene; el disparo usa esa orientación.
 
 ### Escaleras y puertas
 
@@ -62,9 +62,10 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 - El puñetazo es un golpe por pulsación, solo en el suelo y fuera de la escalada, hacia donde mira el personaje. La animación dura 400 ms; la hitbox frontal mide el ancho del jugador por el 65 % de su alto y está activa entre los 100 y 300 ms. Cada golpe puede hacer 10 puntos de daño como máximo una vez. El retroceso es horizontal: 24 píxeles a lo largo de 120 ms; durante ese tiempo se bloquea el control horizontal y se mantiene la gravedad. Recibir un golpe no cancela una animación de ataque ya iniciada. No añadas invulnerabilidad tras el impacto.
   - El hacha sustituye a los puños en el espacio cuerpo a cuerpo, hace más daño y tiene más alcance, pero no consume munición ni durabilidad. En el prototipo actual, recoger otra hacha cuando ya se tiene consume el objeto del punto, pero el equipamiento permanece como hacha. Su efecto de combate queda para una etapa posterior.
-- Apuntar requiere mantener `M` o `2`; el personaje queda inmóvil, puede elegir ocho direcciones y conserva la última orientación al soltar. La pistola dispara un proyectil al soltar la tecla. Tiene 12 disparos; no dispara automáticamente.
-- El fusil tiene 25 balas. Al soltar el apuntado inicia una ráfaga de cinco, con intervalo breve. El usuario puede seguir modificando la mira durante la ráfaga para orientar los disparos que aún no salieron. No permite ráfagas parciales.
-  - Cada jugador tiene espacios independientes para arma de fuego y arma cuerpo a cuerpo. Empieza con pistola y puños; el prototipo actual todavía no implementa munición ni uso de la pistola. En la mecánica final, recoger requiere agacharse y pulsar ataque con al menos un píxel de superposición. Los objetos recogibles no tienen colisión física. Recoger pistola o fusil reemplaza el espacio de arma de fuego y no deja caer la anterior; al agotarse la munición, el arma de fuego desaparece y se conservan hacha o puños según corresponda.
+- Disparar con `2` (Jugador 1) o `M` (Jugador 2) es una acción por pulsación: se debe soltar y volver a pulsar para disparar de nuevo. Cada bala viaja horizontalmente hacia donde mira el jugador. Disparar no bloquea el movimiento y puede hacerse en el aire; durante la escalada se ignora la pulsación.
+- La pistola tiene 12 balas y el fusil 25. Ambos disparan una bala por pulsación. No hay apuntado sostenido ni ráfaga del fusil. Cada arma de fuego recogida carga su capacidad completa; al quedarse sin balas desaparece del espacio de arma de fuego y se conservan hacha o puños.
+- Cada jugador tiene espacios independientes para arma de fuego y arma cuerpo a cuerpo. Empieza con pistola y puños. En la mecánica final, recoger requiere agacharse y pulsar ataque con al menos un píxel de superposición. Los objetos recogibles no tienen colisión física. Recoger pistola o fusil reemplaza el espacio de arma de fuego y no deja caer la anterior.
+- En la implementación visual actual, los proyectiles no chocan con jugadores, plataformas ni objetos y no producen efectos; solo se eliminan al salir de la pantalla. La colisión y el daño de proyectiles pertenecen a una etapa posterior.
 - Los proyectiles dañan jugadores y objetos, chocan con plataformas sin dañarlas, y desaparecen al impactar o salir del mundo. No agregues rebotes, penetración, explosiones ni alcance máximo.
 
 ### Aparición de armas — reglas aclaradas por el usuario
@@ -72,7 +73,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 - Hay seis puntos de aparición y cada uno mantiene su propio ciclo de 30 segundos. Al comenzar la partida hay un retraso global de 10 segundos; al terminar, aparece un objeto visual en cada punto y empieza el temporizador individual correspondiente.
 - Al vencer el temporizador, se elige un nuevo sprite para ese punto y aparece allí inmediatamente, tanto si el sprite anterior seguía visible como si el punto estaba vacío porque alguien lo recogió.
 - En cada aparición, se elige con igual probabilidad entre `pistola.png`, `ametralladora.png` (representa el fusil) y `hacha.png`. Las elecciones son independientes y se permite que el mismo tipo aparezca en ciclos consecutivos.
-  - En el prototipo actual, recoger requiere agacharse y superponerse al punto. El tipo se equipa en el espacio correspondiente y su sprite aparece en el HUD: hacha en el primer espacio, pistola o fusil en el segundo. La pistola está equipada inicialmente junto con los puños. Esto solo representa el equipamiento: todavía no implementa uso de armas de fuego, munición ni cambios de combate por el hacha. Si se recoge otra hacha teniendo ya una, el objeto desaparece y el equipamiento sigue siendo hacha. La regla final de recogida añadirá la pulsación de ataque; no debe describirse como ya implementada.
+- En el prototipo actual, recoger requiere agacharse y superponerse al punto. El tipo se equipa en el espacio correspondiente y su sprite aparece en el HUD: hacha en el primer espacio, pistola o fusil en el segundo. La pistola está equipada inicialmente junto con los puños. Los disparos visuales consumen la munición indicada en las reglas; todavía no colisionan ni producen daño, y el hacha aún no cambia el combate. Si se recoge otra hacha teniendo ya una, el objeto desaparece y el equipamiento sigue siendo hacha. La regla final de recogida añadirá la pulsación de ataque; no debe describirse como ya implementada.
 - En la mecánica final, recoger requerirá la tecla de ataque además de agacharse. Si un jugador está sobre el punto al vencer el temporizador, el nuevo objeto no se recogerá automáticamente.
 
 ### Objetos, vida y final
@@ -87,7 +88,7 @@ Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor 
 
 No presentes parámetros no definidos como hechos. Antes de la etapa que los necesite, presenta una tabla agrupada que indique nombre, valor inicial recomendado, unidad, efecto, justificación y qué observar al probarlo. Centraliza los valores aprobados en un lugar claro; evita números mágicos y no exijas que el usuario decida cada número por separado.
 
-Entre los valores que requieren propuesta están: vida, daños, retroceso, velocidades, salto, gravedad, resistencia, duración e intervalo de ataques, alcance, velocidad de proyectiles, intervalo de ráfaga, vida de objetos, daño entre objetos, fricción y resistencia al movimiento.
+Entre los valores que requieren propuesta están: vida, daños, retroceso, velocidades, salto, gravedad, resistencia, duración e intervalo de ataques, alcance, velocidad de proyectiles, vida de objetos, daño entre objetos, fricción y resistencia al movimiento.
 
 Para decisiones no especificadas:
 
@@ -143,15 +144,15 @@ Implementa el estado de ataque, hitbox temporal, daño, retroceso, vida, regener
 
 ### Etapa 6 — Pistola y proyectil base
 
-Implementa espacios del inventario para arma de fuego y cuerpo a cuerpo, equipamiento inicial de pistola/puños, apuntado de ocho direcciones, inmovilidad al apuntar, disparo único al liberar y consumo de munición. Los proyectiles colisionan con jugadores y plataformas y se eliminan correctamente.
+Implementa espacios del inventario para arma de fuego y cuerpo a cuerpo, equipamiento inicial de pistola/puños, disparo horizontal por pulsación y consumo de munición. La pistola tiene 12 balas y el fusil 25; ambos disparan una bala por pulsación. El personaje puede moverse y disparar, incluso en el aire, pero no durante la escalada. Por ahora, las balas son visuales, atraviesan el escenario y se eliminan al salir de la pantalla; las colisiones y sus efectos se implementarán después.
 
-**Aceptación:** 12 disparos exactos, direcciones correctas, una bala por liberación y limpieza al impactar/salir del mundo.
+**Aceptación:** orientación horizontal correcta, una bala por pulsación, conteo de 12 y 25 balas, pose de disparo correcta y limpieza al salir del mundo, sin colisiones en esta etapa.
 
 ### Etapa 7 — Hacha, fusil, recogida y ciclos de aparición
 
-Integra el hacha, reemplazo de arma, recogida agachado más ataque, fusil con ráfagas de cinco, dirección ajustable durante la ráfaga y reglas de munición. Para los puntos ya acordados, conserva el retraso global de 10 segundos y seis ciclos independientes de 30 segundos. Al comenzar cada ciclo y al vencer su temporizador, el punto muestra una elección equiprobable entre pistola, fusil (`ametralladora.png`) y hacha; puede repetirse el mismo tipo consecutivamente. Si recogen el objeto, el punto queda vacío hasta el vencimiento previsto. Si un jugador está sobre el punto cuando vence, aparece igualmente y no se recoge automáticamente. Los sprites se dibujan centrados, preservando su proporción, con su dimensión mayor limitada aproximadamente al 70 % de la altura del jugador. El prototipo ya recoge al agacharse y superponerse, equipa el tipo de arma correspondiente y muestra su icono en el HUD. La regla final añadirá la tecla de ataque. Los disparos, munición, ráfagas y efecto de combate del hacha siguen pendientes. Recoger un hacha duplicada consume el objeto pero conserva el equipamiento actual. Los 10 y 30 segundos y la elección repetible ya fueron acordados: no volver a proponerlos para aprobación.
+Integra el hacha, recogida agachado más ataque y sus efectos de combate. Para los puntos ya acordados, conserva el retraso global de 10 segundos y seis ciclos independientes de 30 segundos. Al comenzar cada ciclo y al vencer su temporizador, el punto muestra una elección equiprobable entre pistola, fusil (`ametralladora.png`) y hacha; puede repetirse el mismo tipo consecutivamente. Si recogen el objeto, el punto queda vacío hasta el vencimiento previsto. Si un jugador está sobre el punto cuando vence, aparece igualmente y no se recoge automáticamente. Los sprites se dibujan centrados, preservando su proporción, con su dimensión mayor limitada aproximadamente al 70 % de la altura del jugador. El prototipo ya recoge al agacharse y superponerse, equipa el tipo de arma correspondiente, carga la munición completa y muestra el icono en el HUD. La regla final añadirá la tecla de ataque. El uso de hacha queda pendiente. Recoger un hacha duplicada consume el objeto pero conserva el equipamiento actual. Los 10 y 30 segundos y la elección repetible ya fueron acordados: no volver a proponerlos para aprobación.
 
-**Aceptación:** inventario independiente, reglas de reemplazo exactas, fusil con cinco ráfagas completas, seis ciclos independientes, tipo equiprobable y sustituciones en cada punto al vencer su temporizador.
+**Aceptación:** inventario independiente, reglas de reemplazo exactas, fusil con 25 disparos por cargador, seis ciclos independientes, tipo equiprobable y sustituciones en cada punto al vencer su temporizador.
 
 ### Etapa 8 — Objetos físicos
 

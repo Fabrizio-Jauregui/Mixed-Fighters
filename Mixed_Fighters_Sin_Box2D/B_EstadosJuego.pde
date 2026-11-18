@@ -10,6 +10,7 @@ void dibujarInicio() {
     if (enter) {
       estado = 1;
       inicioArmas = millis();
+      proyectiles.clear();
       for (Armas punto : puntosArmas) {
         punto.reiniciar();
       }
@@ -34,6 +35,7 @@ void actualizarPartida() {
 
     jugador1.dibujar();
     jugador2.dibujar();
+    actualizarProyectiles();
     resolverGolpes();
     actualizarPuntosArmas(jugador1, isS && !jugador1.escalando, jugador2, isDOWN && !jugador2.escalando);
 
@@ -92,9 +94,12 @@ void dibujarFin() {
       perdio2 = false;
       isN = false;
       is1 = false;
+      isM = false;
+      is2 = false;
+      proyectiles.clear();
 
-      jugador1.reiniciar(width/2, height/2);
-      jugador2.reiniciar(width/4, height/8);
+      jugador1.reiniciar(width/4, height/8);
+      jugador2.reiniciar(width/2, height/2);
 
       isA = false;
       isD = false;
