@@ -118,7 +118,7 @@ class Jugador {
   }
 
   void saltar() {
-    if (enSuelo && !escalando && !atacando) {
+    if (enSuelo && !escalando && !atacando && !disparoActivo()) {
       vel.y = -fuerzaSalto;
       enSuelo = false;
     }
