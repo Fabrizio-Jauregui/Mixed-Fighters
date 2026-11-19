@@ -1,4 +1,4 @@
-// Las balas son visuales por ahora: se mueven en horizontal y no comprueban impactos.
+// Las balas chocan con las plataformas y desaparecen al impactar.
 class Proyectil {
   float x;
   float y;
@@ -16,6 +16,21 @@ class Proyectil {
 
     if (x < -tamanoBala/2 || x > width + tamanoBala/2) {
       activo = false;
+      return;
+    }
+
+    for (Plataforma plataforma : plataformas) {
+      boolean tocaX =
+        x + tamanoBala/2 > plataforma.x - plataforma.ancho/2 &&
+        x - tamanoBala/2 < plataforma.x + plataforma.ancho/2;
+      boolean tocaY =
+        y + tamanoBala/2 > plataforma.y - plataforma.alto/2 &&
+        y - tamanoBala/2 < plataforma.y + plataforma.alto/2;
+
+      if (tocaX && tocaY) {
+        activo = false;
+        return;
+      }
     }
   }
 
