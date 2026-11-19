@@ -49,6 +49,7 @@ class Jugador {
   float xSalidaRafaga;
   float ySalidaRafaga;
   float direccionRafaga = 1;
+  int danioRafaga;
 
   Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
@@ -222,6 +223,7 @@ class Jugador {
     boolean usandoFusil = armaDeFuego == TIPO_FUSIL;
     PImage spriteArma = usandoFusil ? spriteDisparoFusil : spriteDisparoPistola;
     float direccion = mirandoDerecha ? 1 : -1;
+    danioRafaga = usandoFusil ? danioBalaFusil : danioProyectil;
     float anchoSpriteJugador = ancho;
     if (spriteArma != null) {
       anchoSpriteJugador = spriteArma.width * (alto / spriteArma.height);
@@ -256,7 +258,7 @@ class Jugador {
       armaDeFuego = TIPO_SIN_ARMA_FUEGO;
     }
 
-    return new Proyectil(xSalidaRafaga, ySalidaRafaga, direccionRafaga, danioProyectil);
+    return new Proyectil(xSalidaRafaga, ySalidaRafaga, direccionRafaga, danioRafaga);
   }
 
   void actualizarRafaga() {

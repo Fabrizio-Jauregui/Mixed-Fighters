@@ -11,6 +11,7 @@ final int duracionPoseDisparo = 500;
 final int cantidadBalasRafagaFusil = 5;
 final int intervaloBalasRafagaFusil = duracionPoseDisparo / cantidadBalasRafagaFusil;
 final int danioProyectil = 10;
+final int danioBalaFusil = danioProyectil / 2;
 final float tamanoBala = 6;
 final float velocidadBala = 18;
 
