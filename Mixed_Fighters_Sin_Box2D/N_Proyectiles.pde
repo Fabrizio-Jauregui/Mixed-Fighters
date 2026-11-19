@@ -3,12 +3,14 @@ class Proyectil {
   float x;
   float y;
   float direccion;
+  int danio;
   boolean activo = true;
 
-  Proyectil(float x, float y, float direccion) {
+  Proyectil(float x, float y, float direccion, int danio) {
     this.x = x;
     this.y = y;
     this.direccion = direccion;
+    this.danio = danio;
   }
 
   void actualizar() {
@@ -32,6 +34,28 @@ class Proyectil {
         return;
       }
     }
+
+    if (tocaJugador(jugador1)) {
+      jugador1.recibirDanio(danio);
+      activo = false;
+      return;
+    }
+
+    if (tocaJugador(jugador2)) {
+      jugador2.recibirDanio(danio);
+      activo = false;
+    }
+  }
+
+  boolean tocaJugador(Jugador jugador) {
+    boolean tocaX =
+      x + tamanoBala/2 > jugador.pos.x - jugador.ancho/2 &&
+      x - tamanoBala/2 < jugador.pos.x + jugador.ancho/2;
+    boolean tocaY =
+      y + tamanoBala/2 > jugador.pos.y - jugador.alto/2 &&
+      y - tamanoBala/2 < jugador.pos.y + jugador.alto/2;
+
+    return tocaX && tocaY;
   }
 
   void dibujar() {

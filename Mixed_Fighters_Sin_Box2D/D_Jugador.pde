@@ -227,7 +227,7 @@ class Jugador {
     mirandoDerechaAlDisparar = mirandoDerecha;
     municionArma--;
 
-    Proyectil proyectil = new Proyectil(salidaX, salidaY, direccion);
+    Proyectil proyectil = new Proyectil(salidaX, salidaY, direccion, danioProyectil);
     if (municionArma == 0) {
       armaDeFuego = TIPO_SIN_ARMA_FUEGO;
     }
