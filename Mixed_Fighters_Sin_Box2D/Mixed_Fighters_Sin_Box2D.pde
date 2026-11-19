@@ -12,7 +12,7 @@ void setup() {
   //Escalera Marinera
   escaleraMarinera = new EscaleraMarinera(
     width * 0.336, height * 0.23,
-    width * 0.358, height * 0.624
+    width * 0.358, height * 0.620
     );
 
   spritesArmas = new PImage[] {

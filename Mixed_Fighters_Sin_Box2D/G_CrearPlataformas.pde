@@ -1,5 +1,5 @@
 void crearPlataformas() {
-  plataformas.add(new Plataforma(width * 0.2265, height * 0.254, width * 0.210, height * 0.025)); //piso arriba a la izquierda(al lado del tp)
+  plataformas.add(new Plataforma(width * 0.2265, height * 0.254, width * 0.207, height * 0.025)); //piso arriba a la izquierda(al lado del tp)
   plataformas.add(new Plataforma(width * 0.4737, height * 0.209, width * 0.209, height * 0.00875));//cartel "superfighters"
   plataformas.add(new Plataforma(width * 0.217, height * 0.8133, width * 0.23, height * 0.025));// piso abajo a la izquierda(al lado del tp)
   plataformas.add(new Plataforma(width * 0.4898, height * 0.562, width * 0.1131, height * 0.04625));//arriba, derecha de lamp 1
