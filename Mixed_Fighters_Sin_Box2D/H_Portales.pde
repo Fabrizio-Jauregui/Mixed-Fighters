@@ -36,7 +36,7 @@ void actualizarTeletransporte(Jugador jugador, boolean moviendo) {
   }
 
   if (teletransportado && moviendo) {
-    jugador.invertirX = true;
+    jugador.invertirX = !jugador.invertirX;
   }
 
   if (teletransportado) {
