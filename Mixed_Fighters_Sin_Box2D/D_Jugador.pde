@@ -44,6 +44,11 @@ class Jugador {
   PImage spriteDisparoActual;
   int inicioPoseDisparo = 0;
   boolean mirandoDerechaAlDisparar = true;
+  int balasRafagaPendientes = 0;
+  int momentoProximaBalaRafaga = 0;
+  float xSalidaRafaga;
+  float ySalidaRafaga;
+  float direccionRafaga = 1;
 
   Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
@@ -105,6 +110,8 @@ class Jugador {
     spriteDisparoActual = null;
     inicioPoseDisparo = 0;
     mirandoDerechaAlDisparar = true;
+    balasRafagaPendientes = 0;
+    momentoProximaBalaRafaga = 0;
     armaCuerpoACuerpo = TIPO_PUNOS;
     armaDeFuego = TIPO_PISTOLA;
   }
@@ -117,7 +124,7 @@ class Jugador {
   }
 
   void golpear() {
-    if (!enSuelo || escalando || atacando) {
+    if (!enSuelo || escalando || atacando || disparoActivo()) {
       return;
     }
 
@@ -208,31 +215,67 @@ class Jugador {
   }
 
   Proyectil disparar() {
-    if (escalando || armaDeFuego == TIPO_SIN_ARMA_FUEGO || municionArma <= 0) {
+    if (atacando || disparoActivo() || escalando || armaDeFuego == TIPO_SIN_ARMA_FUEGO || municionArma <= 0) {
       return null;
     }
 
-    PImage spriteArma = armaDeFuego == TIPO_PISTOLA ? spriteDisparoPistola : spriteDisparoFusil;
+    boolean usandoFusil = armaDeFuego == TIPO_FUSIL;
+    PImage spriteArma = usandoFusil ? spriteDisparoFusil : spriteDisparoPistola;
     float direccion = mirandoDerecha ? 1 : -1;
     float anchoSpriteJugador = ancho;
     if (spriteArma != null) {
       anchoSpriteJugador = spriteArma.width * (alto / spriteArma.height);
     }
 
-    float salidaX = pos.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
-    float salidaY = pos.y - alto * 0.05;
+    xSalidaRafaga = pos.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
+    ySalidaRafaga = pos.y - alto * 0.05;
+    direccionRafaga = direccion;
 
     spriteDisparoActual = spriteArma;
     inicioPoseDisparo = millis();
     mirandoDerechaAlDisparar = mirandoDerecha;
-    municionArma--;
 
-    Proyectil proyectil = new Proyectil(salidaX, salidaY, direccion, danioProyectil);
+    if (usandoFusil) {
+      balasRafagaPendientes = min(cantidadBalasRafagaFusil - 1, municionArma - 1);
+      momentoProximaBalaRafaga = millis() + intervaloBalasRafagaFusil;
+    } else {
+      balasRafagaPendientes = 0;
+    }
+
+    return crearBalaRafaga();
+  }
+
+  Proyectil crearBalaRafaga() {
+    if (municionArma <= 0) {
+      armaDeFuego = TIPO_SIN_ARMA_FUEGO;
+      return null;
+    }
+
+    municionArma--;
     if (municionArma == 0) {
       armaDeFuego = TIPO_SIN_ARMA_FUEGO;
     }
 
-    return proyectil;
+    return new Proyectil(xSalidaRafaga, ySalidaRafaga, direccionRafaga, danioProyectil);
+  }
+
+  void actualizarRafaga() {
+    if (balasRafagaPendientes <= 0 || millis() < momentoProximaBalaRafaga) {
+      return;
+    }
+
+    Proyectil bala = crearBalaRafaga();
+    if (bala != null) {
+      proyectiles.add(bala);
+    }
+
+    balasRafagaPendientes--;
+    momentoProximaBalaRafaga += intervaloBalasRafagaFusil;
+  }
+
+  boolean disparoActivo() {
+    return spriteDisparoActual != null &&
+      millis() - inicioPoseDisparo < duracionPoseDisparo;
   }
 
   void actualizarRegeneracion() {

@@ -33,6 +33,9 @@ void actualizarPartida() {
     actualizarTeletransporte(jugador1, isA != isD);
     actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
 
+    jugador1.actualizarRafaga();
+    jugador2.actualizarRafaga();
+
     jugador1.dibujar();
     jugador2.dibujar();
     actualizarProyectiles();
