@@ -34,7 +34,7 @@ class MotorFisico {
     }
 
     // 1. Movimiento horizontal; durante el ataque o el retroceso no hay control lateral.
-    if (jugador.atacando || retrocesoActivo) {
+    if (jugador.atacando || retrocesoActivo || jugador.disparoActivo()) {
       jugador.vel.x = 0;
     } else if (izq && !der) {
       jugador.vel.x = jugador.invertirX ? jugador.velocidad : -jugador.velocidad;
