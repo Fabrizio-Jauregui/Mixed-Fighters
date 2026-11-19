@@ -24,6 +24,7 @@ Las pestañas `.pde` se mantienen juntas en la carpeta del sketch porque Process
 | `E_Plataforma.pde` | Plataforma y lógica de teletransporte existente. |
 | `F_MotorFisico.pde` | Movimiento, gravedad y resolución de colisiones. |
 | `G_CrearPlataformas.pde` | Ubicaciones y dimensiones de las plataformas del mapa. |
+| `O_Historial.pde` | Guarda resultados y consulta el marcador local mediante PHP y XAMPP. |
 
 Para agregar una mecánica, empieza en el grupo responsable de esa mecánica; deja en el archivo principal solo la coordinación general. Para sumar una entidad, crea una pestaña `.pde` con su clase y agrega su creación o actualización al flujo del juego donde corresponda.
 
@@ -50,3 +51,7 @@ Las mecánicas de combate, armas, granadas, agacharse y habilidades descritas or
 
 - Processing 4 / Java mode.
 - Física y colisiones implementadas dentro del proyecto.
+
+## Historial local con XAMPP
+
+Cada partida se registra en MariaDB y el menú muestra las victorias acumuladas de los dos jugadores. Para instalarlo en una PC, sigue [INICIO_XAMPP.md](INICIO_XAMPP.md). La instalación usa Apache/PHP como puente local entre Processing y MariaDB.

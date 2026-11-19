@@ -26,6 +26,8 @@ El juego final incluye:
 
 Quedan fuera: bots, juego online, mapas adicionales, granadas, vidrios rompibles, patadas, derribos, invulnerabilidad de recuperación, pausa, reinicio automático, revancha, rondas adicionales, música, efectos de sonido, puntuación y cualquier función adicional no aprobada.
 
+Excepción aprobada por el usuario: el historial local de resultados en MariaDB (victorias de Jugador 1 y Jugador 2, con empates registrados) se muestra en el menú `estado == 0`. Esta autorización no incluye otras estadísticas ni sincronización entre computadoras.
+
 La imagen Rooftops disponible mide 1920 × 1080. El juego se ejecuta a pantalla completa y la cámara permanece fija. Usa geometrías de colisión explícitas en código; no extraigas colisiones automáticamente de los píxeles. Las colisiones ya creadas son una base aproximada que se debe revisar y ajustar, no rehacer desde cero. Conserva las coordenadas actuales salvo que una discrepancia con el mapa o una petición del usuario justifique cambiarlas. El fondo se ajusta a pantalla completa.
 
 Utiliza Processing nativo, sin Box2D ni bibliotecas externas. La versión menor de Processing no es un impedimento para comenzar; trabaja con la disponible y verifica compatibilidad cuando corresponda. No introduzcas dependencias.

@@ -1,14 +1,24 @@
 // Presentación del menú inicial.
 void dibujarInicio() {
   if (estado == 0) {
+    if (!marcadorConsultado) {
+      cargarMarcador();
+      marcadorConsultado = true;
+    }
+
     textAlign(CENTER, CENTER);
     image(panCarga, 0, 0);
     textSize(30);
     fill(0, 0, 255);
     text("Toque enter para empezar", width/2, height * 0.80);
+    textSize(22);
+    fill(255);
+    text("Victorias: Jugador 1: " + victoriasJugador1 +
+      "  |  Jugador 2: " + victoriasJugador2, width/2, height * 0.87);
 
     if (enter) {
       estado = 1;
+      resultadoGuardado = false;
       inicioArmas = millis();
       proyectiles.clear();
       for (Armas punto : puntosArmas) {
@@ -62,6 +72,12 @@ void actualizarPartida() {
       jugador2.pos.y <= 0 || jugador2.pos.y >= height;
 
     if (perdio1 || perdio2) {
+      if (!resultadoGuardado) {
+        resultadoGuardado = true;
+        String resultado = perdio1 && perdio2 ? "EMPATE" :
+          perdio1 ? "JUGADOR_2" : "JUGADOR_1";
+        guardarResultado(resultado);
+      }
       estado = 3;
     }
 
@@ -93,6 +109,7 @@ void dibujarFin() {
 
     if (enter) {
       estado = 0;
+      marcadorConsultado = false;
       perdio1 = false;
       perdio2 = false;
       isN = false;
