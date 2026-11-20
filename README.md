@@ -24,7 +24,7 @@ Las pestañas `.pde` se mantienen juntas en la carpeta del sketch porque Process
 | `E_Plataforma.pde` | Plataforma y lógica de teletransporte existente. |
 | `F_MotorFisico.pde` | Movimiento, gravedad y resolución de colisiones. |
 | `G_CrearPlataformas.pde` | Ubicaciones y dimensiones de las plataformas del mapa. |
-| `O_Historial.pde` | Guarda resultados y consulta el marcador local mediante PHP y XAMPP. |
+| `O_Historial.pde` | Guarda resultados y consulta el marcador local directamente en MariaDB con JDBC. |
 
 Para agregar una mecánica, empieza en el grupo responsable de esa mecánica; deja en el archivo principal solo la coordinación general. Para sumar una entidad, crea una pestaña `.pde` con su clase y agrega su creación o actualización al flujo del juego donde corresponda.
 
@@ -54,4 +54,4 @@ Las mecánicas de combate, armas, granadas, agacharse y habilidades descritas or
 
 ## Historial local con XAMPP
 
-Cada partida se registra en MariaDB y el menú muestra las victorias acumuladas de los dos jugadores. Para instalarlo en una PC, sigue [INICIO_XAMPP.md](INICIO_XAMPP.md). La instalación usa Apache/PHP como puente local entre Processing y MariaDB.
+El juego se conecta directamente desde Processing a MariaDB con JDBC. No necesita Apache ni PHP. Enciende **MySQL** en XAMPP y ejecuta el sketch; Processing crea la base y la tabla si hacen falta. La configuracion (usuario, contrasena y puerto) esta en Mixed_Fighters_Sin_Box2D/O_Historial.pde. Consulta [INICIO_XAMPP.md](INICIO_XAMPP.md).
