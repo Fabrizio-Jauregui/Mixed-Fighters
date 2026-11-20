@@ -25,6 +25,11 @@ void keyPressed() {
     solicitarDisparo(jugador2, flechaIzquierda, flechaDerecha);
   }
 
+  if ((key == 'c' || key == 'C') && !teclaCProcesada) {
+    isC = true;
+    teclaCProcesada = true;
+  }
+
   if (keyCode == ENTER) enter = true;
 
   if ((key == 'w' || key == 'W') && !teclaW) {
@@ -77,6 +82,11 @@ void keyReleased() {
   if (keyCode == DOWN) flechaAbajo = false;
   if (key == 'm' || key == 'M') teclaM = false;
   if (key == '2') tecla2 = false;
+
+  if (key == 'c' || key == 'C') {
+    isC = false;
+    teclaCProcesada = false;
+  }
 
 
   if (keyCode == ENTER) enter = false;

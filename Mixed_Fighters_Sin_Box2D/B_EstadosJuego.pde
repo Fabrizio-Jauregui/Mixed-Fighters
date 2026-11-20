@@ -24,7 +24,50 @@ void dibujarInicio() {
       for (Armas punto : puntosArmas) {
         punto.reiniciar();
       }
+    } else if (isC) {
+      estadoJuego = 4;
+      isC = false;
     }
+  }
+}
+
+// Pantalla de controles: Enter regresa al menú sin iniciar la partida.
+void ensenarControles() {
+  if (estadoJuego != 4) {
+    return;
+  }
+
+  if (controls != null) {
+    image(controls, 0, 0);
+  } else {
+    background(0);
+  }
+
+  // La imagen decorativa tenía los jugadores intercambiados; este panel muestra los controles reales.
+  rectMode(CENTER);
+  stroke(255, 145, 0);
+  strokeWeight(3);
+  fill(0);
+  rect(width/2, height/2, width * 0.46, height * 0.72);
+
+  textAlign(CENTER, CENTER);
+  fill(255);
+  textSize(height * 0.032);
+  String instrucciones =
+    "JUGADOR 1\n" +
+    "A / D: mover   W: saltar   S: agacharse\n" +
+    "1: golpear   2: disparar\n\n" +
+    "JUGADOR 2\n" +
+    "← / →: mover   ↑: saltar   ↓: agacharse\n" +
+    "N: golpear   M: disparar";
+  text(instrucciones, width/2, height/2);
+
+  textSize(height * 0.026);
+  text("Toque Enter para volver al inicio", width/2, height * 0.88);
+
+  if (enter) {
+    estadoJuego = 0;
+    enter = false;
   }
 }
 

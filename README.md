@@ -52,6 +52,7 @@ Processing combina las pestañas `.pde` del sketch al compilar. Las funciones pu
 
 - Jugador 1: `A`/`D` mueve, `W` salta, `S` agacha, `1` golpea y `2` dispara.
 - Jugador 2: flechas izquierda/derecha mueven, arriba salta, abajo agacha, `N` golpea y `M` dispara.
+- `C` abre la pantalla de controles; `Enter` vuelve al menú inicial desde esa pantalla.
 - En la escalera central, arriba y abajo permiten subir y bajar.
 - `Enter` comienza desde el menú y vuelve al menú desde el resultado.
 - `P` muestra u oculta las plataformas de depuración; `H` muestra u oculta las hitboxes.

@@ -3,6 +3,7 @@ PImage panCarga;
 PImage mapa;
 PImage hudJugador1;
 PImage hudJugador2;
+PImage controls;
 
 ArrayList<Plataforma> plataformas;
 ArrayList<Armas> puntosArmas;
@@ -19,6 +20,8 @@ int inicioArmas = 0;
 final int retrasoAparicionArmas = 10000;
 
 boolean enter = false;
+boolean isC = false;
+boolean teclaCProcesada = false;
 boolean teclaA = false;
 boolean teclaD = false;
 boolean teclaW = false;
@@ -46,10 +49,14 @@ void setup() {
   fullScreen();
   mapa = loadImage("mapas/Rooftops.png");
   panCarga = loadImage("mapas/carga.png");
+  controls = loadImage("mapas/controls.jpg");
   hudJugador1 = loadImage("hud/inventario P1 con dos armas.png");
   hudJugador2 = loadImage("hud/inventario P2 con dos armas.png");
   panCarga.resize(width, height);
   mapa.resize(width, height);
+  if (controls != null) {
+    controls.resize(width, height);
+  }
   plataformas = new ArrayList<Plataforma>();
   crearPlataformas();
 
@@ -83,6 +90,7 @@ void setup() {
 void draw() {
   background(0);
   dibujarInicio();
+  ensenarControles();
   actualizarPartida();
   dibujarFin();
 }
