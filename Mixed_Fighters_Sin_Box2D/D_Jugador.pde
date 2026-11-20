@@ -30,18 +30,8 @@ class Jugador {
   color c;
   int armaCuerpoACuerpo = TIPO_PUNOS;
   int armaDeFuego = TIPO_PISTOLA;
-  PImage spriteQuieto;
-  PImage[] spritesCaminar;
-  PImage[] spritesGolpe;
-  PImage[] spritesGolpeHacha;
-  int cuadroCaminar = 0;
-  int ultimoCambioSprite = 0;
+  DibujoJugador dibujo = new DibujoJugador();
   int municionArma = capacidadMunicionPistola;
-  PImage spriteDisparoPistola;
-  PImage spriteDisparoFusil;
-  PImage spriteDisparoActual;
-  int inicioPoseDisparo = 0;
-  boolean mirandoDerechaAlDisparar = true;
 
   // Constructor y carga de sprites
   Jugador(float x, float y, float ancho, float alto, color c) {
@@ -55,26 +45,7 @@ class Jugador {
   }
 
   void cargarSprites(String carpeta) {
-    spriteQuieto = loadImage("sprites/" + carpeta + "/quieto_1.png");
-    spritesCaminar = new PImage[4];
-
-    for (int i = 0; i < spritesCaminar.length; i++) {
-      spritesCaminar[i] = loadImage("sprites/" + carpeta + "/caminar_" + (i + 1) + ".png");
-    }
-
-    spritesGolpe = new PImage[] {
-      loadImage("sprites/" + carpeta + "/ataque_fisico_2.png"),
-      loadImage("sprites/" + carpeta + "/ataque_fisico_3.png"),
-      loadImage("sprites/" + carpeta + "/ataque_fisico_5.png"),
-      loadImage("sprites/" + carpeta + "/ataque_fisico_6.png")
-    };
-    spritesGolpeHacha = new PImage[] {
-      loadImage("sprites/" + carpeta + "/ataque_arma_11.png"),
-      loadImage("sprites/" + carpeta + "/ataque_arma_14.png"),
-      loadImage("sprites/" + carpeta + "/ataque_arma_15.png")
-    };
-    spriteDisparoPistola = loadImage("sprites/" + carpeta + "/ataque_arma_25.png");
-    spriteDisparoFusil = loadImage("sprites/" + carpeta + "/ataque_arma_29.png");
+    dibujo.cargarSprites(carpeta);
   }
 
   // Movimiento
@@ -97,11 +68,8 @@ class Jugador {
     retrocesoAplicadoX = 0;
     invertirX = false;
     mirandoDerecha = true;
-    cuadroCaminar = 0;
     municionArma = capacidadMunicionPistola;
-    spriteDisparoActual = null;
-    inicioPoseDisparo = 0;
-    mirandoDerechaAlDisparar = true;
+    dibujo.reiniciar();
     armaCuerpoACuerpo = TIPO_PUNOS;
     armaDeFuego = TIPO_PISTOLA;
   }
@@ -201,20 +169,14 @@ class Jugador {
     }
 
     boolean usandoFusil = armaDeFuego == TIPO_FUSIL;
-    PImage spriteArma = usandoFusil ? spriteDisparoFusil : spriteDisparoPistola;
     float direccion = mirandoDerecha ? 1 : -1;
     int danio = usandoFusil ? danioBalaFusil : danioProyectil;
-    float anchoSpriteJugador = ancho;
-    if (spriteArma != null) {
-      anchoSpriteJugador = spriteArma.width * (alto / spriteArma.height);
-    }
+    float anchoSpriteJugador = dibujo.anchoSpriteDisparo(armaDeFuego, alto, ancho);
 
     float xSalida = posicion.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
     float ySalida = posicion.y - alto * 0.05;
 
-    spriteDisparoActual = spriteArma;
-    inicioPoseDisparo = millis();
-    mirandoDerechaAlDisparar = mirandoDerecha;
+    dibujo.iniciarPoseDisparo(armaDeFuego, mirandoDerecha);
 
     municionArma--;
     if (municionArma == 0) {
@@ -225,7 +187,7 @@ class Jugador {
   }
 
   boolean disparoActivo() {
-    return spriteDisparoActual != null && millis() - inicioPoseDisparo < duracionPoseDisparo;
+    return dibujo.poseDisparoActiva();
   }
 
   void actualizarSeguimientoCaida() {
@@ -302,73 +264,7 @@ class Jugador {
   }
 
   void dibujar() {
-    if (atacando) {
-      cuadroGolpe = (millis() - inicioAnimacionGolpe) / 100;
-      if (cuadroGolpe >= spritesGolpe.length) {
-        atacando = false;
-        cuadroGolpe = 0;
-      }
-    }
-
-    if (!atacando) {
-      if (velocidadActual.x > 0) {
-        mirandoDerecha = true;
-      } else if (velocidadActual.x < 0) {
-        mirandoDerecha = false;
-      }
-    }
-
-    boolean caminando = abs(velocidadActual.x) > 0.1;
-    boolean poseDisparoActiva = spriteDisparoActual != null &&
-      millis() - inicioPoseDisparo < duracionPoseDisparo;
-    int armaAtaqueActual = atacando ? armaCuerpoACuerpoAlAtacar : armaCuerpoACuerpo;
-    boolean usandoHacha = armaAtaqueActual == TIPO_HACHA;
-    PImage[] spritesAtaqueActual = usandoHacha ? spritesGolpeHacha : spritesGolpe;
-    PImage sprite = spriteQuieto;
-
-    if (poseDisparoActiva) {
-      sprite = spriteDisparoActual;
-    } else if (atacando && spritesAtaqueActual != null) {
-      int cuadroAtaque = min(cuadroGolpe, spritesAtaqueActual.length - 1);
-      sprite = spritesAtaqueActual[cuadroAtaque];
-      if (sprite == null) {
-        sprite = spriteQuieto;
-      }
-    } else if (caminando && spritesCaminar != null) {
-      if (millis() - ultimoCambioSprite >= 130) {
-        cuadroCaminar = (cuadroCaminar + 1) % spritesCaminar.length;
-        ultimoCambioSprite = millis();
-      }
-      sprite = spritesCaminar[cuadroCaminar];
-    } else {
-      cuadroCaminar = 0;
-      ultimoCambioSprite = millis();
-    }
-
-    if (sprite == null) {
-      rectMode(CENTER);
-      noStroke();
-      fill(c);
-      rect(posicion.x, posicion.y, ancho, alto);
-      return;
-    }
-
-    float altoSprite = alto;
-    float anchoSprite = sprite.width * (altoSprite / sprite.height);
-    float xSprite = posicion.x - anchoSprite/2;
-    float ySprite = posicion.y + alto/2 - altoSprite;
-    boolean dibujarDerecha = poseDisparoActiva ? mirandoDerechaAlDisparar :
-      (atacando ? mirandoDerechaAlAtacar : mirandoDerecha);
-
-    pushMatrix();
-    if (!dibujarDerecha) {
-      translate(posicion.x, 0);
-      scale(-1, 1);
-      image(sprite, -anchoSprite/2, ySprite, anchoSprite, altoSprite);
-    } else {
-      image(sprite, xSprite, ySprite, anchoSprite, altoSprite);
-    }
-    popMatrix();
+    dibujo.dibujar(this);
   }
   void dibujarHitbox() {
     rectMode(CENTER);

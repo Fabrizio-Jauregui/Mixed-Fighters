@@ -17,12 +17,13 @@ Sigue el flujo del programa desde el punto de entrada y luego elige una mecánic
 2. `Mixed_Fighters_Sin_Box2D.pde`: revisa las variables compartidas al inicio del archivo, antes de `setup()`.
 3. `B_EstadosJuego.pde`: coordina menú, partida y resultado. Aquí se ve el orden de actualización de cada cuadro.
 4. `C_Controles.pde`: convierte pulsaciones y liberaciones en acciones y estados de teclado.
-5. `D_Jugador.pde`: datos y acciones del personaje, incluyendo movimiento, combate, armas, vida y dibujo.
-6. `F_MotorFisico.pde`, `E_Plataforma.pde` y `G_CrearPlataformas.pde`: movimiento, colisiones y geometrías del escenario.
-7. `L_Combate.pde`: parámetros y resolución de golpes cuerpo a cuerpo.
-8. `M_Inventario.pde`, `J_Armas.pde`, `N_Proyectiles.pde` y `K_Hud.pde`: tipos de armas, puntos de aparición, balas e indicadores.
-9. `K_EscaleraMarinera.pde` y `H_Portales.pde`: zonas de escalada y teletransporte.
-10. `O_Historial.pde`: consulta y guarda resultados en MariaDB local.
+5. `D_Jugador.pde`: datos y reglas del personaje, incluyendo movimiento, combate, armas y vida.
+6. `D_DibujoJugador.pde`: carga los sprites y dibuja las animaciones del jugador.
+7. `F_MotorFisico.pde`, `E_Plataforma.pde` y `G_CrearPlataformas.pde`: movimiento, colisiones y geometrías del escenario.
+8. `L_Combate.pde`: parámetros y resolución de golpes cuerpo a cuerpo.
+9. `M_Inventario.pde`, `J_Armas.pde`, `N_Proyectiles.pde` y `K_Hud.pde`: tipos de armas, puntos de aparición, balas e indicadores.
+10. `K_EscaleraMarinera.pde` y `H_Portales.pde`: zonas de escalada y teletransporte.
+11. `O_Historial.pde`: consulta y guarda resultados en MariaDB local.
 
 Para entender una acción, síguela por todas las pestañas. Por ejemplo, un disparo empieza en `C_Controles.pde`, pasa por `Jugador.disparar()` y continúa en `N_Proyectiles.pde`.
 
@@ -34,6 +35,7 @@ Para entender una acción, síguela por todas las pestañas. Por ejemplo, un dis
 | `B_EstadosJuego.pde` | Menú, actualización de partida y resultado. |
 | `C_Controles.pde` | Entrada del teclado y solicitud de acciones. |
 | `D_Jugador.pde` | Estado y comportamiento de cada jugador. |
+| `D_DibujoJugador.pde` | Carga los sprites y dibuja al jugador según sus estados. |
 | `E_Plataforma.pde` | Datos y dibujo de una plataforma. |
 | `F_MotorFisico.pde` | Gravedad, movimiento, escalada y colisiones. |
 | `G_CrearPlataformas.pde` | Geometrías sólidas del mapa. |
