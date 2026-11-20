@@ -1,8 +1,8 @@
 class Jugador {
   // Datos
-  PVector pos;
-  PVector vel;
-  PVector acel;
+  PVector posicion;
+  PVector velocidadActual;
+  PVector aceleracion;
   
   int vida = vidaInicial;
   boolean caidaEnCurso = false;
@@ -45,9 +45,9 @@ class Jugador {
 
   // Constructor y carga de sprites
   Jugador(float x, float y, float ancho, float alto, color c) {
-    pos = new PVector(x, y);
-    vel = new PVector(0, 0);
-    acel = new PVector(0, 0);
+    posicion = new PVector(x, y);
+    velocidadActual = new PVector(0, 0);
+    aceleracion = new PVector(0, 0);
 
     this.ancho = ancho;
     this.alto = alto;
@@ -79,9 +79,9 @@ class Jugador {
 
   // Movimiento
   void reiniciar(float x, float y) {
-    pos.set(x, y);
-    vel.set(0, 0);
-    acel.set(0, 0);
+    posicion.set(x, y);
+    velocidadActual.set(0, 0);
+    aceleracion.set(0, 0);
     enSuelo = false;
     escalando = false;
     atacando = false;
@@ -108,7 +108,7 @@ class Jugador {
 
   void saltar() {
     if (enSuelo && !escalando && !atacando && !disparoActivo()) {
-      vel.y = -fuerzaSalto;
+      velocidadActual.y = -fuerzaSalto;
       enSuelo = false;
     }
   }
@@ -125,8 +125,8 @@ class Jugador {
     golpeYaImpacto = false;
     cuadroGolpe = 0;
     inicioAnimacionGolpe = millis();
-    vel.x = 0;
-    acel.set(0, 0);
+    velocidadActual.x = 0;
+    aceleracion.set(0, 0);
   }
 
   boolean puedeGolpear(Jugador objetivo) {
@@ -137,12 +137,12 @@ class Jugador {
     float anchoGolpe = anchoHitboxGolpeActual();
     float altoGolpe = alto * altoProporcionHitboxGolpe;
     float direccion = mirandoDerechaAlAtacar ? 1 : -1;
-    float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
+    float centroGolpeX = posicion.x + direccion * (ancho/2 + anchoGolpe/2);
 
-    boolean tocaX = centroGolpeX + anchoGolpe/2 > objetivo.pos.x - objetivo.ancho/2 && centroGolpeX - anchoGolpe/2 < objetivo.pos.x + objetivo.ancho/2;
-    boolean tocaY = pos.y + altoGolpe/2 > objetivo.pos.y - objetivo.alto/2 && pos.y - altoGolpe/2 < objetivo.pos.y + objetivo.alto/2;
+    boolean seSuperponeHorizontalmente = centroGolpeX + anchoGolpe/2 > objetivo.posicion.x - objetivo.ancho/2 && centroGolpeX - anchoGolpe/2 < objetivo.posicion.x + objetivo.ancho/2;
+    boolean seSuperponeVerticalmente = posicion.y + altoGolpe/2 > objetivo.posicion.y - objetivo.alto/2 && posicion.y - altoGolpe/2 < objetivo.posicion.y + objetivo.alto/2;
 
-    return tocaX && tocaY;
+    return seSuperponeHorizontalmente && seSuperponeVerticalmente;
   }
 
   float anchoHitboxGolpeActual() {
@@ -209,8 +209,8 @@ class Jugador {
       anchoSpriteJugador = spriteArma.width * (alto / spriteArma.height);
     }
 
-    float xSalida = pos.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
-    float ySalida = pos.y - alto * 0.05;
+    float xSalida = posicion.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
+    float ySalida = posicion.y - alto * 0.05;
 
     spriteDisparoActual = spriteArma;
     inicioPoseDisparo = millis();
@@ -225,8 +225,7 @@ class Jugador {
   }
 
   boolean disparoActivo() {
-    return spriteDisparoActual != null &&
-      millis() - inicioPoseDisparo < duracionPoseDisparo;
+    return spriteDisparoActual != null && millis() - inicioPoseDisparo < duracionPoseDisparo;
   }
 
   void actualizarSeguimientoCaida() {
@@ -237,7 +236,7 @@ class Jugador {
 
     if (enSuelo) {
       if (caidaEnCurso) {
-        float distanciaCaida = pos.y - alturaMasAltaCaida;
+        float distanciaCaida = posicion.y - alturaMasAltaCaida;
         float umbralCaida = alto * alturasJugadorParaDanioCaida;
 
         if (distanciaCaida > umbralCaida) {
@@ -249,9 +248,9 @@ class Jugador {
       cancelarSeguimientoCaida();
     } else if (!caidaEnCurso) {
       caidaEnCurso = true;
-      alturaMasAltaCaida = pos.y;
+      alturaMasAltaCaida = posicion.y;
     } else {
-      alturaMasAltaCaida = min(alturaMasAltaCaida, pos.y);
+      alturaMasAltaCaida = min(alturaMasAltaCaida, posicion.y);
     }
   }
 
@@ -292,13 +291,13 @@ class Jugador {
     float anchoGolpe = anchoHitboxGolpeActual();
     float altoGolpe = alto * altoProporcionHitboxGolpe;
     float direccion = mirandoDerechaAlAtacar ? 1 : -1;
-    float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
+    float centroGolpeX = posicion.x + direccion * (ancho/2 + anchoGolpe/2);
 
     rectMode(CENTER);
     noFill();
     stroke(255, 0, 0);
     strokeWeight(2);
-    rect(centroGolpeX, pos.y, anchoGolpe, altoGolpe);
+    rect(centroGolpeX, posicion.y, anchoGolpe, altoGolpe);
     noStroke();
   }
 
@@ -312,14 +311,14 @@ class Jugador {
     }
 
     if (!atacando) {
-      if (vel.x > 0) {
+      if (velocidadActual.x > 0) {
         mirandoDerecha = true;
-      } else if (vel.x < 0) {
+      } else if (velocidadActual.x < 0) {
         mirandoDerecha = false;
       }
     }
 
-    boolean caminando = abs(vel.x) > 0.1;
+    boolean caminando = abs(velocidadActual.x) > 0.1;
     boolean poseDisparoActiva = spriteDisparoActual != null &&
       millis() - inicioPoseDisparo < duracionPoseDisparo;
     int armaAtaqueActual = atacando ? armaCuerpoACuerpoAlAtacar : armaCuerpoACuerpo;
@@ -350,20 +349,20 @@ class Jugador {
       rectMode(CENTER);
       noStroke();
       fill(c);
-      rect(pos.x, pos.y, ancho, alto);
+      rect(posicion.x, posicion.y, ancho, alto);
       return;
     }
 
     float altoSprite = alto;
     float anchoSprite = sprite.width * (altoSprite / sprite.height);
-    float xSprite = pos.x - anchoSprite/2;
-    float ySprite = pos.y + alto/2 - altoSprite;
+    float xSprite = posicion.x - anchoSprite/2;
+    float ySprite = posicion.y + alto/2 - altoSprite;
     boolean dibujarDerecha = poseDisparoActiva ? mirandoDerechaAlDisparar :
       (atacando ? mirandoDerechaAlAtacar : mirandoDerecha);
 
     pushMatrix();
     if (!dibujarDerecha) {
-      translate(pos.x, 0);
+      translate(posicion.x, 0);
       scale(-1, 1);
       image(sprite, -anchoSprite/2, ySprite, anchoSprite, altoSprite);
     } else {
@@ -376,7 +375,7 @@ class Jugador {
     noFill();
     stroke(0, 255, 0);
     strokeWeight(2);
-    rect(pos.x, pos.y, ancho, alto);
+    rect(posicion.x, posicion.y, ancho, alto);
     noStroke();
   }
 }

@@ -1,57 +1,70 @@
 # Mixed Fighters
 
-Prototipo de juego local para dos jugadores, inspirado en *Superfighters*. Está desarrollado en Processing y usa un motor de colisiones propio.
+Juego local para dos personas, desarrollado en Processing. El sketch usa un motor físico propio y el mapa Rooftops.
 
 ## Abrir y ejecutar
 
-1. Instala Processing 4.
-2. Abre la carpeta `Mixed_Fighters_Sin_Box2D` desde Processing o abre directamente `Mixed_Fighters_Sin_Box2D.pde` dentro de esa carpeta.
-3. Pulsa **Run** para iniciar el sketch.
+1. Abre `Mixed_Fighters_Sin_Box2D` en Processing 4.
+2. Ejecuta `Mixed_Fighters_Sin_Box2D.pde` con **Run**.
 
-La carpeta del sketch y el archivo principal tienen el mismo nombre, como espera Processing. Los recursos que carga el juego están dentro de `Mixed_Fighters_Sin_Box2D/data`.
+El archivo principal y la carpeta del sketch tienen el mismo nombre. Los recursos gráficos están dentro de `Mixed_Fighters_Sin_Box2D/data`.
 
-## Mapa del código
+## Recorrido recomendado para aprender el código
 
-Las pestañas `.pde` se mantienen juntas en la carpeta del sketch porque Processing las combina al compilar. El prefijo con letra indica el orden sugerido para recorrerlas:
+Sigue el flujo del programa desde el punto de entrada y luego elige una mecánica:
 
-| Pestaña | Responsabilidad |
+1. `Mixed_Fighters_Sin_Box2D.pde`: prepara recursos y objetos en `setup()`; coordina cada cuadro desde `draw()`.
+2. `Mixed_Fighters_Sin_Box2D.pde`: revisa las variables compartidas al inicio del archivo, antes de `setup()`.
+3. `B_EstadosJuego.pde`: coordina menú, partida y resultado. Aquí se ve el orden de actualización de cada cuadro.
+4. `C_Controles.pde`: convierte pulsaciones y liberaciones en acciones y estados de teclado.
+5. `D_Jugador.pde`: datos y acciones del personaje, incluyendo movimiento, combate, armas, vida y dibujo.
+6. `F_MotorFisico.pde`, `E_Plataforma.pde` y `G_CrearPlataformas.pde`: movimiento, colisiones y geometrías del escenario.
+7. `L_Combate.pde`: parámetros y resolución de golpes cuerpo a cuerpo.
+8. `M_Inventario.pde`, `J_Armas.pde`, `N_Proyectiles.pde` y `K_Hud.pde`: tipos de armas, puntos de aparición, balas e indicadores.
+9. `K_EscaleraMarinera.pde` y `H_Portales.pde`: zonas de escalada y teletransporte.
+10. `O_Historial.pde`: consulta y guarda resultados en MariaDB local.
+
+Para entender una acción, síguela por todas las pestañas. Por ejemplo, un disparo empieza en `C_Controles.pde`, pasa por `Jugador.disparar()` y continúa en `N_Proyectiles.pde`.
+
+## Pestañas y responsabilidades
+
+| Archivo | Responsabilidad |
 | --- | --- |
-| `Mixed_Fighters_Sin_Box2D.pde` | Punto de entrada: inicializa el juego y coordina cada cuadro (`setup()` y `draw()`). |
-| `A_EstadoDelJuego.pde` | Estado compartido: jugadores, recursos, controles y opciones de depuración. |
-| `B_EstadosJuego.pde` | Dibujo y actualización del inicio, la partida y la pantalla de resultado. |
-| `C_Controles.pde` | Traduce eventos del teclado a acciones y estados de entrada. |
-| `D_Jugador.pde` | Datos y comportamiento propio del jugador, como saltar, reiniciar y dibujarse. |
-| `E_Plataforma.pde` | Plataforma y lógica de teletransporte existente. |
-| `F_MotorFisico.pde` | Movimiento, gravedad y resolución de colisiones. |
-| `G_CrearPlataformas.pde` | Ubicaciones y dimensiones de las plataformas del mapa. |
-| `O_Historial.pde` | Guarda resultados y consulta el marcador local directamente en MariaDB con JDBC. |
+| `Mixed_Fighters_Sin_Box2D.pde` | Punto de entrada y configuración inicial. |
+| `B_EstadosJuego.pde` | Menú, actualización de partida y resultado. |
+| `C_Controles.pde` | Entrada del teclado y solicitud de acciones. |
+| `D_Jugador.pde` | Estado y comportamiento de cada jugador. |
+| `E_Plataforma.pde` | Datos y dibujo de una plataforma. |
+| `F_MotorFisico.pde` | Gravedad, movimiento, escalada y colisiones. |
+| `G_CrearPlataformas.pde` | Geometrías sólidas del mapa. |
+| `H_Portales.pde` | Teletransportes entre accesos. |
+| `J_Armas.pde` | Puntos de aparición, ciclos y recogida de armas. |
+| `K_EscaleraMarinera.pde` | Zona de interacción de la escalera central. |
+| `K_Hud.pde` | Dibujo de vida, armas y munición. |
+| `L_Combate.pde` | Parámetros y resolución de golpes. |
+| `M_Inventario.pde` | Identificadores de armas y parámetros de munición/proyectil. |
+| `N_Proyectiles.pde` | Movimiento, colisión y eliminación de balas. |
+| `O_Historial.pde` | Persistencia local de resultados mediante JDBC. |
 
-Para agregar una mecánica, empieza en el grupo responsable de esa mecánica; deja en el archivo principal solo la coordinación general. Para sumar una entidad, crea una pestaña `.pde` con su clase y agrega su creación o actualización al flujo del juego donde corresponda.
+Processing combina las pestañas `.pde` del sketch al compilar. Las funciones pueden comunicarse entre pestañas porque forman parte del mismo programa.
+
+## Controles actuales
+
+- Jugador 1: `A`/`D` mueve, `W` salta, `S` agacha, `1` golpea y `2` dispara.
+- Jugador 2: flechas izquierda/derecha mueven, arriba salta, abajo agacha, `N` golpea y `M` dispara.
+- En la escalera central, arriba y abajo permiten subir y bajar.
+- `Enter` comienza desde el menú y vuelve al menú desde el resultado.
+- `P` muestra u oculta las plataformas de depuración; `H` muestra u oculta las hitboxes.
+
+El fusil dispara una bala por pulsación, igual que la pistola, y tiene más munición por cargador. La vida no se regenera. El HUD muestra la vida, las armas equipadas y la munición restante.
 
 ## Recursos
 
-- `Mixed_Fighters_Sin_Box2D/data/mapas/`: mapa y pantalla de carga usados por el sketch.
-- `Mixed_Fighters_Sin_Box2D/data/sprites/`: archivo de sprites del proyecto.
-- `docs/`: roadmap y notas de investigación.
-- `docs/libreria/`: JBox2D y Processing Box2D guardados como referencia. El juego actual no los utiliza; la física está implementada en `F_MotorFisico.pde`.
-
-## Controles implementados actualmente
-
-- `A` / `D`: movimiento horizontal del jugador 1.
-- `←` / `→`: movimiento horizontal del jugador 2.
-- `W`: salto del jugador 1.
-- `↑`: salto del jugador 2.
-- `Enter`: comenzar desde el menú o reiniciar desde el resultado.
-- `P`: mostrar u ocultar las plataformas dibujadas.
-- `H`: mostrar u ocultar las hitboxes de los jugadores.
-
-Las mecánicas de combate, armas, granadas, agacharse y habilidades descritas originalmente son ideas para el desarrollo futuro; todavía no están implementadas en el código actual.
-
-## Tecnologías
-
-- Processing 4 / Java mode.
-- Física y colisiones implementadas dentro del proyecto.
+- `Mixed_Fighters_Sin_Box2D/data/mapas/`: mapa y pantalla de carga.
+- `Mixed_Fighters_Sin_Box2D/data/sprites/`: sprites de personajes.
+- `Mixed_Fighters_Sin_Box2D/data/armas/`: imágenes de armas recogibles e iconos.
+- `Mixed_Fighters_Sin_Box2D/data/hud/`: bases gráficas del HUD.
 
 ## Historial local con XAMPP
 
-El juego se conecta directamente desde Processing a MariaDB con JDBC. No necesita Apache ni PHP. Enciende **MySQL** en XAMPP y ejecuta el sketch; Processing crea la base y la tabla si hacen falta. La configuracion (usuario, contrasena y puerto) esta en Mixed_Fighters_Sin_Box2D/O_Historial.pde. Consulta [INICIO_XAMPP.md](INICIO_XAMPP.md).
+El sketch se conecta directamente a MariaDB mediante JDBC; Apache y PHP no son necesarios. Enciende **MySQL** en XAMPP antes de ejecutar el juego. La primera ejecución crea la base `mixed_fighters` y la tabla `peleas`. La conexión local se configura en `Mixed_Fighters_Sin_Box2D/O_Historial.pde`; consulta [INICIO_XAMPP.md](INICIO_XAMPP.md).

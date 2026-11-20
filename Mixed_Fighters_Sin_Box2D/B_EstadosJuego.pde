@@ -1,6 +1,6 @@
 // Presentación del menú inicial.
 void dibujarInicio() {
-  if (estado == 0) {
+  if (estadoJuego == 0) {
     if (!marcadorConsultado) {
       cargarMarcador();
       marcadorConsultado = true;
@@ -17,7 +17,7 @@ void dibujarInicio() {
       "  |  Jugador 2: " + victoriasJugador2, width/2, height * 0.87);
 
     if (enter) {
-      estado = 1;
+      estadoJuego = 1;
       resultadoGuardado = false;
       inicioArmas = millis();
       proyectiles.clear();
@@ -30,24 +30,24 @@ void dibujarInicio() {
 
 // Actualización y dibujo de la partida activa.
 void actualizarPartida() {
-  if (estado == 1) {
+  if (estadoJuego == 1) {
     if (mapa != null) {
       image(mapa, 0, 0);
     } else {
       background(70);
     }
 
-    motorFisico.actualizar(jugador1, isA, isD, isW, isS, plataformas, escaleraMarinera);
-    motorFisico.actualizar(jugador2, isLEFT, isRIGHT, isUP, isDOWN, plataformas, escaleraMarinera);
+    motorFisico.actualizar(jugador1, teclaA, teclaD, teclaW, teclaS, plataformas, escaleraMarinera);
+    motorFisico.actualizar(jugador2, flechaIzquierda, flechaDerecha, flechaArriba, flechaAbajo, plataformas, escaleraMarinera);
 
-    actualizarTeletransporte(jugador1, isA != isD);
-    actualizarTeletransporte(jugador2, isLEFT != isRIGHT);
+    actualizarTeletransporte(jugador1, teclaA != teclaD);
+    actualizarTeletransporte(jugador2, flechaIzquierda != flechaDerecha);
 
     jugador1.dibujar();
     jugador2.dibujar();
     actualizarProyectiles();
     resolverGolpes();
-    actualizarPuntosArmas(jugador1, isS && !jugador1.escalando, jugador2, isDOWN && !jugador2.escalando);
+    actualizarPuntosArmas(jugador1, teclaS && !jugador1.escalando, jugador2, flechaAbajo && !jugador2.escalando);
 
     if (mostrarPlataformas) {
       for (Plataforma p : plataformas) {
@@ -63,8 +63,8 @@ void actualizarPartida() {
       jugador2.dibujarHitboxGolpe();
     }
 
-    perdio1 = jugador1.vida <= 0 || jugador1.pos.x <= 0 || jugador1.pos.x >= width ||jugador1.pos.y <= 0 || jugador1.pos.y >= height;
-    perdio2 = jugador2.vida <= 0 || jugador2.pos.x <= 0 || jugador2.pos.x >= width ||jugador2.pos.y <= 0 || jugador2.pos.y >= height;
+    perdio1 = jugador1.vida <= 0 || jugador1.posicion.x <= 0 || jugador1.posicion.x >= width ||jugador1.posicion.y <= 0 || jugador1.posicion.y >= height;
+    perdio2 = jugador2.vida <= 0 || jugador2.posicion.x <= 0 || jugador2.posicion.x >= width ||jugador2.posicion.y <= 0 || jugador2.posicion.y >= height;
 
     if (perdio1 || perdio2) {
       if (!resultadoGuardado) {
@@ -72,7 +72,7 @@ void actualizarPartida() {
         String resultado = perdio1 && perdio2 ? "EMPATE" : perdio1 ? "JUGADOR_2" : "JUGADOR_1";
         guardarResultado(resultado);
       }
-      estado = 3;
+      estadoJuego = 3;
     }
 
     dibujarHUD();
@@ -81,7 +81,7 @@ void actualizarPartida() {
 
 // Presentación del resultado y reinicio de la partida.
 void dibujarFin() {
-  if (estado == 3) {
+  if (estadoJuego == 3) {
     textAlign(CENTER, CENTER);
     textSize(30);
     fill(0);
@@ -97,27 +97,27 @@ void dibujarFin() {
     }
 
     if (enter) {
-      estado = 0;
+      estadoJuego = 0;
       marcadorConsultado = false;
       perdio1 = false;
       perdio2 = false;
-      isN = false;
-      is1 = false;
-      isM = false;
-      is2 = false;
+      teclaN = false;
+      tecla1 = false;
+      teclaM = false;
+      tecla2 = false;
       proyectiles.clear();
 
       jugador1.reiniciar(width/4, height/8);
       jugador2.reiniciar(width/2, height/2);
 
-      isA = false;
-      isD = false;
-      isW = false;
-      isS = false;
-      isLEFT = false;
-      isRIGHT = false;
-      isUP = false;
-      isDOWN = false;
+      teclaA = false;
+      teclaD = false;
+      teclaW = false;
+      teclaS = false;
+      flechaIzquierda = false;
+      flechaDerecha = false;
+      flechaArriba = false;
+      flechaAbajo = false;
       enter = false;
     }
   }

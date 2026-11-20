@@ -22,14 +22,14 @@ class Proyectil {
     }
 
     for (Plataforma plataforma : plataformas) {
-      boolean tocaX =
+      boolean seSuperponeHorizontalmente =
         x + tamanoBala/2 > plataforma.x - plataforma.ancho/2 &&
         x - tamanoBala/2 < plataforma.x + plataforma.ancho/2;
-      boolean tocaY =
+      boolean seSuperponeVerticalmente =
         y + tamanoBala/2 > plataforma.y - plataforma.alto/2 &&
         y - tamanoBala/2 < plataforma.y + plataforma.alto/2;
 
-      if (tocaX && tocaY) {
+      if (seSuperponeHorizontalmente && seSuperponeVerticalmente) {
         activo = false;
         return;
       }
@@ -48,14 +48,14 @@ class Proyectil {
   }
 
   boolean tocaJugador(Jugador jugador) {
-    boolean tocaX =
-      x + tamanoBala/2 > jugador.pos.x - jugador.ancho/2 &&
-      x - tamanoBala/2 < jugador.pos.x + jugador.ancho/2;
-    boolean tocaY =
-      y + tamanoBala/2 > jugador.pos.y - jugador.alto/2 &&
-      y - tamanoBala/2 < jugador.pos.y + jugador.alto/2;
+    boolean seSuperponeHorizontalmente =
+      x + tamanoBala/2 > jugador.posicion.x - jugador.ancho/2 &&
+      x - tamanoBala/2 < jugador.posicion.x + jugador.ancho/2;
+    boolean seSuperponeVerticalmente =
+      y + tamanoBala/2 > jugador.posicion.y - jugador.alto/2 &&
+      y - tamanoBala/2 < jugador.posicion.y + jugador.alto/2;
 
-    return tocaX && tocaY;
+    return seSuperponeHorizontalmente && seSuperponeVerticalmente;
   }
 
   void dibujar() {

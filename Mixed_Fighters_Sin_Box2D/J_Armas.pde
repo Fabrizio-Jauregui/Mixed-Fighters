@@ -5,7 +5,7 @@ class Armas {
   float alto;
   PImage[] spritesDisponibles;
   PImage spriteActual;
-  int tipoActual = -1;
+  int tipoArmaActual = -1;
   boolean disponible = true;
   int inicioCiclo = 0;
   boolean cicloIniciado = false;
@@ -31,25 +31,25 @@ class Armas {
   }
 
   void actualizar() {
-    int ahora = millis();
+    int tiempoActual = millis();
 
     if (!cicloIniciado) {
-      inicioCiclo = ahora;
+      inicioCiclo = tiempoActual;
       cicloIniciado = true;
       spriteActual = elegirSprite();
       return;
     }
 
-    if (ahora - inicioCiclo >= duracionCiclo) {
+    if (tiempoActual - inicioCiclo >= duracionCiclo) {
       disponible = true;
       spriteActual = elegirSprite();
-      inicioCiclo = ahora;
+      inicioCiclo = tiempoActual;
     }
   }
 
   PImage elegirSprite() {
-    tipoActual = (int) random(spritesDisponibles.length);
-    return spritesDisponibles[tipoActual];
+    tipoArmaActual = (int) random(spritesDisponibles.length);
+    return spritesDisponibles[tipoArmaActual];
   }
 
   boolean recogerSiCorresponde(Jugador jugador, boolean agachado) {
@@ -57,15 +57,15 @@ class Armas {
       return false;
     }
 
-    boolean tocaX =
-      jugador.pos.x + jugador.ancho/2 >= x - ancho/2 &&
-      jugador.pos.x - jugador.ancho/2 <= x + ancho/2;
+    boolean seSuperponeHorizontalmente =
+      jugador.posicion.x + jugador.ancho/2 >= x - ancho/2 &&
+      jugador.posicion.x - jugador.ancho/2 <= x + ancho/2;
 
-    boolean tocaY =
-      jugador.pos.y + jugador.alto/2 >= y - alto/2 &&
-      jugador.pos.y - jugador.alto/2 <= y + alto/2;
+    boolean seSuperponeVerticalmente =
+      jugador.posicion.y + jugador.alto/2 >= y - alto/2 &&
+      jugador.posicion.y - jugador.alto/2 <= y + alto/2;
 
-    if (tocaX && tocaY) {
+    if (seSuperponeHorizontalmente && seSuperponeVerticalmente) {
       disponible = false;
       return true;
     }
@@ -78,7 +78,7 @@ class Armas {
     inicioCiclo = 0;
     cicloIniciado = false;
     spriteActual = null;
-    tipoActual = -1;
+    tipoArmaActual = -1;
   }
 }
 
@@ -92,10 +92,10 @@ void actualizarPuntosArmas(Jugador jugador1, boolean agachado1, Jugador jugador2
     punto.dibujar(jugador1.alto);
 
     if (punto.recogerSiCorresponde(jugador1, agachado1)) {
-      jugador1.equiparArma(punto.tipoActual);
+      jugador1.equiparArma(punto.tipoArmaActual);
     }
     if (punto.recogerSiCorresponde(jugador2, agachado2)) {
-      jugador2.equiparArma(punto.tipoActual);
+      jugador2.equiparArma(punto.tipoArmaActual);
     }
   }
 }

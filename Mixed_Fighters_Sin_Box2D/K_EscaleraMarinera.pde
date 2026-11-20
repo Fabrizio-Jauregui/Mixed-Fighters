@@ -13,15 +13,15 @@ class EscaleraMarinera {
   }
 
   boolean contieneJugador(Jugador jugador) {
-    return jugador.pos.x + jugador.ancho/2 >= bordeIzquierdo && jugador.pos.x - jugador.ancho/2 <= bordeDerecho && jugador.pos.y + jugador.alto/2 >= bordeSuperior && jugador.pos.y - jugador.alto/2 <= bordeInferior;
+    return jugador.posicion.x + jugador.ancho/2 >= bordeIzquierdo && jugador.posicion.x - jugador.ancho/2 <= bordeDerecho && jugador.posicion.y + jugador.alto/2 >= bordeSuperior && jugador.posicion.y - jugador.alto/2 <= bordeInferior;
   }
 
   boolean salioPorCostado(Jugador jugador) {
-    return jugador.pos.x + jugador.ancho/2 < bordeIzquierdo || jugador.pos.x - jugador.ancho/2 > bordeDerecho;
+    return jugador.posicion.x + jugador.ancho/2 < bordeIzquierdo || jugador.posicion.x - jugador.ancho/2 > bordeDerecho;
   }
 
   boolean estaEnExtremoSuperior(Jugador jugador) {
-    return jugador.pos.y <= bordeSuperior - jugador.alto/2;
+    return jugador.posicion.y <= bordeSuperior - jugador.alto/2;
   }
 
   void dibujarHitbox() {

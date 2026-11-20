@@ -1,39 +1,44 @@
+// Datos compartidos por las pestañas del sketch.
 PImage panCarga;
 PImage mapa;
 PImage hudJugador1;
 PImage hudJugador2;
+
 ArrayList<Plataforma> plataformas;
 ArrayList<Armas> puntosArmas;
 ArrayList<Proyectil> proyectiles;
 PImage[] spritesArmas;
+
 EscaleraMarinera escaleraMarinera;
-int estado = 0;
-int inicioArmas = 0;
-final int retrasoAparicionArmas = 10000;
+MotorFisico motorFisico;
 Jugador jugador1;
 Jugador jugador2;
 
-MotorFisico motorFisico;
+int estadoJuego = 0;
+int inicioArmas = 0;
+final int retrasoAparicionArmas = 10000;
 
 boolean enter = false;
-boolean isA = false;
-boolean isD = false;
-boolean isW = false;
-boolean isS = false;
-boolean isN = false;
-boolean is1 = false;
-boolean isLEFT = false;
-boolean isRIGHT = false;
-boolean isUP = false;
-boolean isDOWN = false;
-boolean isM = false;
-boolean is2 = false;
+boolean teclaA = false;
+boolean teclaD = false;
+boolean teclaW = false;
+boolean teclaS = false;
+boolean teclaN = false;
+boolean tecla1 = false;
+boolean flechaIzquierda = false;
+boolean flechaDerecha = false;
+boolean flechaArriba = false;
+boolean flechaAbajo = false;
+boolean teclaM = false;
+boolean tecla2 = false;
+
 boolean perdio1 = false;
 boolean perdio2 = false;
 int victoriasJugador1 = 0;
 int victoriasJugador2 = 0;
 boolean marcadorConsultado = false;
 boolean resultadoGuardado = false;
+
 boolean mostrarPlataformas = true;
 boolean mostrarHitboxes = false;
 
