@@ -1,7 +1,6 @@
 class MotorFisico {
 
-  void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar,
-    ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
+  void actualizar(Jugador jugador, boolean izq, boolean der, boolean subir, boolean bajar, ArrayList<Plataforma> plataformas, EscaleraMarinera escalera) {
     float desplazamientoRetroceso = jugador.actualizarRetroceso();
     if (desplazamientoRetroceso != 0) {
       jugador.pos.x += desplazamientoRetroceso;

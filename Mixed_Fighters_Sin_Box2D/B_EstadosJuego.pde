@@ -66,16 +66,13 @@ void actualizarPartida() {
       jugador2.dibujarHitboxGolpe();
     }
 
-    perdio1 = jugador1.vida <= 0 || jugador1.pos.x <= 0 || jugador1.pos.x >= width ||
-      jugador1.pos.y <= 0 || jugador1.pos.y >= height;
-    perdio2 = jugador2.vida <= 0 || jugador2.pos.x <= 0 || jugador2.pos.x >= width ||
-      jugador2.pos.y <= 0 || jugador2.pos.y >= height;
+    perdio1 = jugador1.vida <= 0 || jugador1.pos.x <= 0 || jugador1.pos.x >= width ||jugador1.pos.y <= 0 || jugador1.pos.y >= height;
+    perdio2 = jugador2.vida <= 0 || jugador2.pos.x <= 0 || jugador2.pos.x >= width ||jugador2.pos.y <= 0 || jugador2.pos.y >= height;
 
     if (perdio1 || perdio2) {
       if (!resultadoGuardado) {
         resultadoGuardado = true;
-        String resultado = perdio1 && perdio2 ? "EMPATE" :
-          perdio1 ? "JUGADOR_2" : "JUGADOR_1";
+        String resultado = perdio1 && perdio2 ? "EMPATE" : perdio1 ? "JUGADOR_2" : "JUGADOR_1";
         guardarResultado(resultado);
       }
       estado = 3;

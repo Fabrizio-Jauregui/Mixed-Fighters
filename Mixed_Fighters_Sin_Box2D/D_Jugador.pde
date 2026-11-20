@@ -145,7 +145,7 @@ class Jugador {
     }
 
     int tiempoGolpe = millis() - inicioCuadroGolpe;
-    if (tiempoGolpe < inicioVentanaGolpe || tiempoGolpe >= finVentanaGolpe) {
+    if (tiempoGolpe >= finVentanaGolpe) {
       return false;
     }
 
@@ -367,7 +367,7 @@ class Jugador {
 
   void dibujarHitboxGolpe() {
     int tiempoGolpe = millis() - inicioCuadroGolpe;
-    if (!atacando || golpeYaImpacto || tiempoGolpe < inicioVentanaGolpe || tiempoGolpe >= finVentanaGolpe) {
+    if (!atacando || golpeYaImpacto || tiempoGolpe >= finVentanaGolpe) {
       return;
     }
 

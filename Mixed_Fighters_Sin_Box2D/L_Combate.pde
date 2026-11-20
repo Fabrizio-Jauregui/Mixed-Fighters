@@ -2,7 +2,6 @@
 final int vidaInicial = 100;
 final int danioPunetazo = 5;
 final int danioHacha = 10;
-final int inicioVentanaGolpe = 100;
 final int finVentanaGolpe = 300;
 final float altoProporcionHitboxGolpe = 0.325;
 final float proporcionAnchoHitboxHacha = 0.75;
