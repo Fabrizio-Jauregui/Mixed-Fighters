@@ -2,15 +2,12 @@
 final int vidaInicial = 100;
 final int danioPunetazo = 5;
 final int danioHacha = 10;
-final int finVentanaGolpe = 300;
 final float altoProporcionHitboxGolpe = 0.325;
 final float proporcionAnchoHitboxHacha = 0.75;
 final int duracionRetroceso = 120;
 final float distanciaRetroceso = 24;
 final float alturasJugadorParaDanioCaida = 3;
 final float pixelesPorPuntoDanioCaida = 48;
-final int esperaRegeneracionVida = 5000;
-final float puntosRegeneradosPorSegundo = 3;
 
 void resolverGolpes() {
   // Se comprueban los dos ataques antes de aplicar daño para permitir un empate simultáneo.

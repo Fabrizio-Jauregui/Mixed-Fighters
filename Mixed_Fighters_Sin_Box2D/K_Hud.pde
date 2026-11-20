@@ -43,6 +43,23 @@ void dibujarHUDJugador(PImage imagenHUD, float x, float y, float ancho, float al
 
   dibujarIconoArma(obtenerSpriteArma(jugador.armaCuerpoACuerpo), x, y, escalaHUD, 133, 45);
   dibujarIconoArma(obtenerSpriteArma(jugador.armaDeFuego), x, y, escalaHUD, 213, 45);
+  dibujarMunicion(jugador, x, y, escalaHUD);
+}
+
+void dibujarMunicion(Jugador jugador, float x, float y, float escalaHUD) {
+  float centroX = x + 249 * escalaHUD;
+  float centroY = y + 124 * escalaHUD;
+
+  pushStyle();
+  rectMode(CENTER);
+  noStroke();
+  fill(0, 180);
+  rect(centroX, centroY, 42 * escalaHUD, 24 * escalaHUD, 5 * escalaHUD);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(16 * escalaHUD);
+  text(jugador.municionArma, centroX, centroY);
+  popStyle();
 }
 
 void dibujarIconoArma(PImage icono, float x, float y, float escalaHUD, float slotX, float slotY) {

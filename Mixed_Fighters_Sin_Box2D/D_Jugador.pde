@@ -1,12 +1,10 @@
 class Jugador {
+  // Datos
   PVector pos;
   PVector vel;
   PVector acel;
   
   int vida = vidaInicial;
-  int ultimaVezDanada = 0;
-  int ultimaActualizacionRegeneracion = 0;
-  float progresoRegeneracion = 0;
   boolean caidaEnCurso = false;
   float alturaMasAltaCaida = 0;
   
@@ -22,7 +20,7 @@ class Jugador {
   int armaCuerpoACuerpoAlAtacar = TIPO_PUNOS;
   boolean golpeYaImpacto = false;
   int cuadroGolpe = 0;
-  int inicioCuadroGolpe = 0;
+  int inicioAnimacionGolpe = 0;
   boolean retrocesoActivo = false;
   int inicioRetroceso = 0;
   float distanciaRetrocesoX = 0;
@@ -44,13 +42,8 @@ class Jugador {
   PImage spriteDisparoActual;
   int inicioPoseDisparo = 0;
   boolean mirandoDerechaAlDisparar = true;
-  int balasRafagaPendientes = 0;
-  int momentoProximaBalaRafaga = 0;
-  float xSalidaRafaga;
-  float ySalidaRafaga;
-  float direccionRafaga = 1;
-  int danioRafaga;
 
+  // Constructor y carga de sprites
   Jugador(float x, float y, float ancho, float alto, color c) {
     pos = new PVector(x, y);
     vel = new PVector(0, 0);
@@ -84,6 +77,7 @@ class Jugador {
     spriteDisparoFusil = loadImage("sprites/" + carpeta + "/ataque_arma_29.png");
   }
 
+  // Movimiento
   void reiniciar(float x, float y) {
     pos.set(x, y);
     vel.set(0, 0);
@@ -94,11 +88,8 @@ class Jugador {
     golpeYaImpacto = false;
     armaCuerpoACuerpoAlAtacar = TIPO_PUNOS;
     cuadroGolpe = 0;
-    inicioCuadroGolpe = 0;
+    inicioAnimacionGolpe = 0;
     vida = vidaInicial;
-    ultimaVezDanada = millis();
-    ultimaActualizacionRegeneracion = ultimaVezDanada;
-    progresoRegeneracion = 0;
     cancelarSeguimientoCaida();
     retrocesoActivo = false;
     inicioRetroceso = 0;
@@ -111,8 +102,6 @@ class Jugador {
     spriteDisparoActual = null;
     inicioPoseDisparo = 0;
     mirandoDerechaAlDisparar = true;
-    balasRafagaPendientes = 0;
-    momentoProximaBalaRafaga = 0;
     armaCuerpoACuerpo = TIPO_PUNOS;
     armaDeFuego = TIPO_PISTOLA;
   }
@@ -124,6 +113,7 @@ class Jugador {
     }
   }
 
+  // Combate
   void golpear() {
     if (!enSuelo || escalando || atacando || disparoActivo()) {
       return;
@@ -134,7 +124,7 @@ class Jugador {
     armaCuerpoACuerpoAlAtacar = armaCuerpoACuerpo;
     golpeYaImpacto = false;
     cuadroGolpe = 0;
-    inicioCuadroGolpe = millis();
+    inicioAnimacionGolpe = millis();
     vel.x = 0;
     acel.set(0, 0);
   }
@@ -144,22 +134,13 @@ class Jugador {
       return false;
     }
 
-    int tiempoGolpe = millis() - inicioCuadroGolpe;
-    if (tiempoGolpe >= finVentanaGolpe) {
-      return false;
-    }
-
     float anchoGolpe = anchoHitboxGolpeActual();
     float altoGolpe = alto * altoProporcionHitboxGolpe;
     float direccion = mirandoDerechaAlAtacar ? 1 : -1;
     float centroGolpeX = pos.x + direccion * (ancho/2 + anchoGolpe/2);
 
-    boolean tocaX =
-      centroGolpeX + anchoGolpe/2 > objetivo.pos.x - objetivo.ancho/2 &&
-      centroGolpeX - anchoGolpe/2 < objetivo.pos.x + objetivo.ancho/2;
-    boolean tocaY =
-      pos.y + altoGolpe/2 > objetivo.pos.y - objetivo.alto/2 &&
-      pos.y - altoGolpe/2 < objetivo.pos.y + objetivo.alto/2;
+    boolean tocaX = centroGolpeX + anchoGolpe/2 > objetivo.pos.x - objetivo.ancho/2 && centroGolpeX - anchoGolpe/2 < objetivo.pos.x + objetivo.ancho/2;
+    boolean tocaY = pos.y + altoGolpe/2 > objetivo.pos.y - objetivo.alto/2 && pos.y - altoGolpe/2 < objetivo.pos.y + objetivo.alto/2;
 
     return tocaX && tocaY;
   }
@@ -193,17 +174,16 @@ class Jugador {
     retrocesoAplicadoX = 0;
   }
 
+  // Vida
   void recibirDanio(int danio) {
     if (vida <= 0) {
       return;
     }
 
     vida = max(0, vida - danio);
-    ultimaVezDanada = millis();
-    ultimaActualizacionRegeneracion = ultimaVezDanada;
-    progresoRegeneracion = 0;
   }
 
+  // Armas
   void equiparArma(int tipoArma) {
     if (tipoArma == TIPO_HACHA) {
       if (armaCuerpoACuerpo == TIPO_PUNOS) {
@@ -223,92 +203,30 @@ class Jugador {
     boolean usandoFusil = armaDeFuego == TIPO_FUSIL;
     PImage spriteArma = usandoFusil ? spriteDisparoFusil : spriteDisparoPistola;
     float direccion = mirandoDerecha ? 1 : -1;
-    danioRafaga = usandoFusil ? danioBalaFusil : danioProyectil;
+    int danio = usandoFusil ? danioBalaFusil : danioProyectil;
     float anchoSpriteJugador = ancho;
     if (spriteArma != null) {
       anchoSpriteJugador = spriteArma.width * (alto / spriteArma.height);
     }
 
-    xSalidaRafaga = pos.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
-    ySalidaRafaga = pos.y - alto * 0.05;
-    direccionRafaga = direccion;
+    float xSalida = pos.x + direccion * (anchoSpriteJugador * 0.45 + tamanoBala/2);
+    float ySalida = pos.y - alto * 0.05;
 
     spriteDisparoActual = spriteArma;
     inicioPoseDisparo = millis();
     mirandoDerechaAlDisparar = mirandoDerecha;
-
-    if (usandoFusil) {
-      balasRafagaPendientes = min(cantidadBalasRafagaFusil - 1, municionArma - 1);
-      momentoProximaBalaRafaga = millis() + intervaloBalasRafagaFusil;
-    } else {
-      balasRafagaPendientes = 0;
-    }
-
-    return crearBalaRafaga();
-  }
-
-  Proyectil crearBalaRafaga() {
-    if (municionArma <= 0) {
-      armaDeFuego = TIPO_SIN_ARMA_FUEGO;
-      return null;
-    }
 
     municionArma--;
     if (municionArma == 0) {
       armaDeFuego = TIPO_SIN_ARMA_FUEGO;
     }
 
-    return new Proyectil(xSalidaRafaga, ySalidaRafaga, direccionRafaga, danioRafaga);
-  }
-
-  void actualizarRafaga() {
-    if (balasRafagaPendientes <= 0 || millis() < momentoProximaBalaRafaga) {
-      return;
-    }
-
-    Proyectil bala = crearBalaRafaga();
-    if (bala != null) {
-      proyectiles.add(bala);
-    }
-
-    balasRafagaPendientes--;
-    momentoProximaBalaRafaga += intervaloBalasRafagaFusil;
+    return new Proyectil(xSalida, ySalida, direccion, danio);
   }
 
   boolean disparoActivo() {
     return spriteDisparoActual != null &&
       millis() - inicioPoseDisparo < duracionPoseDisparo;
-  }
-
-  void actualizarRegeneracion() {
-    int ahora = millis();
-
-    if (vida <= 0 || vida >= vidaInicial) {
-      progresoRegeneracion = 0;
-      ultimaActualizacionRegeneracion = ahora;
-      return;
-    }
-
-    if (ahora - ultimaVezDanada < esperaRegeneracionVida) {
-      progresoRegeneracion = 0;
-      ultimaActualizacionRegeneracion = ahora;
-      return;
-    }
-
-    int tiempoTranscurrido = ahora - ultimaActualizacionRegeneracion;
-    progresoRegeneracion += tiempoTranscurrido / 1000.0 * puntosRegeneradosPorSegundo;
-
-    int puntosRecuperados = (int) progresoRegeneracion;
-    if (puntosRecuperados > 0) {
-      vida = min(vidaInicial, vida + puntosRecuperados);
-      progresoRegeneracion -= puntosRecuperados;
-    }
-
-    if (vida >= vidaInicial) {
-      progresoRegeneracion = 0;
-    }
-
-    ultimaActualizacionRegeneracion = ahora;
   }
 
   void actualizarSeguimientoCaida() {
@@ -365,9 +283,9 @@ class Jugador {
     return desplazamiento;
   }
 
+  // Dibujo
   void dibujarHitboxGolpe() {
-    int tiempoGolpe = millis() - inicioCuadroGolpe;
-    if (!atacando || golpeYaImpacto || tiempoGolpe >= finVentanaGolpe) {
+    if (!atacando || golpeYaImpacto) {
       return;
     }
 
@@ -386,7 +304,7 @@ class Jugador {
 
   void dibujar() {
     if (atacando) {
-      cuadroGolpe = (millis() - inicioCuadroGolpe) / 100;
+      cuadroGolpe = (millis() - inicioAnimacionGolpe) / 100;
       if (cuadroGolpe >= spritesGolpe.length) {
         atacando = false;
         cuadroGolpe = 0;
